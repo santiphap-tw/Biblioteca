@@ -124,4 +124,14 @@ public class AppTest {
         String firstLine = outputLine[0];
         assertEquals("Biblioteca should quit",true, firstLine.toLowerCase().contains("thank you"));
     }
+
+    @Test
+    public void bookShouldHaveCheckOut() {
+        Book book = new Book("Title","Author","Date");
+        assertEquals("Book should available", true, book.isAvailable());
+        book.checkOut();
+        assertEquals("Book should not available after check out", false, book.isAvailable());
+        book.checkIn();
+        assertEquals("Book should available after return", true, book.isAvailable());
+    }
 }
