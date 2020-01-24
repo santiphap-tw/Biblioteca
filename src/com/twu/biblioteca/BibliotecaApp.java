@@ -58,7 +58,7 @@ public class BibliotecaApp {
         if(option.equals("0")){
             return false;
         }
-        System.out.println("Invalid option");
+        System.out.println("Please select a valid option!");
         return true;
     }
 

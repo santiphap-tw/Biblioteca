@@ -104,4 +104,14 @@ public class AppTest {
         String firstBook = outputLine[1];
         assertEquals("showListOfBooksDetailed should show books with details", true, firstLine.contains("|"));
     }
+
+    @Test
+    public void bibliotecaShouldNotifyInvalidOption() {
+        trackPrint("Hello 0");
+        BibliotecaApp biblioteca = new BibliotecaApp();
+        biblioteca.showOptions();
+        String[] outputLine = getTrackedPrint().split(">>>")[1].split("\n");
+        String firstLine = outputLine[0];
+        assertEquals("Biblioteca should notify for invalid options",true, firstLine.toLowerCase().contains("valid"));
+    }
 }
