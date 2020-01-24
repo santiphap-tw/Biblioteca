@@ -59,9 +59,14 @@ public class BibliotecaApp {
         }
         if(option.equals("2")){
             showListOfBooksDetailed();
-            System.out.print("Enter the book number:");
-            int bookNumber = sc.nextInt();
-            checkOut(bookNumber);
+            System.out.println("Enter the book name:");
+            sc.nextLine(); // Prevent nextLine skipping
+            String bookName = sc.nextLine();
+            boolean isSuccess = checkOut(bookName.trim());
+            if(isSuccess)
+                System.out.println("Thank you! Enjoy the book");
+            else
+                System.out.println("Sorry, that book is not available");
             return true;
         }
         if(option.equals("0")){
@@ -90,13 +95,28 @@ public class BibliotecaApp {
         return books;
     }
 
-    public void checkOut(int bookNumber) {
+    public boolean checkOut(int bookNumber) {
         if(bookNumber > 0 && bookNumber <= books.size()){
             books.remove(bookNumber-1);
-            System.out.println("Thank you! Enjoy the book");
+            return true;
         }
         else {
-            System.out.println("Invalid book number. Please try again.");
+            return false;
         }
+    }
+
+    public boolean checkOut(String bookName) {
+        int bookNumber = getBookNumber(bookName);
+        return checkOut(bookNumber);
+    }
+
+    private int getBookNumber(String bookName) {
+        for(int bookNumber=0; bookNumber<books.size(); bookNumber++){
+            System.out.println(books.get(bookNumber).getTitle() + " - " + bookName);
+            if(books.get(bookNumber).getTitle().equals(bookName)){
+                return bookNumber+1;
+            }
+        }
+        return -1;
     }
 }
