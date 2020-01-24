@@ -30,9 +30,13 @@ public class BibliotecaApp {
     }
 
     public void showListOfBooks() {
+        showListOfBooks(false);
+    }
+
+    public void showListOfBooks(boolean onlyNA) {
         System.out.println("Title\t|\tAuthor\t|\tPublish Date");
         int bookNumber = 1;
-        for(Book book : getBooks()) {
+        for(Book book : getBooks(onlyNA)) {
             System.out.println(bookNumber++ + ") " + book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
         }
     }
@@ -71,7 +75,7 @@ public class BibliotecaApp {
             return true;
         }
         if(option.equals("3")){
-            showListOfBooks();
+            showListOfBooks(true);
             System.out.println("Enter the book name:");
             sc.nextLine(); // Prevent nextLine skipping
             String bookName = sc.nextLine();
@@ -97,11 +101,16 @@ public class BibliotecaApp {
     }
 
     public ArrayList<Book> getBooks() {
-        ArrayList<Book> availableBooks = new ArrayList<Book>();
-        for(Book book : books){
-            if(book.isAvailable())availableBooks.add(book);
+        return getBooks(false);
+    }
+
+    public ArrayList<Book> getBooks(boolean onlyNA) {
+        ArrayList<Book> books = new ArrayList<Book>();
+        for(Book book : this.books){
+            if(onlyNA && !book.isAvailable()) books.add(book);
+            if(!onlyNA && book.isAvailable()) books.add(book);
         }
-        return availableBooks;
+        return books;
     }
 
     private boolean checkOut(int bookNumber) {
