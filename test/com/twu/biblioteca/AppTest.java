@@ -134,4 +134,14 @@ public class AppTest {
         book.checkIn();
         assertEquals("Book should available after return", true, book.isAvailable());
     }
+
+    @Test
+    public void bibliotecaShouldHaveCheckOut() {
+        trackPrint("0");
+        BibliotecaApp biblioteca = new BibliotecaApp();
+        biblioteca.start();
+        assertEquals("Biblioteca should have 3 books at start", 3, biblioteca.getBooks().size());
+        biblioteca.checkOut(1);
+        assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks().size());
+    }
 }

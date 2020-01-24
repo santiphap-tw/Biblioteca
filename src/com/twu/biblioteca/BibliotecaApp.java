@@ -29,8 +29,9 @@ public class BibliotecaApp {
 
     public void showListOfBooks() {
         System.out.println("List of Books:");
+        int bookNumber = 1;
         for(Book book : books) {
-            System.out.println("- " + book.getTitle());
+            System.out.println(bookNumber++ + ") " + book.getTitle());
         }
     }
 
@@ -65,8 +66,9 @@ public class BibliotecaApp {
 
     public void showListOfBooksDetailed() {
         System.out.println("Title\t|\tAuthor\t|\tPublish Date");
+        int bookNumber = 1;
         for(Book book : books) {
-            System.out.println(book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
+            System.out.println(bookNumber++ + ") " + book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
         }
     }
 
@@ -74,5 +76,14 @@ public class BibliotecaApp {
         books.add(new Book("Book A", "Santiphap A.", "01/01/2008"));
         books.add(new Book("Book B", "Santiphap B.", "02/01/2008"));
         books.add(new Book("Book C", "Santiphap C.", "03/01/2008"));
+    }
+
+    public ArrayList<Book> getBooks() {
+        return books;
+    }
+
+    public void checkOut(int bookNumber) {
+        if(bookNumber > 0 && bookNumber <= books.size())
+            books.remove(bookNumber-1);
     }
 }
