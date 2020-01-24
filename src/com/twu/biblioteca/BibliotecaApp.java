@@ -31,7 +31,7 @@ public class BibliotecaApp {
     public void showListOfBooks() {
         System.out.println("List of Books:");
         int bookNumber = 1;
-        for(Book book : books) {
+        for(Book book : getBooks()) {
             System.out.println(bookNumber++ + ") " + book.getTitle());
         }
     }
@@ -80,7 +80,7 @@ public class BibliotecaApp {
     public void showListOfBooksDetailed() {
         System.out.println("Title\t|\tAuthor\t|\tPublish Date");
         int bookNumber = 1;
-        for(Book book : books) {
+        for(Book book : getBooks()) {
             System.out.println(bookNumber++ + ") " + book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
         }
     }
@@ -92,12 +92,17 @@ public class BibliotecaApp {
     }
 
     public ArrayList<Book> getBooks() {
-        return books;
+        ArrayList<Book> availableBooks = new ArrayList<Book>();
+        for(Book book : books){
+            if(book.isAvailable())availableBooks.add(book);
+        }
+        return availableBooks;
     }
 
-    public boolean checkOut(int bookNumber) {
+    private boolean checkOut(int bookNumber) {
         if(bookNumber > 0 && bookNumber <= books.size()){
-            books.remove(bookNumber-1);
+            Book book = books.get(bookNumber-1);
+            book.checkOut();
             return true;
         }
         else {
@@ -112,8 +117,8 @@ public class BibliotecaApp {
 
     private int getBookNumber(String bookName) {
         for(int bookNumber=0; bookNumber<books.size(); bookNumber++){
-            System.out.println(books.get(bookNumber).getTitle() + " - " + bookName);
-            if(books.get(bookNumber).getTitle().equals(bookName)){
+            Book book = books.get(bookNumber);
+            if(book.getTitle().equals(bookName) && book.isAvailable()){
                 return bookNumber+1;
             }
         }

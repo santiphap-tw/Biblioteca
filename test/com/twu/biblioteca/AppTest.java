@@ -146,7 +146,7 @@ public class AppTest {
         BibliotecaApp biblioteca = new BibliotecaApp();
         biblioteca.start();
         assertEquals("Biblioteca should have 3 books at start", 3, biblioteca.getBooks().size());
-        biblioteca.checkOut(1);
+        biblioteca.checkOut("Book A");
         assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks().size());
         biblioteca.checkOut("Book B");
         assertEquals("Biblioteca should have 1 books after checkout", 1, biblioteca.getBooks().size());
@@ -154,7 +154,7 @@ public class AppTest {
 
     @Test
     public void bibliotecaShouldHaveCheckOutOptionAtOption2() {
-        trackPrint(new String[] {"2","Book A","2","Book X","0"});
+        trackPrint(new String[] {"2","Book A","2","Book A","0"});
         BibliotecaApp biblioteca = new BibliotecaApp();
         biblioteca.showOptions();
         assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks().size());
