@@ -57,11 +57,15 @@ public class AppTest {
         trackPrint();
         BibliotecaApp biblioteca = new BibliotecaApp();
         biblioteca.showListOfBooks();
-        String[] outputLine = getTrackedPrint().split("\n");
-        String firstLine = outputLine[0];
-        assertEquals("showListOfBooks should show a header",true, firstLine.toLowerCase().contains("list of books"));
-        int numberOfBooks = outputLine.length-1;
-        assertEquals("showListOfBooks should show at least 1 book", true, numberOfBooks > 0);
+        String[] output_allLine = getTrackedPrint().split("\n");
+        String firstLine = output_allLine[0];
+        assertEquals("showListOfBooksDetailed should have title header",true, firstLine.toLowerCase().contains("title"));
+        assertEquals("showListOfBooksDetailed should have author header",true, firstLine.toLowerCase().contains("author"));
+        assertEquals("showListOfBooksDetailed should have publish date header",true, firstLine.toLowerCase().contains("publish date"));
+        int numberOfBooks = output_allLine.length-1;
+        assertEquals("showListOfBooksDetailed should show at least 1 book", true, numberOfBooks > 0);
+        String firstBook = output_allLine[1];
+        assertEquals("showListOfBooksDetailed should show books with details", true, firstBook.contains("|"));
     }
 
     @Test
@@ -81,9 +85,13 @@ public class AppTest {
         biblioteca.showOptions();
         String[] output_allLine = getTrackedPrint().split(">>>")[1].split("\n");
         String firstLine = output_allLine[0];
-        assertEquals("Biblioteca option 1 should show a header",true, firstLine.toLowerCase().contains("list of books"));
+        assertEquals("showListOfBooksDetailed should have title header",true, firstLine.toLowerCase().contains("title"));
+        assertEquals("showListOfBooksDetailed should have author header",true, firstLine.toLowerCase().contains("author"));
+        assertEquals("showListOfBooksDetailed should have publish date header",true, firstLine.toLowerCase().contains("publish date"));
         int numberOfBooks = output_allLine.length-1;
-        assertEquals("Biblioteca option 1 should show at least 1 book", true, numberOfBooks > 0);
+        assertEquals("showListOfBooksDetailed should show at least 1 book", true, numberOfBooks > 0);
+        String firstBook = output_allLine[1];
+        assertEquals("showListOfBooksDetailed should show books with details", true, firstBook.contains("|"));
     }
 
     @Test
@@ -92,22 +100,6 @@ public class AppTest {
         assertEquals("Book should have a title", "Title", book.getTitle());
         assertEquals("Book should have an author", "Author", book.getAuthor());
         assertEquals("Book should have a publish date", "Date", book.getPublishDate());
-    }
-
-    @Test
-    public void bibliotecaShouldShowDetailedBooks() {
-        BibliotecaApp biblioteca = new BibliotecaApp();
-        trackPrint();
-        biblioteca.showListOfBooksDetailed();
-        String[] output_allLine = getTrackedPrint().split("\n");
-        String firstLine = output_allLine[0];
-        assertEquals("showListOfBooksDetailed should have title header",true, firstLine.toLowerCase().contains("title"));
-        assertEquals("showListOfBooksDetailed should have author header",true, firstLine.toLowerCase().contains("author"));
-        assertEquals("showListOfBooksDetailed should have publish date header",true, firstLine.toLowerCase().contains("publish date"));
-        int numberOfBooks = output_allLine.length-1;
-        assertEquals("showListOfBooksDetailed should show at least 1 book", true, numberOfBooks > 0);
-        String firstBook = output_allLine[1];
-        assertEquals("showListOfBooksDetailed should show books with details", true, firstBook.contains("|"));
     }
 
     @Test

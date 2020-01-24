@@ -30,10 +30,10 @@ public class BibliotecaApp {
     }
 
     public void showListOfBooks() {
-        System.out.println("List of Books:");
+        System.out.println("Title\t|\tAuthor\t|\tPublish Date");
         int bookNumber = 1;
         for(Book book : getBooks()) {
-            System.out.println(bookNumber++ + ") " + book.getTitle());
+            System.out.println(bookNumber++ + ") " + book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
         }
     }
 
@@ -59,7 +59,7 @@ public class BibliotecaApp {
             return true;
         }
         if(option.equals("2")){
-            showListOfBooksDetailed();
+            showListOfBooks();
             System.out.println("Enter the book name:");
             sc.nextLine(); // Prevent nextLine skipping
             String bookName = sc.nextLine();
@@ -71,7 +71,7 @@ public class BibliotecaApp {
             return true;
         }
         if(option.equals("3")){
-            showListOfBooksDetailed();
+            showListOfBooks();
             System.out.println("Enter the book name:");
             sc.nextLine(); // Prevent nextLine skipping
             String bookName = sc.nextLine();
@@ -88,14 +88,6 @@ public class BibliotecaApp {
         }
         System.out.println("Please select a valid option!");
         return true;
-    }
-
-    public void showListOfBooksDetailed() {
-        System.out.println("Title\t|\tAuthor\t|\tPublish Date");
-        int bookNumber = 1;
-        for(Book book : getBooks()) {
-            System.out.println(bookNumber++ + ") " + book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
-        }
     }
 
     private void addDefaultBooks() {
