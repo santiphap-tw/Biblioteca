@@ -1,16 +1,24 @@
 package com.twu.biblioteca;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BibliotecaApp {
 
     private ArrayList<Book> books;
+    public static final String[] options = {
+            "__blank__",
+            "Show list of books"
+    };
 
     public BibliotecaApp() {
         books = new ArrayList<Book>();
         addDefaultBooks();
+    }
+
+    public void start() {
         showWelcomeMessage();
-        showListOfBooks();
+        showOptions();
     }
 
     public void showWelcomeMessage() {
@@ -22,6 +30,25 @@ public class BibliotecaApp {
         for(Book book : books) {
             System.out.println("- " + book.getTitle());
         }
+    }
+
+    public void showOptions() {
+        System.out.println("What would you like to do?");
+        for(int optionIndex = 1; optionIndex < options.length; optionIndex++){
+            System.out.println(optionIndex+ ") " + options[optionIndex]);
+        }
+        /*System.out.print(">>> ");
+        Scanner sc = new Scanner(System.in);
+        String option = sc.next();
+        selectOption(option);*/
+    }
+
+    public void selectOption(String option) {
+        if(option.equals("1")){
+            showListOfBooks();
+            return ;
+        }
+        System.out.println("Invalid option");
     }
 
     public void showListOfBooksDetailed() {
