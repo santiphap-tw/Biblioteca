@@ -6,8 +6,10 @@ import java.util.Scanner;
 public class BibliotecaApp {
 
     private ArrayList<Book> books;
+    private Scanner sc = new Scanner(System.in);
+
     public static final String[] options = {
-            "__blank__",
+            "Exit",
             "Show list of books"
     };
 
@@ -37,18 +39,27 @@ public class BibliotecaApp {
         for(int optionIndex = 1; optionIndex < options.length; optionIndex++){
             System.out.println(optionIndex+ ") " + options[optionIndex]);
         }
-        /*System.out.print(">>> ");
-        Scanner sc = new Scanner(System.in);
-        String option = sc.next();
-        selectOption(option);*/
+        System.out.println("0) " + options[0]);
+        startInput();
     }
 
-    public void selectOption(String option) {
+    private void startInput() {
+        System.out.print(">>> ");
+        String option = sc.next();
+        boolean continueInput = selectOption(option);
+        if(continueInput) startInput();
+    }
+
+    public boolean selectOption(String option) {
         if(option.equals("1")){
             showListOfBooks();
-            return ;
+            return true;
+        }
+        if(option.equals("0")){
+            return false;
         }
         System.out.println("Invalid option");
+        return true;
     }
 
     public void showListOfBooksDetailed() {

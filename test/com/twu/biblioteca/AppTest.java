@@ -1,26 +1,35 @@
 package com.twu.biblioteca;
 
 
+import org.junit.After;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 
 public class AppTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
+    private final InputStream originalIn = System.in;
 
 
     private void trackPrint() {
         System.setOut(new PrintStream(outContent));
     }
 
-    private void untrackPrint() {
+    private void trackPrint(String input) {
+        ByteArrayInputStream inContent = new ByteArrayInputStream(input.getBytes());
+        System.setOut(new PrintStream(outContent));
+        System.setIn(inContent);
+    }
+
+    @After
+    public void untrackPrint() {
+        System.setIn(originalIn);
         System.setOut(originalOut);
     }
 
@@ -30,64 +39,46 @@ public class AppTest {
 
     @Test
     public void bibliotecaShouldHaveWelcomeMessage() {
-        trackPrint();
+        trackPrint("0");
         BibliotecaApp biblioteca = new BibliotecaApp();
         biblioteca.start();
         String[] outputLine = getTrackedPrint().split("\n");
         String firstLine = outputLine[0];
         assertEquals("Biblioteca should have a welcome message",true, firstLine.toLowerCase().contains("welcome"));
-        untrackPrint();
     }
 
     @Test
-    public void bibliotecaShouldShowBooks() {
-        BibliotecaApp biblioteca = new BibliotecaApp();
+    public void showListOfBooksShouldShowBooks() {
         trackPrint();
+        BibliotecaApp biblioteca = new BibliotecaApp();
         biblioteca.showListOfBooks();
         String[] outputLine = getTrackedPrint().split("\n");
         String firstLine = outputLine[0];
         assertEquals("showListOfBooks should show a header",true, firstLine.toLowerCase().contains("list of books"));
         int numberOfBooks = outputLine.length-1;
         assertEquals("showListOfBooks should show at least 1 book", true, numberOfBooks > 0);
-        untrackPrint();
     }
 
     @Test
     public void bibliotecaShouldShowOptionsAfterWelcome() {
-        trackPrint();
+        trackPrint("0");
         BibliotecaApp biblioteca = new BibliotecaApp();
         biblioteca.start();
         String[] outputLine = getTrackedPrint().split("\n");
         String secondLine = outputLine.length > 1 ? outputLine[1] : "";
         assertEquals("Biblioteca should show options after welcome message appeared",true, secondLine.toLowerCase().contains("what would you like to do?"));
-        untrackPrint();
     }
 
     @Test
-    public void bibliotecaShouldHaveShowBooksOption() {
+    public void bibliotecaShouldHaveShowBooksOptionAtOption1() {
+        trackPrint("1 0");
         BibliotecaApp biblioteca = new BibliotecaApp();
-        trackPrint();
         biblioteca.showOptions();
-        String[] outputLine = getTrackedPrint().split("\n");
-        int numberOfOptions = outputLine.length-1;
-        assertEquals("showOptions should have at least 1 option", true, numberOfOptions > 0);
-        for(int option = 1; option <= numberOfOptions; option++){
-            assertEquals("showOptions should have show books option",true, outputLine[option].toLowerCase().contains("show list of books"));
-        }
-        untrackPrint();
-    }
-
-    @Test
-    public void bibloptecaOption1ShouldShowBooks() {
-        BibliotecaApp biblioteca = new BibliotecaApp();
-        trackPrint();
-        biblioteca.selectOption("1");
-        String[] outputLine = getTrackedPrint().split("\n");
+        String[] outputLine = getTrackedPrint().split(">>>")[1].split("\n");
         String firstLine = outputLine[0];
-        assertEquals("showListOfBooks should show a header",true, firstLine.toLowerCase().contains("list of books"));
+        assertEquals("Biblioteca option 1 should show a header",true, firstLine.toLowerCase().contains("list of books"));
         int numberOfBooks = outputLine.length-1;
-        assertEquals("showListOfBooks should show at least 1 book", true, numberOfBooks > 0);
-        untrackPrint();
+        assertEquals("Biblioteca option 1 should show at least 1 book", true, numberOfBooks > 0);
     }
 
     @Test
@@ -112,6 +103,5 @@ public class AppTest {
         assertEquals("showListOfBooksDetailed should show at least 1 book", true, numberOfBooks > 0);
         String firstBook = outputLine[1];
         assertEquals("showListOfBooksDetailed should show books with details", true, firstLine.contains("|"));
-        untrackPrint();
     }
 }
