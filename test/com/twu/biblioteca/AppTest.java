@@ -165,4 +165,30 @@ public class AppTest {
         String output2 = output2_allLine[output2_allLine.length-1];
         assertEquals("Checkout should notify when fail", true, output2.toLowerCase().contains("sorry"));
     }
+
+    @Test
+    public void bibliotecaShouldHaveCheckIn() {
+        trackPrint("0");
+        BibliotecaApp biblioteca = new BibliotecaApp();
+        biblioteca.start();
+        biblioteca.checkOut("Book A");
+        biblioteca.checkOut("Book B");
+        assertEquals("Biblioteca should have 1 books at start", 1, biblioteca.getBooks().size());
+        biblioteca.checkIn("Book A");
+        assertEquals("Biblioteca should have 2 books after return", 2, biblioteca.getBooks().size());
+    }
+
+    @Test
+    public void bibliotecaShouldHaveCheckInOptionAtOption3() {
+        trackPrint(new String[] {"2","Book A","3","Book A","3","Book A","0"});
+        BibliotecaApp biblioteca = new BibliotecaApp();
+        biblioteca.showOptions();
+        assertEquals("Biblioteca should have 3 books after checkout/return", 3, biblioteca.getBooks().size());
+        String[] output2_allLine = getTrackedPrint().split(">>>")[2].split("\n");
+        String output2 = output2_allLine[output2_allLine.length-1];
+        assertEquals("Return should notify when success", true, output2.toLowerCase().contains("thank you"));
+        String[] output3_allLine = getTrackedPrint().split(">>>")[3].split("\n");
+        String output3 = output3_allLine[output3_allLine.length-1];
+        assertEquals("Return should notify when fail", true, output3.toLowerCase().contains("valid"));
+    }
 }

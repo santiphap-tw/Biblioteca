@@ -11,7 +11,8 @@ public class BibliotecaApp {
     public static final String[] options = {
             "Exit",
             "Show list of books",
-            "Check out"
+            "Check out",
+            "Return"
     };
 
     public BibliotecaApp() {
@@ -69,6 +70,18 @@ public class BibliotecaApp {
                 System.out.println("Sorry, that book is not available");
             return true;
         }
+        if(option.equals("3")){
+            showListOfBooksDetailed();
+            System.out.println("Enter the book name:");
+            sc.nextLine(); // Prevent nextLine skipping
+            String bookName = sc.nextLine();
+            boolean isSuccess = checkIn(bookName.trim());
+            if(isSuccess)
+                System.out.println("Thank you for returning the book");
+            else
+                System.out.println("This is not a valid book to return");
+            return true;
+        }
         if(option.equals("0")){
             System.out.println("Thank you for using Biblioteca!");
             return false;
@@ -102,6 +115,7 @@ public class BibliotecaApp {
     private boolean checkOut(int bookNumber) {
         if(bookNumber > 0 && bookNumber <= books.size()){
             Book book = books.get(bookNumber-1);
+            if(!book.isAvailable()) return false;
             book.checkOut();
             return true;
         }
@@ -118,10 +132,27 @@ public class BibliotecaApp {
     private int getBookNumber(String bookName) {
         for(int bookNumber=0; bookNumber<books.size(); bookNumber++){
             Book book = books.get(bookNumber);
-            if(book.getTitle().equals(bookName) && book.isAvailable()){
+            if(book.getTitle().equals(bookName)){
                 return bookNumber+1;
             }
         }
         return -1;
+    }
+
+    public boolean checkIn(String bookName) {
+        int bookNumber = getBookNumber(bookName);
+        return checkIn(bookNumber);
+    }
+
+    private boolean checkIn(int bookNumber) {
+        if(bookNumber > 0 && bookNumber <= books.size()){
+            Book book = books.get(bookNumber-1);
+            if(book.isAvailable()) return false;
+            book.checkIn();
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
