@@ -151,5 +151,8 @@ public class AppTest {
         BibliotecaApp biblioteca = new BibliotecaApp();
         biblioteca.showOptions();
         assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks().size());
+        String[] outputLine = getTrackedPrint().split(">>>")[1].split("\n");
+        String finalLine = outputLine[outputLine.length-1];
+        assertEquals("Checkout should notify when success", true, finalLine.toLowerCase().contains("thank you"));
     }
 }

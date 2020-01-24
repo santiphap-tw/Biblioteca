@@ -91,7 +91,12 @@ public class BibliotecaApp {
     }
 
     public void checkOut(int bookNumber) {
-        if(bookNumber > 0 && bookNumber <= books.size())
+        if(bookNumber > 0 && bookNumber <= books.size()){
             books.remove(bookNumber-1);
+            System.out.println("Thank you! Enjoy the book");
+        }
+        else {
+            System.out.println("Invalid book number. Please try again.");
+        }
     }
 }
