@@ -144,4 +144,12 @@ public class AppTest {
         biblioteca.checkOut(1);
         assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks().size());
     }
+
+    @Test
+    public void bibliotecaShouldHaveCheckOutOptionAtOption2() {
+        trackPrint("2 1 0");
+        BibliotecaApp biblioteca = new BibliotecaApp();
+        biblioteca.showOptions();
+        assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks().size());
+    }
 }

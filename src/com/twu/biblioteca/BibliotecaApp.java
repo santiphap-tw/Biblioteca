@@ -10,7 +10,8 @@ public class BibliotecaApp {
 
     public static final String[] options = {
             "Exit",
-            "Show list of books"
+            "Show list of books",
+            "Check out"
     };
 
     public BibliotecaApp() {
@@ -54,6 +55,13 @@ public class BibliotecaApp {
     public boolean selectOption(String option) {
         if(option.equals("1")){
             showListOfBooks();
+            return true;
+        }
+        if(option.equals("2")){
+            showListOfBooksDetailed();
+            System.out.print("Enter the book number:");
+            int bookNumber = sc.nextInt();
+            checkOut(bookNumber);
             return true;
         }
         if(option.equals("0")){
