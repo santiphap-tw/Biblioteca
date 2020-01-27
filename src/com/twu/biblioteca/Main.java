@@ -1,11 +1,11 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.controller.Biblioteca;
+import com.twu.biblioteca.view.BibliotecaApp;
 
 public class Main {
 
     public static void main(String[] args) {
-        Biblioteca biblioteca = new Biblioteca();
-        biblioteca.start();
+        BibliotecaApp app = new BibliotecaApp();
+        app.start();
     }
 }
