@@ -2,8 +2,9 @@ package com.twu.biblioteca.controller.runnable;
 
 import com.twu.biblioteca.controller.Biblioteca;
 import com.twu.biblioteca.model.Label;
+import com.twu.biblioteca.model.RunnableWithParameter;
 
-public class AppReturnRunnable implements RunnableWithParameter{
+public class AppReturnRunnable implements RunnableWithParameter {
 
     private Biblioteca biblioteca;
 

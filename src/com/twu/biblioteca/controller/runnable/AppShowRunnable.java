@@ -1,15 +1,15 @@
 package com.twu.biblioteca.controller.runnable;
 
 import com.twu.biblioteca.controller.Biblioteca;
-import com.twu.biblioteca.model.Label;
-import com.twu.biblioteca.view.BibliotecaApp;
+import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.RunnableWithParameter;
 
-public class AppShowRunnable implements RunnableWithParameter{
+public class AppShowRunnable implements RunnableWithParameter {
 
-    private BibliotecaApp app;
+    private Biblioteca biblioteca;
 
-    public AppShowRunnable(BibliotecaApp app) {
-        this.app = app;
+    public AppShowRunnable(Biblioteca biblioteca) {
+        this.biblioteca = biblioteca;
     }
 
     @Override
@@ -20,10 +20,18 @@ public class AppShowRunnable implements RunnableWithParameter{
     @Override
     public void run(String parameter) {
         if(parameter.equals("not available"))
-            app.showListOfBooks(Biblioteca.BOOK_FILTER.NOT_AVAILABLE);
+            showListOfBooks(Biblioteca.BOOK_FILTER.NOT_AVAILABLE);
         else if(parameter.equals("all"))
-            app.showListOfBooks(Biblioteca.BOOK_FILTER.ALL);
+            showListOfBooks(Biblioteca.BOOK_FILTER.ALL);
         else
-            app.showListOfBooks(Biblioteca.BOOK_FILTER.AVAILABLE);
+            showListOfBooks(Biblioteca.BOOK_FILTER.AVAILABLE);
+    }
+
+    private void showListOfBooks(Biblioteca.BOOK_FILTER bookFilter) {
+        System.out.println("Title\t|\tAuthor\t|\tPublish Date");
+        int bookNumber = 1;
+        for(Book book : biblioteca.getBooks(bookFilter)) {
+            System.out.println(bookNumber++ + ") " + book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
+        }
     }
 }

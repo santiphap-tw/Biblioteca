@@ -1,8 +1,9 @@
 package com.twu.biblioteca.controller.runnable;
 
 import com.twu.biblioteca.model.Label;
+import com.twu.biblioteca.model.RunnableWithParameter;
 
-public class AppExitRunnable implements RunnableWithParameter{
+public class AppExitRunnable implements RunnableWithParameter {
 
     @Override
     public void run() {

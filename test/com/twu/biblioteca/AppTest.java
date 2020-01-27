@@ -101,5 +101,4 @@ public class AppTest {
         book.doReturn();
         assertEquals("Book should available after return", true, book.isAvailable());
     }
-
 }
