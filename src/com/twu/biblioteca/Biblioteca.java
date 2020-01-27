@@ -145,9 +145,7 @@ public class Biblioteca {
         String option = "";
         try{
             option = (String) optionsDescription[Integer.parseInt(order)];
-        } catch (NumberFormatException e) {
-            option = "Invalid";
-        }
+        } catch (NumberFormatException e) {}
         return option;
     }
 
