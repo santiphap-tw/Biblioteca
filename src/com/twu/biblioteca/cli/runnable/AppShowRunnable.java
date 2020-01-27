@@ -1,6 +1,6 @@
-package com.twu.biblioteca.controller.runnable;
+package com.twu.biblioteca.cli.runnable;
 
-import com.twu.biblioteca.controller.Biblioteca;
+import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.RunnableWithParameter;
 

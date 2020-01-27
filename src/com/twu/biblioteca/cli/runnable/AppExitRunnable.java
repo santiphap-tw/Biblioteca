@@ -1,4 +1,4 @@
-package com.twu.biblioteca.controller.runnable;
+package com.twu.biblioteca.cli.runnable;
 
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RunnableWithParameter;

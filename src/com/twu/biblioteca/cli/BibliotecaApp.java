@@ -1,7 +1,7 @@
-package com.twu.biblioteca.view;
+package com.twu.biblioteca.cli;
 
-import com.twu.biblioteca.controller.Biblioteca;
-import com.twu.biblioteca.controller.runnable.*;
+import com.twu.biblioteca.Biblioteca;
+import com.twu.biblioteca.cli.runnable.*;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.AppOption;
 

@@ -1,6 +1,6 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.view.BibliotecaApp;
+import com.twu.biblioteca.cli.BibliotecaApp;
 
 public class Main {
 
