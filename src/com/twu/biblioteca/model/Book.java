@@ -1,4 +1,4 @@
-package com.twu.biblioteca;
+package com.twu.biblioteca.model;
 
 public class Book {
 
@@ -34,11 +34,11 @@ public class Book {
         return available;
     }
 
-    public void checkOut() {
+    public void doCheckOut() {
         this.available = false;
     }
 
-    public void checkIn() {
+    public void doReturn() {
         this.available = true;
     }
 }
