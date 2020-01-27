@@ -4,13 +4,13 @@ import java.util.*;
 
 public class Biblioteca {
 
-    enum STATE {
+    private enum STATE {
         INITIAL,
         RUNNING,
         TERMINATE
     }
 
-    enum BOOK_TYPE  {
+    public enum BOOK_FILTER {
         AVAILABLE,
         NOT_AVAILABLE,
         ALL
@@ -20,33 +20,33 @@ public class Biblioteca {
     private ArrayList<Book> books;
     private Scanner sc = new Scanner(System.in);
     private Map<String, Runnable> options = new LinkedHashMap<String, Runnable>() {{
-        put("Exit", () -> {
-            System.out.println("Thank you for using Biblioteca!");
+        put(Label.OPTION_EXIT.text, () -> {
+            System.out.println(Label.EXIT.text);
         });
-        put("Show list of books", () -> {
-            showListOfBooks(BOOK_TYPE.AVAILABLE);
+        put(Label.OPTION_SHOW_BOOKS.text, () -> {
+            showListOfBooks(BOOK_FILTER.AVAILABLE);
         });
-        put("Check out", () -> {
-            showListOfBooks(BOOK_TYPE.AVAILABLE);
-            System.out.println("Enter the book name:");
+        put(Label.OPTION_CHECKOUT.text, () -> {
+            showListOfBooks(BOOK_FILTER.AVAILABLE);
+            System.out.println(Label.BOOK_NAME_PROMPT.text);
             sc.nextLine(); // Prevent nextLine skipping
             String bookName = sc.nextLine();
-            boolean isSuccess = checkOut(bookName.trim());
+            boolean isSuccess = doCheckOut(bookName.trim());
             if(isSuccess)
-                System.out.println("Thank you! Enjoy the book");
+                System.out.println(Label.CHECKOUT_SUCCESS.text);
             else
-                System.out.println("Sorry, that book is not available");
+                System.out.println(Label.CHECKOUT_FAIL.text);
         });
-        put("Return", () -> {
-            showListOfBooks(BOOK_TYPE.NOT_AVAILABLE);
-            System.out.println("Enter the book name:");
+        put(Label.OPTION_RETURN.text, () -> {
+            showListOfBooks(BOOK_FILTER.NOT_AVAILABLE);
+            System.out.println(Label.BOOK_NAME_PROMPT.text);
             sc.nextLine(); // Prevent nextLine skipping
             String bookName = sc.nextLine();
-            boolean isSuccess = checkIn(bookName.trim());
+            boolean isSuccess = doReturn(bookName.trim());
             if(isSuccess)
-                System.out.println("Thank you for returning the book");
+                System.out.println(Label.RETURN_SUCCESS.text);
             else
-                System.out.println("This is not a valid book to return");
+                System.out.println(Label.RETURN_FAIL.text);
         });
     }};
 
@@ -56,10 +56,10 @@ public class Biblioteca {
         this.state = STATE.INITIAL;
     }
 
-    public ArrayList<Book> getBooks(BOOK_TYPE book_type) {
+    public ArrayList<Book> getBooks(BOOK_FILTER bookFilter) {
         ArrayList<Book> books = new ArrayList<Book>();
         for(Book book : this.books){
-            switch (book_type){
+            switch (bookFilter){
                 case AVAILABLE:
                     if(book.isAvailable()) books.add(book);
                     break;
@@ -74,22 +74,22 @@ public class Biblioteca {
         return books;
     }
 
-    public boolean checkOut(String bookName) {
+    public boolean doCheckOut(String bookName) {
         for(Book book : this.books) {
             if(bookName.equals(book.getTitle())){
                 if(!book.isAvailable()) return false;
-                book.checkOut();
+                book.doCheckOut();
                 return true;
             }
         }
         return false;
     }
 
-    public boolean checkIn(String bookName) {
+    public boolean doReturn(String bookName) {
         for(Book book : this.books) {
             if(bookName.equals(book.getTitle())){
                 if(book.isAvailable()) return false;
-                book.checkIn();
+                book.doReturn();
                 return true;
             }
         }
@@ -105,7 +105,7 @@ public class Biblioteca {
                     this.state = STATE.RUNNING;
                     break;
                 case RUNNING:
-                    System.out.print(">>> ");
+                    System.out.print(Label.OPTION_INPUT_PROMPT.text);
                     String option = sc.next();
                     boolean isContinue = selectOption(option);
                     if(!isContinue)
@@ -119,12 +119,12 @@ public class Biblioteca {
 
     // STATE - INITIAL
     public void showWelcomeMessage() {
-        System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
+        System.out.println(Label.WELCOME.text);
     }
 
     // STATE - INITIAL
     public void showOptions() {
-        System.out.println("What would you like to do?");
+        System.out.println(Label.OPTION_PROMPT.text);
         Object[] optionsDescription = options.keySet().toArray();
         for(int optionIndex = 1; optionIndex < optionsDescription.length; optionIndex++){
             System.out.println(optionIndex+ ") " + optionsDescription[optionIndex]);
@@ -137,7 +137,7 @@ public class Biblioteca {
         String option = this.getOptionFromOrder(order);
         boolean isExitOption = option.equals(options.keySet().toArray()[0]);
         Runnable operation = options.getOrDefault(option, () -> {
-            System.out.println("Please select a valid option!");
+            System.out.println(Label.OPTION_INVALID.text);
         });
         operation.run();
         return !isExitOption;
@@ -154,10 +154,10 @@ public class Biblioteca {
         return option;
     }
 
-    public void showListOfBooks(BOOK_TYPE book_type) {
+    public void showListOfBooks(BOOK_FILTER bookFilter) {
         System.out.println("Title\t|\tAuthor\t|\tPublish Date");
         int bookNumber = 1;
-        for(Book book : getBooks(book_type)) {
+        for(Book book : getBooks(bookFilter)) {
             System.out.println(bookNumber++ + ") " + book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
         }
     }
