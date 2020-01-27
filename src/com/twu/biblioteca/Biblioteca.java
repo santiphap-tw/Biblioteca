@@ -1,7 +1,6 @@
 package com.twu.biblioteca;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Biblioteca {
 
@@ -10,16 +9,40 @@ public class Biblioteca {
         RUNNING,
         TERMINATE
     }
+
     private STATE state;
     private ArrayList<Book> books;
     private Scanner sc = new Scanner(System.in);
-
-    public static final String[] options = {
-            "Exit",
-            "Show list of books",
-            "Check out",
-            "Return"
-    };
+    private Map<String, Runnable> options = new LinkedHashMap<String, Runnable>() {{
+        put("Exit", () -> {
+            System.out.println("Thank you for using Biblioteca!");
+        });
+        put("Show list of books", () -> {
+            showListOfBooks();
+        });
+        put("Check out", () -> {
+            showListOfBooks();
+            System.out.println("Enter the book name:");
+            sc.nextLine(); // Prevent nextLine skipping
+            String bookName = sc.nextLine();
+            boolean isSuccess = checkOut(bookName.trim());
+            if(isSuccess)
+                System.out.println("Thank you! Enjoy the book");
+            else
+                System.out.println("Sorry, that book is not available");
+        });
+        put("Return", () -> {
+            showListOfBooks(true);
+            System.out.println("Enter the book name:");
+            sc.nextLine(); // Prevent nextLine skipping
+            String bookName = sc.nextLine();
+            boolean isSuccess = checkIn(bookName.trim());
+            if(isSuccess)
+                System.out.println("Thank you for returning the book");
+            else
+                System.out.println("This is not a valid book to return");
+        });
+    }};
 
     public Biblioteca() {
         books = new ArrayList<Book>();
@@ -48,53 +71,41 @@ public class Biblioteca {
         }
     }
 
+    // STATE - INITIAL
     public void showWelcomeMessage() {
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
     }
 
+    // STATE - INITIAL
     public void showOptions() {
         System.out.println("What would you like to do?");
-        for(int optionIndex = 1; optionIndex < options.length; optionIndex++){
-            System.out.println(optionIndex+ ") " + options[optionIndex]);
+        Object[] optionsDescription = options.keySet().toArray();
+        for(int optionIndex = 1; optionIndex < optionsDescription.length; optionIndex++){
+            System.out.println(optionIndex+ ") " + optionsDescription[optionIndex]);
         }
-        System.out.println("0) " + options[0]);
+        System.out.println("0) " + optionsDescription[0]);
     }
 
-    public boolean selectOption(String option) {
-        if(option.equals("1")){
-            showListOfBooks();
-            return true;
+    // STATE - RUNNING
+    public boolean selectOption(String order) {
+        String option = this.getOptionFromOrder(order);
+        boolean isExitOption = option.equals(options.keySet().toArray()[0]);
+        Runnable operation = options.getOrDefault(option, () -> {
+            System.out.println("Please select a valid option!");
+        });
+        operation.run();
+        return !isExitOption;
+    }
+
+    private String getOptionFromOrder(String order) {
+        Object[] optionsDescription = options.keySet().toArray();
+        String option = "";
+        try{
+            option = (String) optionsDescription[Integer.parseInt(order)];
+        } catch (NumberFormatException e) {
+            option = "Invalid";
         }
-        if(option.equals("2")){
-            showListOfBooks();
-            System.out.println("Enter the book name:");
-            sc.nextLine(); // Prevent nextLine skipping
-            String bookName = sc.nextLine();
-            boolean isSuccess = checkOut(bookName.trim());
-            if(isSuccess)
-                System.out.println("Thank you! Enjoy the book");
-            else
-                System.out.println("Sorry, that book is not available");
-            return true;
-        }
-        if(option.equals("3")){
-            showListOfBooks(true);
-            System.out.println("Enter the book name:");
-            sc.nextLine(); // Prevent nextLine skipping
-            String bookName = sc.nextLine();
-            boolean isSuccess = checkIn(bookName.trim());
-            if(isSuccess)
-                System.out.println("Thank you for returning the book");
-            else
-                System.out.println("This is not a valid book to return");
-            return true;
-        }
-        if(option.equals("0")){
-            System.out.println("Thank you for using Biblioteca!");
-            return false;
-        }
-        System.out.println("Please select a valid option!");
-        return true;
+        return option;
     }
 
     public void showListOfBooks() {
