@@ -96,6 +96,27 @@ public class Biblioteca {
         this.state = STATE.INITIAL;
     }
 
+    public void start() {
+        while(this.state != STATE.TERMINATE) {
+            switch (this.state) {
+                case INITIAL:
+                    showWelcomeMessage();
+                    showOptions();
+                    this.state = STATE.RUNNING;
+                    break;
+                case RUNNING:
+                    System.out.print(Label.OPTION_INPUT_PROMPT.text);
+                    String option = sc.nextLine();
+                    boolean isContinue = selectOption(option);
+                    if(!isContinue)
+                        this.state = STATE.TERMINATE;
+                    break;
+                case TERMINATE:
+                    break;
+            }
+        }
+    }
+
     public ArrayList<Book> getBooks(BOOK_FILTER bookFilter) {
         ArrayList<Book> books = new ArrayList<Book>();
         for(Book book : this.books){
@@ -134,27 +155,6 @@ public class Biblioteca {
             }
         }
         return false;
-    }
-
-    public void start() {
-        while(this.state != STATE.TERMINATE) {
-            switch (this.state) {
-                case INITIAL:
-                    showWelcomeMessage();
-                    showOptions();
-                    this.state = STATE.RUNNING;
-                    break;
-                case RUNNING:
-                    System.out.print(Label.OPTION_INPUT_PROMPT.text);
-                    String option = sc.nextLine();
-                    boolean isContinue = selectOption(option);
-                    if(!isContinue)
-                        this.state = STATE.TERMINATE;
-                    break;
-                case TERMINATE:
-                    break;
-            }
-        }
     }
 
     private void showWelcomeMessage() {
