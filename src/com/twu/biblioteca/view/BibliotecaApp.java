@@ -1,7 +1,7 @@
 package com.twu.biblioteca.view;
 
 import com.twu.biblioteca.controller.Biblioteca;
-import com.twu.biblioteca.controller.runnable.OptionRunnable;
+import com.twu.biblioteca.controller.runnable.*;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Label;
 
@@ -22,77 +22,9 @@ public class BibliotecaApp {
     private Scanner sc = new Scanner(System.in);
 
 
-    private Map<String, Option> options = new LinkedHashMap<String, Option>() {{
-        put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new Option(Label.OPTION_SHOW_BOOKS.text, new OptionRunnable() {
-            @Override
-            public void run() {
-                run("available");
-            }
+    private Map<String, Option> options;
 
-            @Override
-            public void run(String parameter) {
-                if(parameter.equals("not available"))
-                    showListOfBooks(Biblioteca.BOOK_FILTER.NOT_AVAILABLE);
-                else if(parameter.equals("all"))
-                    showListOfBooks(Biblioteca.BOOK_FILTER.ALL);
-                else
-                    showListOfBooks(Biblioteca.BOOK_FILTER.AVAILABLE);
-            }
-        }));
-        put(Label.OPTION_CHECKOUT_COMMAND.text, new Option(Label.OPTION_CHECKOUT.text, new OptionRunnable() {
-            @Override
-            public void run() {
-                run("");
-            }
-
-            @Override
-            public void run(String bookName) {
-                boolean isSuccess = biblioteca.doCheckOut(bookName.trim());
-                if(isSuccess)
-                    System.out.println(Label.CHECKOUT_SUCCESS.text);
-                else
-                    System.out.println(Label.CHECKOUT_FAIL.text);
-            }
-        }));
-        put(Label.OPTION_RETURN_COMMAND.text, new Option(Label.OPTION_RETURN.text, new OptionRunnable() {
-            @Override
-            public void run() {
-                run("");
-            }
-
-            @Override
-            public void run(String bookName) {
-                boolean isSuccess = biblioteca.doReturn(bookName.trim());
-                if(isSuccess)
-                    System.out.println(Label.RETURN_SUCCESS.text);
-                else
-                    System.out.println(Label.RETURN_FAIL.text);
-            }
-        }));
-        put(Label.OPTION_EXIT_COMMAND.text, new Option(Label.OPTION_EXIT.text, new OptionRunnable() {
-            @Override
-            public void run() {
-                System.out.println(Label.EXIT.text);
-            }
-
-            @Override
-            public void run(String parameter) {
-                run();
-            }
-        }));
-    }};
-
-    private final Option invalidOption = new Option(Label.OPTION_INVALID.text, new OptionRunnable() {
-        @Override
-        public void run(String parameter) {
-            run();
-        }
-
-        @Override
-        public void run() {
-            System.out.println(Label.OPTION_INVALID.text);
-        }
-    });
+    private final Option invalidOption = new Option(Label.OPTION_INVALID.text, new AppInvalidRunnable());
 
     public BibliotecaApp() {
         this(new Biblioteca());
@@ -100,6 +32,11 @@ public class BibliotecaApp {
     public BibliotecaApp(Biblioteca biblioteca) {
         this.biblioteca = biblioteca;
         this.state = STATE.INITIAL;
+        options = new LinkedHashMap<String, Option>();
+        options.put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new Option(Label.OPTION_SHOW_BOOKS.text, new AppShowRunnable(this)));
+        options.put(Label.OPTION_CHECKOUT_COMMAND.text, new Option(Label.OPTION_CHECKOUT.text, new AppCheckOutRunnable(biblioteca)));
+        options.put(Label.OPTION_RETURN_COMMAND.text, new Option(Label.OPTION_RETURN.text, new AppReturnRunnable(biblioteca)));
+        options.put(Label.OPTION_EXIT_COMMAND.text, new Option(Label.OPTION_EXIT.text, new AppExitRunnable()));
     }
 
     public void start() {
@@ -144,7 +81,7 @@ public class BibliotecaApp {
         return !isExitOption;
     }
 
-    private void showListOfBooks(Biblioteca.BOOK_FILTER bookFilter) {
+    public void showListOfBooks(Biblioteca.BOOK_FILTER bookFilter) {
         System.out.println("Title\t|\tAuthor\t|\tPublish Date");
         int bookNumber = 1;
         for(Book book : biblioteca.getBooks(bookFilter)) {
@@ -154,9 +91,9 @@ public class BibliotecaApp {
 
     private class Option {
         String description;
-        OptionRunnable operation;
+        RunnableWithParameter operation;
 
-        public Option(String description, OptionRunnable operation) {
+        public Option(String description, RunnableWithParameter operation) {
             this.description = description;
             this.operation = operation;
         }
