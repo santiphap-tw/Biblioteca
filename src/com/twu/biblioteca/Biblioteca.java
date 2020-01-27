@@ -19,12 +19,19 @@ public class Biblioteca {
     private STATE state;
     private ArrayList<Book> books;
     private Scanner sc = new Scanner(System.in);
+    /*
     private Map<String, Runnable> options = new LinkedHashMap<String, Runnable>() {{
         put(Label.OPTION_EXIT.text, () -> {
             System.out.println(Label.EXIT.text);
         });
         put(Label.OPTION_SHOW_BOOKS.text, () -> {
             showListOfBooks(BOOK_FILTER.AVAILABLE);
+            BibliotecaOption test = new BibliotecaOption();
+            test.description = "test";
+            test.operation = () -> {
+                showListOfBooks(BOOK_FILTER.AVAILABLE);
+            };
+            test.operation.run();
         });
         put(Label.OPTION_CHECKOUT.text, () -> {
             showListOfBooks(BOOK_FILTER.AVAILABLE);
@@ -48,6 +55,36 @@ public class Biblioteca {
             else
                 System.out.println(Label.RETURN_FAIL.text);
         });
+    }};*/
+    private Map<String, Option> options = new LinkedHashMap<String, Option>() {{
+        put("1", new Option(Label.OPTION_SHOW_BOOKS.text, () -> {
+            showListOfBooks(BOOK_FILTER.AVAILABLE);
+        }));
+        put("2", new Option(Label.OPTION_CHECKOUT.text, () -> {
+            showListOfBooks(BOOK_FILTER.AVAILABLE);
+            System.out.println(Label.BOOK_NAME_PROMPT.text);
+            sc.nextLine(); // Prevent nextLine skipping
+            String bookName = sc.nextLine();
+            boolean isSuccess = doCheckOut(bookName.trim());
+            if(isSuccess)
+                System.out.println(Label.CHECKOUT_SUCCESS.text);
+            else
+                System.out.println(Label.CHECKOUT_FAIL.text);
+        }));
+        put("3", new Option(Label.OPTION_RETURN.text, () -> {
+            showListOfBooks(BOOK_FILTER.NOT_AVAILABLE);
+            System.out.println(Label.BOOK_NAME_PROMPT.text);
+            sc.nextLine(); // Prevent nextLine skipping
+            String bookName = sc.nextLine();
+            boolean isSuccess = doReturn(bookName.trim());
+            if(isSuccess)
+                System.out.println(Label.RETURN_SUCCESS.text);
+            else
+                System.out.println(Label.RETURN_FAIL.text);
+        }));
+        put("0", new Option(Label.OPTION_EXIT.text, () -> {
+            System.out.println(Label.EXIT.text);
+        }));
     }};
 
     public Biblioteca() {
@@ -123,30 +160,19 @@ public class Biblioteca {
 
     private void showOptions() {
         System.out.println(Label.OPTION_PROMPT.text);
-        Object[] optionsDescription = options.keySet().toArray();
-        for(int optionIndex = 1; optionIndex < optionsDescription.length; optionIndex++){
-            System.out.println(optionIndex+ ") " + optionsDescription[optionIndex]);
-        }
-        System.out.println("0) " + optionsDescription[0]);
+        options.forEach((command, option) -> {
+            System.out.println(command+ ") " + option.description);
+        });
     }
 
-    private boolean selectOption(String order) {
-        String option = this.getOptionFromOrder(order);
-        boolean isExitOption = option.equals(options.keySet().toArray()[0]);
-        Runnable operation = options.getOrDefault(option, () -> {
+    private boolean selectOption(String option) {
+        Option invalidOption = new Option (Label.OPTION_INVALID.text, () -> {
             System.out.println(Label.OPTION_INVALID.text);
         });
-        operation.run();
+        Option selectedOption = options.getOrDefault(option, invalidOption);
+        selectedOption.run();
+        boolean isExitOption = selectedOption.description.equals(Label.OPTION_EXIT.text);
         return !isExitOption;
-    }
-
-    private String getOptionFromOrder(String order) {
-        Object[] optionsDescription = options.keySet().toArray();
-        String option = "";
-        try{
-            option = (String) optionsDescription[Integer.parseInt(order)];
-        } catch (NumberFormatException e) {}
-        return option;
     }
 
     private void showListOfBooks(BOOK_FILTER bookFilter) {
@@ -157,9 +183,23 @@ public class Biblioteca {
         }
     }
 
-    private void addDefaultBooks() {
+    private void addDefaultBooks(){
         books.add(new Book("Book A", "Santiphap A.", "01/01/2008"));
         books.add(new Book("Book B", "Santiphap B.", "02/01/2008"));
         books.add(new Book("Book C", "Santiphap C.", "03/01/2008"));
+    }
+
+    private class Option {
+        String description;
+        Runnable operation;
+
+        public Option(String description, Runnable operation) {
+            this.description = description;
+            this.operation = operation;
+        }
+
+        void run(){
+            this.operation.run();
+        }
     }
 }

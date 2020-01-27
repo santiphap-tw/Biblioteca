@@ -2,7 +2,7 @@ package com.twu.biblioteca;
 
 public enum Label {
 
-    OPTION_EXIT("Exit"),
+    OPTION_EXIT("Exit the application"),
     OPTION_INVALID("Please select a valid option!"),
     OPTION_SHOW_BOOKS("Show list of books"),
     OPTION_CHECKOUT("Check out"),
