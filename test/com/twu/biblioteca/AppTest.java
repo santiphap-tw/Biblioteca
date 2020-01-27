@@ -3,6 +3,7 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.cli.BibliotecaApp;
+import com.twu.biblioteca.model.Movie;
 import org.junit.After;
 import org.junit.Test;
 
@@ -100,4 +101,24 @@ public class AppTest {
         book.doReturn();
         assertEquals("Book should available after return", true, book.isAvailable());
     }
+
+    @Test
+    public void movieShouldHaveTitleYearDirectorAndRating() {
+        Movie movie = new Movie("Title",2020,"Director",10);
+        assertEquals("Movie should have a title", "Title", movie.getTitle());
+        assertEquals("Movie should have a year", 2020, movie.getYear());
+        assertEquals("Movie should have a director", "Director", movie.getDirector());
+        assertEquals("Movie should have a rating", 10, movie.getRating());
+    }
+
+    @Test
+    public void MovieShouldHaveCheckOutAndReturn() {
+        Movie movie = new Movie("Title",2020,"Director",10);
+        assertEquals("Movie should available", true, movie.isAvailable());
+        movie.doCheckOut();
+        assertEquals("Movie should not available after check out", false, movie.isAvailable());
+        movie.doReturn();
+        assertEquals("Movie should available after return", true, movie.isAvailable());
+    }
+
 }
