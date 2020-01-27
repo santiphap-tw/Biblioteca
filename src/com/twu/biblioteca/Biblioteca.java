@@ -117,13 +117,11 @@ public class Biblioteca {
         }
     }
 
-    // STATE - INITIAL
-    public void showWelcomeMessage() {
+    private void showWelcomeMessage() {
         System.out.println(Label.WELCOME.text);
     }
 
-    // STATE - INITIAL
-    public void showOptions() {
+    private void showOptions() {
         System.out.println(Label.OPTION_PROMPT.text);
         Object[] optionsDescription = options.keySet().toArray();
         for(int optionIndex = 1; optionIndex < optionsDescription.length; optionIndex++){
@@ -132,7 +130,6 @@ public class Biblioteca {
         System.out.println("0) " + optionsDescription[0]);
     }
 
-    // STATE - RUNNING
     private boolean selectOption(String order) {
         String option = this.getOptionFromOrder(order);
         boolean isExitOption = option.equals(options.keySet().toArray()[0]);
@@ -154,7 +151,7 @@ public class Biblioteca {
         return option;
     }
 
-    public void showListOfBooks(BOOK_FILTER bookFilter) {
+    private void showListOfBooks(BOOK_FILTER bookFilter) {
         System.out.println("Title\t|\tAuthor\t|\tPublish Date");
         int bookNumber = 1;
         for(Book book : getBooks(bookFilter)) {
