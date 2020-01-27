@@ -13,85 +13,21 @@ import static org.junit.Assert.assertEquals;
 
 public class AppTest {
 
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
     private final InputStream originalIn = System.in;
 
-    private void trackPrint() {
-        System.setOut(new PrintStream(outContent));
-    }
-
-    private void trackPrint(String input) {
+    private void simulateInput(String input) {
         ByteArrayInputStream inContent = new ByteArrayInputStream(input.getBytes());
         System.setIn(inContent);
-        trackPrint();
     }
 
-    private void trackPrint(String[] inputs) {
+    private void simulateInput(String[] inputs) {
         String input = String.join(System.getProperty("line.separator"), inputs);
-        trackPrint(input);
+        simulateInput(input);
     }
 
     @After
-    public void untrackPrint() {
+    public void stopSimulateInput() {
         System.setIn(originalIn);
-        System.setOut(originalOut);
-    }
-
-    private String getTrackedPrint(){
-        return outContent.toString();
-    }
-
-    @Test
-    public void bibliotecaShouldHaveWelcomeMessage() {
-        trackPrint("0");
-        Biblioteca biblioteca = new Biblioteca();
-        biblioteca.start();
-        String[] output_allLine = getTrackedPrint().split("\n");
-        String firstLine = output_allLine[0];
-        assertEquals("Biblioteca should have a welcome message",true, firstLine.toLowerCase().contains("welcome"));
-    }
-
-    @Test
-    public void showListOfBooksShouldShowBooks() {
-        trackPrint();
-        Biblioteca biblioteca = new Biblioteca();
-        biblioteca.showListOfBooks(Biblioteca.BOOK_FILTER.AVAILABLE);
-        String[] output_allLine = getTrackedPrint().split("\n");
-        String firstLine = output_allLine[0];
-        assertEquals("showListOfBooksDetailed should have title header",true, firstLine.toLowerCase().contains("title"));
-        assertEquals("showListOfBooksDetailed should have author header",true, firstLine.toLowerCase().contains("author"));
-        assertEquals("showListOfBooksDetailed should have publish date header",true, firstLine.toLowerCase().contains("publish date"));
-        int numberOfBooks = output_allLine.length-1;
-        assertEquals("showListOfBooksDetailed should show at least 1 book", true, numberOfBooks > 0);
-        String firstBook = output_allLine[1];
-        assertEquals("showListOfBooksDetailed should show books with details", true, firstBook.contains("|"));
-    }
-
-    @Test
-    public void bibliotecaShouldShowOptionsAfterWelcome() {
-        trackPrint("0");
-        Biblioteca biblioteca = new Biblioteca();
-        biblioteca.start();
-        String[] output_allLine = getTrackedPrint().split("\n");
-        String secondLine = output_allLine.length > 1 ? output_allLine[1] : "";
-        assertEquals("Biblioteca should show options after welcome message appeared",true, secondLine.toLowerCase().contains("what would you like to do?"));
-    }
-
-    @Test
-    public void bibliotecaShouldHaveShowBooksOptionAtOption1() {
-        trackPrint(new String[] {"1", "0"});
-        Biblioteca biblioteca = new Biblioteca();
-        biblioteca.start();
-        String[] output_allLine = getTrackedPrint().split(">>>")[1].split("\n");
-        String firstLine = output_allLine[0];
-        assertEquals("showListOfBooksDetailed should have title header",true, firstLine.toLowerCase().contains("title"));
-        assertEquals("showListOfBooksDetailed should have author header",true, firstLine.toLowerCase().contains("author"));
-        assertEquals("showListOfBooksDetailed should have publish date header",true, firstLine.toLowerCase().contains("publish date"));
-        int numberOfBooks = output_allLine.length-1;
-        assertEquals("showListOfBooksDetailed should show at least 1 book", true, numberOfBooks > 0);
-        String firstBook = output_allLine[1];
-        assertEquals("showListOfBooksDetailed should show books with details", true, firstBook.contains("|"));
     }
 
     @Test
@@ -100,26 +36,6 @@ public class AppTest {
         assertEquals("Book should have a title", "Title", book.getTitle());
         assertEquals("Book should have an author", "Author", book.getAuthor());
         assertEquals("Book should have a publish date", "Date", book.getPublishDate());
-    }
-
-    @Test
-    public void bibliotecaShouldNotifyInvalidOption() {
-        trackPrint(new String[] {"Hello", "0"});
-        Biblioteca biblioteca = new Biblioteca();
-        biblioteca.start();
-        String[] output_allLine = getTrackedPrint().split(">>>")[1].split("\n");
-        String output = output_allLine[output_allLine.length-1];
-        assertEquals("Biblioteca should notify for invalid options",true, output.toLowerCase().contains("valid"));
-    }
-
-    @Test
-    public void bibliotecaShouldQuit() {
-        trackPrint("0");
-        Biblioteca biblioteca = new Biblioteca();
-        biblioteca.start();
-        String[] output_allLine = getTrackedPrint().split(">>>")[1].split("\n");
-        String output = output_allLine[output_allLine.length-1];
-        assertEquals("Biblioteca should quit",true, output.toLowerCase().contains("thank you"));
     }
 
     @Test
@@ -134,7 +50,7 @@ public class AppTest {
 
     @Test
     public void bibliotecaShouldHaveCheckOut() {
-        trackPrint("0");
+        simulateInput("0");
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.start();
         assertEquals("Biblioteca should have 3 books at start", 3, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
@@ -145,22 +61,8 @@ public class AppTest {
     }
 
     @Test
-    public void bibliotecaShouldHaveCheckOutOptionAtOption2() {
-        trackPrint(new String[] {"2","Book A","2","Book A","0"});
-        Biblioteca biblioteca = new Biblioteca();
-        biblioteca.start();
-        assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
-        String[] output1_allLine = getTrackedPrint().split(">>>")[1].split("\n");
-        String output1 = output1_allLine[output1_allLine.length-1];
-        assertEquals("Checkout should notify when success", true, output1.toLowerCase().contains("thank you"));
-        String[] output2_allLine = getTrackedPrint().split(">>>")[2].split("\n");
-        String output2 = output2_allLine[output2_allLine.length-1];
-        assertEquals("Checkout should notify when fail", true, output2.toLowerCase().contains("sorry"));
-    }
-
-    @Test
-    public void bibliotecaShouldHaveCheckIn() {
-        trackPrint("0");
+    public void bibliotecaShouldHaveReturn() {
+        simulateInput("0");
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.start();
         biblioteca.doCheckOut("Book A");
@@ -170,17 +72,4 @@ public class AppTest {
         assertEquals("Biblioteca should have 2 books after return", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
     }
 
-    @Test
-    public void bibliotecaShouldHaveCheckInOptionAtOption3() {
-        trackPrint(new String[] {"2","Book A","3","Book A","3","Book A","0"});
-        Biblioteca biblioteca = new Biblioteca();
-        biblioteca.start();
-        assertEquals("Biblioteca should have 3 books after checkout/return", 3, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
-        String[] output2_allLine = getTrackedPrint().split(">>>")[2].split("\n");
-        String output2 = output2_allLine[output2_allLine.length-1];
-        assertEquals("Return should notify when success", true, output2.toLowerCase().contains("thank you"));
-        String[] output3_allLine = getTrackedPrint().split(">>>")[3].split("\n");
-        String output3 = output3_allLine[output3_allLine.length-1];
-        assertEquals("Return should notify when fail", true, output3.toLowerCase().contains("valid"));
-    }
 }
