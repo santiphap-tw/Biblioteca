@@ -5,6 +5,12 @@ import java.util.Scanner;
 
 public class Biblioteca {
 
+    enum STATE {
+        INITIAL,
+        RUNNING,
+        TERMINATE
+    }
+    private STATE state;
     private ArrayList<Book> books;
     private Scanner sc = new Scanner(System.in);
 
@@ -18,27 +24,32 @@ public class Biblioteca {
     public Biblioteca() {
         books = new ArrayList<Book>();
         addDefaultBooks();
+        this.state = STATE.INITIAL;
     }
 
     public void start() {
-        showWelcomeMessage();
-        showOptions();
+        while(this.state != STATE.TERMINATE) {
+            switch (this.state) {
+                case INITIAL:
+                    showWelcomeMessage();
+                    showOptions();
+                    this.state = STATE.RUNNING;
+                    break;
+                case RUNNING:
+                    System.out.print(">>> ");
+                    String option = sc.next();
+                    boolean isContinue = selectOption(option);
+                    if(!isContinue)
+                        this.state = STATE.TERMINATE;
+                    break;
+                case TERMINATE:
+                    break;
+            }
+        }
     }
 
     public void showWelcomeMessage() {
         System.out.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
-    }
-
-    public void showListOfBooks() {
-        showListOfBooks(false);
-    }
-
-    public void showListOfBooks(boolean onlyNA) {
-        System.out.println("Title\t|\tAuthor\t|\tPublish Date");
-        int bookNumber = 1;
-        for(Book book : getBooks(onlyNA)) {
-            System.out.println(bookNumber++ + ") " + book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
-        }
     }
 
     public void showOptions() {
@@ -47,14 +58,6 @@ public class Biblioteca {
             System.out.println(optionIndex+ ") " + options[optionIndex]);
         }
         System.out.println("0) " + options[0]);
-        startInput();
-    }
-
-    private void startInput() {
-        System.out.print(">>> ");
-        String option = sc.next();
-        boolean continueInput = selectOption(option);
-        if(continueInput) startInput();
     }
 
     public boolean selectOption(String option) {
@@ -94,10 +97,16 @@ public class Biblioteca {
         return true;
     }
 
-    private void addDefaultBooks() {
-        books.add(new Book("Book A", "Santiphap A.", "01/01/2008"));
-        books.add(new Book("Book B", "Santiphap B.", "02/01/2008"));
-        books.add(new Book("Book C", "Santiphap C.", "03/01/2008"));
+    public void showListOfBooks() {
+        showListOfBooks(false);
+    }
+
+    public void showListOfBooks(boolean onlyNA) {
+        System.out.println("Title\t|\tAuthor\t|\tPublish Date");
+        int bookNumber = 1;
+        for(Book book : getBooks(onlyNA)) {
+            System.out.println(bookNumber++ + ") " + book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
+        }
     }
 
     public ArrayList<Book> getBooks() {
@@ -113,6 +122,22 @@ public class Biblioteca {
         return books;
     }
 
+    public boolean checkOut(String bookName) {
+        int bookNumber = getBookNumber(bookName);
+        return checkOut(bookNumber);
+    }
+
+    public boolean checkIn(String bookName) {
+        int bookNumber = getBookNumber(bookName);
+        return checkIn(bookNumber);
+    }
+
+    private void addDefaultBooks() {
+        books.add(new Book("Book A", "Santiphap A.", "01/01/2008"));
+        books.add(new Book("Book B", "Santiphap B.", "02/01/2008"));
+        books.add(new Book("Book C", "Santiphap C.", "03/01/2008"));
+    }
+
     private boolean checkOut(int bookNumber) {
         if(bookNumber > 0 && bookNumber <= books.size()){
             Book book = books.get(bookNumber-1);
@@ -125,11 +150,6 @@ public class Biblioteca {
         }
     }
 
-    public boolean checkOut(String bookName) {
-        int bookNumber = getBookNumber(bookName);
-        return checkOut(bookNumber);
-    }
-
     private int getBookNumber(String bookName) {
         for(int bookNumber=0; bookNumber<books.size(); bookNumber++){
             Book book = books.get(bookNumber);
@@ -138,11 +158,6 @@ public class Biblioteca {
             }
         }
         return -1;
-    }
-
-    public boolean checkIn(String bookName) {
-        int bookNumber = getBookNumber(bookName);
-        return checkIn(bookNumber);
     }
 
     private boolean checkIn(int bookNumber) {

@@ -82,7 +82,7 @@ public class AppTest {
     public void bibliotecaShouldHaveShowBooksOptionAtOption1() {
         trackPrint(new String[] {"1", "0"});
         Biblioteca biblioteca = new Biblioteca();
-        biblioteca.showOptions();
+        biblioteca.start();
         String[] output_allLine = getTrackedPrint().split(">>>")[1].split("\n");
         String firstLine = output_allLine[0];
         assertEquals("showListOfBooksDetailed should have title header",true, firstLine.toLowerCase().contains("title"));
@@ -106,7 +106,7 @@ public class AppTest {
     public void bibliotecaShouldNotifyInvalidOption() {
         trackPrint(new String[] {"Hello", "0"});
         Biblioteca biblioteca = new Biblioteca();
-        biblioteca.showOptions();
+        biblioteca.start();
         String[] output_allLine = getTrackedPrint().split(">>>")[1].split("\n");
         String output = output_allLine[output_allLine.length-1];
         assertEquals("Biblioteca should notify for invalid options",true, output.toLowerCase().contains("valid"));
@@ -116,7 +116,7 @@ public class AppTest {
     public void bibliotecaShouldQuit() {
         trackPrint("0");
         Biblioteca biblioteca = new Biblioteca();
-        biblioteca.showOptions();
+        biblioteca.start();
         String[] output_allLine = getTrackedPrint().split(">>>")[1].split("\n");
         String output = output_allLine[output_allLine.length-1];
         assertEquals("Biblioteca should quit",true, output.toLowerCase().contains("thank you"));
@@ -148,7 +148,7 @@ public class AppTest {
     public void bibliotecaShouldHaveCheckOutOptionAtOption2() {
         trackPrint(new String[] {"2","Book A","2","Book A","0"});
         Biblioteca biblioteca = new Biblioteca();
-        biblioteca.showOptions();
+        biblioteca.start();
         assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks().size());
         String[] output1_allLine = getTrackedPrint().split(">>>")[1].split("\n");
         String output1 = output1_allLine[output1_allLine.length-1];
@@ -174,7 +174,7 @@ public class AppTest {
     public void bibliotecaShouldHaveCheckInOptionAtOption3() {
         trackPrint(new String[] {"2","Book A","3","Book A","3","Book A","0"});
         Biblioteca biblioteca = new Biblioteca();
-        biblioteca.showOptions();
+        biblioteca.start();
         assertEquals("Biblioteca should have 3 books after checkout/return", 3, biblioteca.getBooks().size());
         String[] output2_allLine = getTrackedPrint().split(">>>")[2].split("\n");
         String output2 = output2_allLine[output2_allLine.length-1];
