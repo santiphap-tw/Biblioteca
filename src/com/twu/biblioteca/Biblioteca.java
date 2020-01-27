@@ -23,12 +23,17 @@ public class Biblioteca {
         put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new Option(Label.OPTION_SHOW_BOOKS.text, new RunnableWithParameter() {
             @Override
             public void run() {
-                showListOfBooks(BOOK_FILTER.AVAILABLE);
+                run("available");
             }
 
             @Override
             public void run(String parameter) {
-                run();
+                if(parameter.equals("not available"))
+                    showListOfBooks(BOOK_FILTER.NOT_AVAILABLE);
+                else if(parameter.equals("all"))
+                    showListOfBooks(BOOK_FILTER.ALL);
+                else
+                    showListOfBooks(BOOK_FILTER.AVAILABLE);
             }
         }));
         put(Label.OPTION_CHECKOUT_COMMAND.text, new Option(Label.OPTION_CHECKOUT.text, new RunnableWithParameter() {

@@ -5,7 +5,7 @@ public enum Label {
     OPTION_EXIT("Exit the application"),
     OPTION_EXIT_COMMAND("exit"),
     OPTION_INVALID("Please select a valid option!"),
-    OPTION_SHOW_BOOKS("Show the list of books"),
+    OPTION_SHOW_BOOKS("Show the list of books, can be followed with \"show available|not available|all\". Default is available."),
     OPTION_SHOW_BOOKS_COMMAND("show"),
     OPTION_CHECKOUT("Checkout the book, ie. \"checkout BOOK_NAME\""),
     OPTION_CHECKOUT_COMMAND("checkout"),
