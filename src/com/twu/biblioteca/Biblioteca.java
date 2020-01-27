@@ -3,7 +3,7 @@ package com.twu.biblioteca;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class BibliotecaApp {
+public class Biblioteca {
 
     private ArrayList<Book> books;
     private Scanner sc = new Scanner(System.in);
@@ -15,7 +15,7 @@ public class BibliotecaApp {
             "Return"
     };
 
-    public BibliotecaApp() {
+    public Biblioteca() {
         books = new ArrayList<Book>();
         addDefaultBooks();
     }
