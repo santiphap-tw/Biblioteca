@@ -32,30 +32,30 @@ public class AppTest {
     }
 
     @Test(timeout=1000)
-    public void bibliotecaOption0ShouldExit() {
-        simulateInput("0");
+    public void bibliotecaHaveExitCommand() {
+        simulateInput("exit");
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.start();
     }
 
     @Test(timeout=1000)
-    public void bibliotecaOption1ShouldShowBooks() {
-        simulateInput(new String[] {"1","0"});
+    public void bibliotecaHaveShowCommand() {
+        simulateInput(new String[] {"show","exit"});
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.start();
     }
 
     @Test(timeout=1000)
-    public void bibliotecaOption2ShouldCheckOut() {
-        simulateInput(new String[] {"2","Book A","0"});
+    public void bibliotecaHaveCheckOutCommand() {
+        simulateInput(new String[] {"checkout Book A","exit"});
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.start();
         assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
     }
 
     @Test(timeout=1000)
-    public void bibliotecaOption3ShouldReturn() {
-        simulateInput(new String[] {"2","Book A","2","Book B","3","Book A","0"});
+    public void bibliotecaHaveReturnCommand() {
+        simulateInput(new String[] {"checkout Book A","checkout Book B","return Book A","exit"});
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.start();
         assertEquals("Biblioteca should have 2 books after return", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
@@ -63,7 +63,7 @@ public class AppTest {
 
     @Test
     public void bibliotecaShouldHaveCheckOut() {
-        simulateInput("0");
+        simulateInput("exit");
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.start();
         assertEquals("Biblioteca should have 3 books at start", 3, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
@@ -75,7 +75,7 @@ public class AppTest {
 
     @Test
     public void bibliotecaShouldHaveReturn() {
-        simulateInput("0");
+        simulateInput("exit");
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.start();
         biblioteca.doCheckOut("Book A");

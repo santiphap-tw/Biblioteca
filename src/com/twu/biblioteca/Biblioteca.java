@@ -19,73 +19,71 @@ public class Biblioteca {
     private STATE state;
     private ArrayList<Book> books;
     private Scanner sc = new Scanner(System.in);
-    /*
-    private Map<String, Runnable> options = new LinkedHashMap<String, Runnable>() {{
-        put(Label.OPTION_EXIT.text, () -> {
-            System.out.println(Label.EXIT.text);
-        });
-        put(Label.OPTION_SHOW_BOOKS.text, () -> {
-            showListOfBooks(BOOK_FILTER.AVAILABLE);
-            BibliotecaOption test = new BibliotecaOption();
-            test.description = "test";
-            test.operation = () -> {
-                showListOfBooks(BOOK_FILTER.AVAILABLE);
-            };
-            test.operation.run();
-        });
-        put(Label.OPTION_CHECKOUT.text, () -> {
-            showListOfBooks(BOOK_FILTER.AVAILABLE);
-            System.out.println(Label.BOOK_NAME_PROMPT.text);
-            sc.nextLine(); // Prevent nextLine skipping
-            String bookName = sc.nextLine();
-            boolean isSuccess = doCheckOut(bookName.trim());
-            if(isSuccess)
-                System.out.println(Label.CHECKOUT_SUCCESS.text);
-            else
-                System.out.println(Label.CHECKOUT_FAIL.text);
-        });
-        put(Label.OPTION_RETURN.text, () -> {
-            showListOfBooks(BOOK_FILTER.NOT_AVAILABLE);
-            System.out.println(Label.BOOK_NAME_PROMPT.text);
-            sc.nextLine(); // Prevent nextLine skipping
-            String bookName = sc.nextLine();
-            boolean isSuccess = doReturn(bookName.trim());
-            if(isSuccess)
-                System.out.println(Label.RETURN_SUCCESS.text);
-            else
-                System.out.println(Label.RETURN_FAIL.text);
-        });
-    }};*/
     private Map<String, Option> options = new LinkedHashMap<String, Option>() {{
-        put("1", new Option(Label.OPTION_SHOW_BOOKS.text, () -> {
-            showListOfBooks(BOOK_FILTER.AVAILABLE);
+        put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new Option(Label.OPTION_SHOW_BOOKS.text, new RunnableWithParameter() {
+            @Override
+            public void run() {
+                showListOfBooks(BOOK_FILTER.AVAILABLE);
+            }
+
+            @Override
+            public void run(String parameter) {
+                run();
+            }
         }));
-        put("2", new Option(Label.OPTION_CHECKOUT.text, () -> {
-            showListOfBooks(BOOK_FILTER.AVAILABLE);
-            System.out.println(Label.BOOK_NAME_PROMPT.text);
-            sc.nextLine(); // Prevent nextLine skipping
-            String bookName = sc.nextLine();
-            boolean isSuccess = doCheckOut(bookName.trim());
-            if(isSuccess)
-                System.out.println(Label.CHECKOUT_SUCCESS.text);
-            else
-                System.out.println(Label.CHECKOUT_FAIL.text);
+        put(Label.OPTION_CHECKOUT_COMMAND.text, new Option(Label.OPTION_CHECKOUT.text, new RunnableWithParameter() {
+            @Override
+            public void run() {
+                run("");
+            }
+
+            @Override
+            public void run(String bookName) {
+                boolean isSuccess = doCheckOut(bookName.trim());
+                if(isSuccess)
+                    System.out.println(Label.CHECKOUT_SUCCESS.text);
+                else
+                    System.out.println(Label.CHECKOUT_FAIL.text);
+            }
         }));
-        put("3", new Option(Label.OPTION_RETURN.text, () -> {
-            showListOfBooks(BOOK_FILTER.NOT_AVAILABLE);
-            System.out.println(Label.BOOK_NAME_PROMPT.text);
-            sc.nextLine(); // Prevent nextLine skipping
-            String bookName = sc.nextLine();
-            boolean isSuccess = doReturn(bookName.trim());
-            if(isSuccess)
-                System.out.println(Label.RETURN_SUCCESS.text);
-            else
-                System.out.println(Label.RETURN_FAIL.text);
+        put(Label.OPTION_RETURN_COMMAND.text, new Option(Label.OPTION_RETURN.text, new RunnableWithParameter() {
+            @Override
+            public void run() {
+                run("");
+            }
+
+            @Override
+            public void run(String bookName) {
+                boolean isSuccess = doReturn(bookName.trim());
+                if(isSuccess)
+                    System.out.println(Label.RETURN_SUCCESS.text);
+                else
+                    System.out.println(Label.RETURN_FAIL.text);
+            }
         }));
-        put("0", new Option(Label.OPTION_EXIT.text, () -> {
-            System.out.println(Label.EXIT.text);
+        put(Label.OPTION_EXIT_COMMAND.text, new Option(Label.OPTION_EXIT.text, new RunnableWithParameter() {
+            @Override
+            public void run() {
+                System.out.println(Label.EXIT.text);
+            }
+
+            @Override
+            public void run(String parameter) {
+                run();
+            }
         }));
     }};
+    private final Option invalidOption = new Option(Label.OPTION_INVALID.text, new RunnableWithParameter() {
+        @Override
+        public void run(String parameter) {
+            run();
+        }
+
+        @Override
+        public void run() {
+            System.out.println(Label.OPTION_INVALID.text);
+        }
+    });
 
     public Biblioteca() {
         books = new ArrayList<Book>();
@@ -143,7 +141,7 @@ public class Biblioteca {
                     break;
                 case RUNNING:
                     System.out.print(Label.OPTION_INPUT_PROMPT.text);
-                    String option = sc.next();
+                    String option = sc.nextLine();
                     boolean isContinue = selectOption(option);
                     if(!isContinue)
                         this.state = STATE.TERMINATE;
@@ -161,16 +159,16 @@ public class Biblioteca {
     private void showOptions() {
         System.out.println(Label.OPTION_PROMPT.text);
         options.forEach((command, option) -> {
-            System.out.println(command+ ") " + option.description);
+            System.out.println(command+ "\t\t" + option.description);
         });
     }
 
     private boolean selectOption(String option) {
-        Option invalidOption = new Option (Label.OPTION_INVALID.text, () -> {
-            System.out.println(Label.OPTION_INVALID.text);
-        });
+        String[] optionArray = option.split(" ", 2);
+        option = optionArray[0];
+        String parameter = optionArray.length > 1 ? optionArray[1] : "";
         Option selectedOption = options.getOrDefault(option, invalidOption);
-        selectedOption.run();
+        selectedOption.run(parameter);
         boolean isExitOption = selectedOption.description.equals(Label.OPTION_EXIT.text);
         return !isExitOption;
     }
@@ -191,15 +189,19 @@ public class Biblioteca {
 
     private class Option {
         String description;
-        Runnable operation;
+        RunnableWithParameter operation;
 
-        public Option(String description, Runnable operation) {
+        public Option(String description, RunnableWithParameter operation) {
             this.description = description;
             this.operation = operation;
         }
 
-        void run(){
-            this.operation.run();
+        void run(String parameter){
+            this.operation.run(parameter);
         }
+    }
+
+    private abstract class RunnableWithParameter implements Runnable {
+        public abstract void run(String parameter);
     }
 }

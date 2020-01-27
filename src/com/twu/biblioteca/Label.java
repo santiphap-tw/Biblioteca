@@ -3,10 +3,14 @@ package com.twu.biblioteca;
 public enum Label {
 
     OPTION_EXIT("Exit the application"),
+    OPTION_EXIT_COMMAND("exit"),
     OPTION_INVALID("Please select a valid option!"),
-    OPTION_SHOW_BOOKS("Show list of books"),
-    OPTION_CHECKOUT("Check out"),
-    OPTION_RETURN("Return"),
+    OPTION_SHOW_BOOKS("Show the list of books"),
+    OPTION_SHOW_BOOKS_COMMAND("show"),
+    OPTION_CHECKOUT("Checkout the book, ie. \"checkout BOOK_NAME\""),
+    OPTION_CHECKOUT_COMMAND("checkout"),
+    OPTION_RETURN("Return the book, ie. \"return BOOK_NAME\""),
+    OPTION_RETURN_COMMAND("return"),
     OPTION_PROMPT("What would you like to do?"),
     OPTION_INPUT_PROMPT(">>> "),
     CHECKOUT_SUCCESS("Thank you! Enjoy the book"),
