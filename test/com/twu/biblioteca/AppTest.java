@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class AppTest {
 
@@ -30,22 +31,34 @@ public class AppTest {
         System.setIn(originalIn);
     }
 
-    @Test
-    public void bookShouldHaveTitleAuthorPublishDate() {
-        Book book = new Book("Title","Author","Date");
-        assertEquals("Book should have a title", "Title", book.getTitle());
-        assertEquals("Book should have an author", "Author", book.getAuthor());
-        assertEquals("Book should have a publish date", "Date", book.getPublishDate());
+    @Test(timeout=1000)
+    public void bibliotecaOption0ShouldExit() {
+        simulateInput("0");
+        Biblioteca biblioteca = new Biblioteca();
+        biblioteca.start();
     }
 
-    @Test
-    public void bookShouldHaveCheckOut() {
-        Book book = new Book("Title","Author","Date");
-        assertEquals("Book should available", true, book.isAvailable());
-        book.doCheckOut();
-        assertEquals("Book should not available after check out", false, book.isAvailable());
-        book.doReturn();
-        assertEquals("Book should available after return", true, book.isAvailable());
+    @Test(timeout=1000)
+    public void bibliotecaOption1ShouldShowBooks() {
+        simulateInput(new String[] {"1","0"});
+        Biblioteca biblioteca = new Biblioteca();
+        biblioteca.start();
+    }
+
+    @Test(timeout=1000)
+    public void bibliotecaOption2ShouldCheckOut() {
+        simulateInput(new String[] {"2","Book A","0"});
+        Biblioteca biblioteca = new Biblioteca();
+        biblioteca.start();
+        assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+    }
+
+    @Test(timeout=1000)
+    public void bibliotecaOption3ShouldReturn() {
+        simulateInput(new String[] {"2","Book A","2","Book B","3","Book A","0"});
+        Biblioteca biblioteca = new Biblioteca();
+        biblioteca.start();
+        assertEquals("Biblioteca should have 2 books after return", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
     }
 
     @Test
@@ -70,6 +83,24 @@ public class AppTest {
         assertEquals("Biblioteca should have 1 books at start", 1, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
         biblioteca.doReturn("Book A");
         assertEquals("Biblioteca should have 2 books after return", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+    }
+
+    @Test
+    public void bookShouldHaveTitleAuthorAndPublishDate() {
+        Book book = new Book("Title","Author","Date");
+        assertEquals("Book should have a title", "Title", book.getTitle());
+        assertEquals("Book should have an author", "Author", book.getAuthor());
+        assertEquals("Book should have a publish date", "Date", book.getPublishDate());
+    }
+
+    @Test
+    public void bookShouldHaveCheckOutAndReturn() {
+        Book book = new Book("Title","Author","Date");
+        assertEquals("Book should available", true, book.isAvailable());
+        book.doCheckOut();
+        assertEquals("Book should not available after check out", false, book.isAvailable());
+        book.doReturn();
+        assertEquals("Book should available after return", true, book.isAvailable());
     }
 
 }
