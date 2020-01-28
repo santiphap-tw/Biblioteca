@@ -19,6 +19,8 @@ public enum Label {
     OPTION_LOGIN_COMMAND("login"),
     OPTION_LOGOUT("Logout from Biblioteca"),
     OPTION_LOGOUT_COMMAND("logout"),
+    OPTION_HELP("Show commands list"),
+    OPTION_HELP_COMMAND("help"),
     OPTION_PROMPT("What would you like to do?"),
     OPTION_INPUT_PROMPT(">>> "),
     LOGIN_SUCCESS("Welcome, "),

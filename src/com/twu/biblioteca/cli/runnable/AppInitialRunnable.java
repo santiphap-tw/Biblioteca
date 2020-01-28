@@ -2,10 +2,11 @@ package com.twu.biblioteca.cli.runnable;
 
 import com.twu.biblioteca.model.AppOption;
 import com.twu.biblioteca.model.Label;
+import com.twu.biblioteca.model.RunnableWithParameter;
 
 import java.util.Map;
 
-public class AppInitialRunnable implements Runnable {
+public class AppInitialRunnable implements RunnableWithParameter {
 
     private Map<String,AppOption> options;
 
@@ -16,6 +17,11 @@ public class AppInitialRunnable implements Runnable {
     @Override
     public void run() {
         showWelcomeMessage();
+        showOptions();
+    }
+
+    @Override
+    public void run(String parameter) {
         showOptions();
     }
 

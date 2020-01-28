@@ -94,6 +94,12 @@ public class AppTest {
         app.start();
         assertEquals("Biblioteca should logged out", null, biblioteca.getCurrentUser());
     }
+    @Test(timeout=1000)
+    public void bibliotecaAppHaveHelpCommand() {
+        simulateInput(new String[] {Label.OPTION_HELP_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
+        BibliotecaApp app = new BibliotecaApp();
+        app.start();
+    }
 
     @Test
     public void bibliotecaShouldHaveCheckOut() {
