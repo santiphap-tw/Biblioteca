@@ -103,8 +103,15 @@ public class AppTest {
     }
 
     @Test(timeout=1000)
-    public void appHaveWhoAmICommand() {
-        simulateInput(new String[] {Label.OPTION_WHOAMI_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
+    public void appHaveMyInfoCommand() {
+        simulateInput(new String[] {Label.OPTION_MY_INFO_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
+        BibliotecaApp app = new BibliotecaApp();
+        app.start();
+    }
+
+    @Test(timeout=1000)
+    public void appHaveMyBorrowingCommand() {
+        simulateInput(new String[] {Label.OPTION_MY_BORROWING_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
         app.start();
     }

@@ -5,11 +5,11 @@ import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RunnableWithParameter;
 import com.twu.biblioteca.model.User;
 
-public class AppWhoamiRunnable implements RunnableWithParameter {
+public class AppMyInfoRunnable implements RunnableWithParameter {
 
     private Biblioteca biblioteca;
 
-    public AppWhoamiRunnable(Biblioteca biblioteca) {
+    public AppMyInfoRunnable(Biblioteca biblioteca) {
         this.biblioteca = biblioteca;
     }
 
@@ -23,7 +23,7 @@ public class AppWhoamiRunnable implements RunnableWithParameter {
             System.out.println("Email: \t" + user.getEmail());
             System.out.println("Phone: \t" + user.getPhone());
         } else {
-            System.out.println(Label.WHOAMI_FAIL.text);
+            System.out.println(Label.MY_INFO_FAIL.text);
         }
     }
 
