@@ -1,6 +1,7 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rentable;
 
 import java.util.*;
@@ -18,6 +19,7 @@ public class Biblioteca {
     public Biblioteca() {
         items = new ArrayList<Rentable>();
         addDefaultBooks();
+        addDefaultMovies();
     }
 
     public ArrayList<Rentable> getItems(FILTER filter) {
@@ -64,5 +66,11 @@ public class Biblioteca {
         items.add(new Book("Book A", "Santiphap A.", "01/01/2008"));
         items.add(new Book("Book B", "Santiphap B.", "02/01/2008"));
         items.add(new Book("Book C", "Santiphap C.", "03/01/2008"));
+    }
+
+    private void addDefaultMovies(){
+        items.add(new Movie("Movie A", 2008, "Santiphap A.", 8));
+        items.add(new Movie("Movie B", 2013,"Santiphap B.", 9));
+        items.add(new Movie("Movie C", 2020, "Santiphap C.", 10));
     }
 }

@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 
 import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.Rentable;
 import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.Movie;
@@ -42,27 +43,41 @@ public class AppTest {
 
     @Test(timeout=1000)
     public void bibliotecaAppHaveShowCommand() {
-        simulateInput(new String[] {"show","exit"});
+        simulateInput(new String[] {Label.OPTION_SHOW_ALL_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
+        BibliotecaApp app = new BibliotecaApp();
+        app.start();
+    }
+
+    @Test(timeout=1000)
+    public void bibliotecaAppHaveShowBookCommand() {
+        simulateInput(new String[] {Label.OPTION_SHOW_BOOKS_COMMAND.text,Label.OPTION_EXIT_COMMAND.text});
+        BibliotecaApp app = new BibliotecaApp();
+        app.start();
+    }
+
+    @Test(timeout=1000)
+    public void bibliotecaAppHaveShowMovieCommand() {
+        simulateInput(new String[] {Label.OPTION_SHOW_MOVIES_COMMAND.text,Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
         app.start();
     }
 
     @Test(timeout=1000)
     public void bibliotecaAppHaveCheckOutCommand() {
-        simulateInput(new String[] {"checkout Book A","exit"});
+        simulateInput(new String[] {Label.OPTION_CHECKOUT_COMMAND.text + " Book A",Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("Biblioteca app should have 2 books after checkout", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca app should have 2 items after checkout", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test(timeout=1000)
     public void bibliotecaAppHaveReturnCommand() {
-        simulateInput(new String[] {"checkout Book A","checkout Book B","return Book A","exit"});
+        simulateInput(new String[] {Label.OPTION_CHECKOUT_COMMAND.text + " Book A",Label.OPTION_CHECKOUT_COMMAND.text + " Book B",Label.OPTION_RETURN_COMMAND.text + " Book A",Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("Biblioteca app should have 2 books after return", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca app should have 2 items after return", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test
