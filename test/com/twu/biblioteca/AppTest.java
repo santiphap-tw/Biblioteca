@@ -102,6 +102,13 @@ public class AppTest {
         app.start();
     }
 
+    @Test(timeout=1000)
+    public void appHaveWhoAmICommand() {
+        simulateInput(new String[] {Label.OPTION_WHOAMI_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
+        BibliotecaApp app = new BibliotecaApp();
+        app.start();
+    }
+
     @Test
     public void bibliotecaShouldHaveCheckOut() {
         Biblioteca biblioteca = new Biblioteca();

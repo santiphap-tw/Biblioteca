@@ -39,6 +39,7 @@ public class BibliotecaApp {
         options.put(Label.OPTION_LOGOUT_COMMAND.text, new AppOption(Label.OPTION_LOGOUT.text, new AppLogoutRunnable(biblioteca)));
         options.put(Label.OPTION_CHECKOUT_COMMAND.text, new AppOption(Label.OPTION_CHECKOUT.text, new AppCheckOutRunnable(biblioteca)));
         options.put(Label.OPTION_RETURN_COMMAND.text, new AppOption(Label.OPTION_RETURN.text, new AppReturnRunnable(biblioteca)));
+        options.put(Label.OPTION_WHOAMI_COMMAND.text, new AppOption(Label.OPTION_WHOAMI.text, new AppWhoamiRunnable(biblioteca)));
         options.put(Label.OPTION_HELP_COMMAND.text, new AppOption(Label.OPTION_HELP.text, new AppInitialRunnable(options)));
         options.put(Label.OPTION_EXIT_COMMAND.text, new AppOption(Label.OPTION_EXIT.text, new AppExitRunnable()));
         // Initialise initial tasks
