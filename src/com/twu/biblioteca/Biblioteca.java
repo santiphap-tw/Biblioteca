@@ -71,10 +71,11 @@ public class Biblioteca {
     }
 
     public boolean doCheckOut(String itemName) {
+        if(currentUser==null) return false;
         for(Rentable item : this.items) {
             if(itemName.equals(item.getTitle())){
                 if(!item.isAvailable()) return false;
-                item.doCheckOut();
+                item.doCheckOut(currentUser);
                 return true;
             }
         }
@@ -82,14 +83,20 @@ public class Biblioteca {
     }
 
     public boolean doReturn(String itemName) {
+        if(currentUser==null) return false;
         for(Rentable item : this.items) {
             if(itemName.equals(item.getTitle())){
-                if(item.isAvailable()) return false;
+                if(item.isAvailable() || currentUser != item.getLoaner()) return false;
                 item.doReturn();
                 return true;
             }
         }
         return false;
+    }
+
+    public ArrayList<Rentable> getMyItems() {
+        if(currentUser == null) return new ArrayList<Rentable>();
+        return currentUser.getItems();
     }
 
     private void addDefaultBooks(){

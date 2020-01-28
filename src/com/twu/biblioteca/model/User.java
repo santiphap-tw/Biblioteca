@@ -43,11 +43,11 @@ public class User {
         return items;
     }
 
-    public void doCheckOut(Rentable item) {
+    public void checkOutItem(Rentable item) {
         this.items.add(item);
     }
 
-    public boolean doReturn(Rentable item) {
+    public boolean returnItem(Rentable item) {
         return this.items.remove(item);
     }
 }

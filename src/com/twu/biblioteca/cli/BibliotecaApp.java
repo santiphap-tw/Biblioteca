@@ -34,6 +34,8 @@ public class BibliotecaApp {
         options.put(Label.OPTION_SHOW_ALL_COMMAND.text, new AppOption(Label.OPTION_SHOW_ALL.text, new AppShowRunnable(biblioteca, Rentable.class)));
         options.put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new AppOption(Label.OPTION_SHOW_BOOKS.text, new AppShowRunnable(biblioteca, Book.class)));
         options.put(Label.OPTION_SHOW_MOVIES_COMMAND.text, new AppOption(Label.OPTION_SHOW_MOVIES.text, new AppShowRunnable(biblioteca, Movie.class)));
+        options.put(Label.OPTION_LOGIN_COMMAND.text, new AppOption(Label.OPTION_LOGIN.text, new AppLoginRunnable(biblioteca)));
+        options.put(Label.OPTION_LOGOUT_COMMAND.text, new AppOption(Label.OPTION_LOGOUT.text, new AppLogoutRunnable(biblioteca)));
         options.put(Label.OPTION_CHECKOUT_COMMAND.text, new AppOption(Label.OPTION_CHECKOUT.text, new AppCheckOutRunnable(biblioteca)));
         options.put(Label.OPTION_RETURN_COMMAND.text, new AppOption(Label.OPTION_RETURN.text, new AppReturnRunnable(biblioteca)));
         options.put(Label.OPTION_EXIT_COMMAND.text, new AppOption(Label.OPTION_EXIT.text, new AppExitRunnable()));
