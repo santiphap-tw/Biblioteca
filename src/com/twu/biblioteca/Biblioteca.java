@@ -15,6 +15,12 @@ public class Biblioteca {
         ALL
     }
 
+    public enum RESPONSE {
+        SUCCESS,
+        AUTHORIZATION_ERROR,
+        DEFAULT_ERROR
+    }
+
     private ArrayList<Rentable> items;
     private ArrayList<User> users;
     private User currentUser;
@@ -70,28 +76,29 @@ public class Biblioteca {
         return user;
     }
 
-    public boolean doCheckOut(String itemName) {
-        if(currentUser==null) return false;
+    public RESPONSE doCheckOut(String itemName) {
+        if(currentUser==null) return RESPONSE.AUTHORIZATION_ERROR;
         for(Rentable item : this.items) {
             if(itemName.equals(item.getTitle())){
-                if(!item.isAvailable()) return false;
+                if(!item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
                 item.doCheckOut(currentUser);
-                return true;
+                return RESPONSE.SUCCESS;
             }
         }
-        return false;
+        return RESPONSE.DEFAULT_ERROR;
     }
 
-    public boolean doReturn(String itemName) {
-        if(currentUser==null) return false;
+    public RESPONSE doReturn(String itemName) {
+        if(currentUser==null) return RESPONSE.AUTHORIZATION_ERROR;
         for(Rentable item : this.items) {
             if(itemName.equals(item.getTitle())){
-                if(item.isAvailable() || currentUser != item.getLoaner()) return false;
+                if(item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
+                if(currentUser != item.getLoaner()) return RESPONSE.AUTHORIZATION_ERROR;
                 item.doReturn();
-                return true;
+                return RESPONSE.SUCCESS;
             }
         }
-        return false;
+        return RESPONSE.DEFAULT_ERROR;
     }
 
     public ArrayList<Rentable> getMyItems() {

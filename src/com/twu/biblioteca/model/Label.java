@@ -28,6 +28,7 @@ public enum Label {
     CHECKOUT_FAIL("Sorry, that item is not available"),
     RETURN_SUCCESS("Thank you for returning"),
     RETURN_FAIL("This is not a valid item to return"),
+    AUTHORIZATION_ERROR("You don't have an authorization, please re-login."),
     WELCOME("Welcome to Biblioteca. Your one-stop-shop for great book & movie titles in Bangalore!"),
     EXIT("Thank you for using Biblioteca!");
 
