@@ -1,11 +1,8 @@
 package com.twu.biblioteca;
 
 
-import com.twu.biblioteca.model.Book;
-import com.twu.biblioteca.model.Label;
-import com.twu.biblioteca.model.Rentable;
+import com.twu.biblioteca.model.*;
 import com.twu.biblioteca.cli.BibliotecaApp;
-import com.twu.biblioteca.model.Movie;
 import org.junit.After;
 import org.junit.Test;
 
@@ -36,7 +33,7 @@ public class AppTest {
 
     @Test(timeout=1000)
     public void bibliotecaAppHaveExitCommand() {
-        simulateInput("exit");
+        simulateInput(Label.OPTION_EXIT_COMMAND.text);
         BibliotecaApp app = new BibliotecaApp();
         app.start();
     }
@@ -101,7 +98,7 @@ public class AppTest {
     }
 
     @Test
-    public void bookShouldHaveTitleAuthorAndPublishDate() {
+    public void bookShouldHaveInformation() {
         Book book = new Book("Title","Author","Date");
         assertEquals("Book should have a title", "Title", book.getTitle());
         assertEquals("Book should have an author", "Author", book.getAuthor());
@@ -119,7 +116,7 @@ public class AppTest {
     }
 
     @Test
-    public void movieShouldHaveTitleYearDirectorAndRating() {
+    public void movieShouldHaveInformation() {
         Movie movie = new Movie("Title",2020,"Director",10);
         assertEquals("Movie should have a title", "Title", movie.getTitle());
         assertEquals("Movie should have a year", 2020, movie.getYear());
@@ -135,6 +132,16 @@ public class AppTest {
         assertEquals("Movie should not available after check out", false, movie.isAvailable());
         movie.doReturn();
         assertEquals("Movie should available after return", true, movie.isAvailable());
+    }
+
+    @Test
+    public void UserShouldHaveInformation() {
+        User user = new User("111-1111", "1234", "Name", "Email", "Phone");
+        assertEquals("User should have id", "111-1111", user.getId());
+        assertEquals("User should have password", "1234", user.getPassword());
+        assertEquals("User should have name", "Name", user.getName());
+        assertEquals("User should have email", "Email", user.getEmail());
+        assertEquals("User should have phone", "Phone", user.getPhone());
     }
 
 }
