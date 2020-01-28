@@ -94,6 +94,7 @@ public class AppTest {
         app.start();
         assertEquals("App should have logged out", null, biblioteca.getCurrentUser());
     }
+
     @Test(timeout=1000)
     public void appHaveHelpCommand() {
         simulateInput(new String[] {Label.OPTION_HELP_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
@@ -132,25 +133,25 @@ public class AppTest {
     }
 
     @Test
+    public void rentableShouldHaveCheckOutAndReturn() {
+        Rentable item = new Book("Title","Author","Date");
+        User user = new User("111-1111", "1234", "Name", "Email", "Phone");
+        assertEquals("Book should available", true, item.isAvailable());
+        item.doCheckOut(user);
+        assertEquals("Book should not available after check out", false, item.isAvailable());
+        assertEquals("Borrower should be user 111-1111", user.getId(), item.getBorrower().getId());
+        item.doReturn();
+        assertEquals("Book should available after return", true, item.isAvailable());
+        assertEquals("Borrower should be none", null, item.getBorrower());
+    }
+
+    @Test
     public void bookShouldHaveInformation() {
         Book book = new Book("Title","Author","Date");
         assertEquals("Book should have a title", "Title", book.getTitle());
         assertEquals("Book should have an author", "Author", book.getAuthor());
         assertEquals("Book should have a publish date", "Date", book.getPublishDate());
         assertEquals("Book should have a borrower", null, book.getBorrower());
-    }
-
-    @Test
-    public void bookShouldHaveCheckOutAndReturn() {
-        Book book = new Book("Title","Author","Date");
-        User user = new User("111-1111", "1234", "Name", "Email", "Phone");
-        assertEquals("Book should available", true, book.isAvailable());
-        book.doCheckOut(user);
-        assertEquals("Book should not available after check out", false, book.isAvailable());
-        assertEquals("Borrower should be user 111-1111", user.getId(), book.getBorrower().getId());
-        book.doReturn();
-        assertEquals("Book should available after return", true, book.isAvailable());
-        assertEquals("Borrower should be none", null, book.getBorrower());
     }
 
     @Test
@@ -161,19 +162,6 @@ public class AppTest {
         assertEquals("Movie should have a director", "Director", movie.getDirector());
         assertEquals("Movie should have a rating", 10, movie.getRating());
         assertEquals("Movie should have a borrower", null, movie.getBorrower());
-    }
-
-    @Test
-    public void MovieShouldHaveCheckOutAndReturn() {
-        Movie movie = new Movie("Title",2020,"Director",10);
-        User user = new User("111-1111", "1234", "Name", "Email", "Phone");
-        assertEquals("Movie should available", true, movie.isAvailable());
-        movie.doCheckOut(user);
-        assertEquals("Movie should not available after check out", false, movie.isAvailable());
-        assertEquals("Borrower should be user 111-1111", user.getId(), movie.getBorrower().getId());
-        movie.doReturn();
-        assertEquals("Movie should available after return", true, movie.isAvailable());
-        assertEquals("Borrower should be none", null, movie.getBorrower());
     }
 
     @Test
