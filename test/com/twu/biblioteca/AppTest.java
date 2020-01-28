@@ -144,4 +144,28 @@ public class AppTest {
         assertEquals("User should have phone", "Phone", user.getPhone());
     }
 
+    @Test
+    public void UserShouldHaveCheckOutandReturnItems() {
+        User user = new User("111-1111", "1234", "Name", "Email", "Phone");
+        Book book = new Book("Title","Author","Date");
+        Movie movie = new Movie("Title",2020,"Director",10);
+        user.doCheckOut(book);
+        user.doCheckOut(movie);
+        assertEquals("User should have 2 items", 2, user.getItems().size());
+        user.doReturn(book);
+        user.doReturn(movie);
+        assertEquals("User should have no item", 0, user.getItems().size());
+    }
+
+    @Test
+    public void bibliotecaShouldHaveUserAccess() {
+        Biblioteca biblioteca = new Biblioteca();
+        assertEquals("Biblioteca should have users list", 3, biblioteca.getUsers().size());
+        assertEquals("Biblioteca should have no current user", null, biblioteca.getCurrentUser());
+        biblioteca.login("111-1111", "1111");
+        assertEquals("Biblioteca should have the current user", "111-1111", biblioteca.getCurrentUser().getId());
+        biblioteca.logout();
+        assertEquals("Biblioteca should have no current user", null, biblioteca.getCurrentUser());
+    }
+
 }
