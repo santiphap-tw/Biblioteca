@@ -20,9 +20,9 @@ public class BibliotecaApp {
     private STATE state;
     private Biblioteca biblioteca;
     private Scanner sc = new Scanner(System.in);
-    private Map<String, AppOption> options;
+    private Map<String, AppRunnable> options;
     private Runnable initialTasks;
-    private final AppOption invalidOption = new AppOption(Label.OPTION_INVALID.text, new AppInvalidRunnable());
+    private final AppRunnable invalidOption = new AppInvalidRunnable(Label.OPTION_INVALID.text);
 
     public BibliotecaApp() {
         this(new Biblioteca());
@@ -31,20 +31,20 @@ public class BibliotecaApp {
         this.biblioteca = biblioteca;
         this.state = STATE.INITIAL;
         // Initialise option behaviors
-        options = new LinkedHashMap<String, AppOption>();
-        options.put(Label.OPTION_SHOW_ALL_COMMAND.text, new AppOption(Label.OPTION_SHOW_ALL.text, new AppShowRunnable(biblioteca, Rentable.class)));
-        options.put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new AppOption(Label.OPTION_SHOW_BOOKS.text, new AppShowRunnable(biblioteca, Book.class)));
-        options.put(Label.OPTION_SHOW_MOVIES_COMMAND.text, new AppOption(Label.OPTION_SHOW_MOVIES.text, new AppShowRunnable(biblioteca, Movie.class)));
-        options.put(Label.OPTION_LOGIN_COMMAND.text, new AppOption(Label.OPTION_LOGIN.text, new AppLoginRunnable(biblioteca)));
-        options.put(Label.OPTION_LOGOUT_COMMAND.text, new AppOption(Label.OPTION_LOGOUT.text, new AppLogoutRunnable(biblioteca)));
-        options.put(Label.OPTION_CHECKOUT_COMMAND.text, new AppOption(Label.OPTION_CHECKOUT.text, new AppCheckOutRunnable(biblioteca)));
-        options.put(Label.OPTION_RETURN_COMMAND.text, new AppOption(Label.OPTION_RETURN.text, new AppReturnRunnable(biblioteca)));
-        options.put(Label.OPTION_MY_INFO_COMMAND.text, new AppOption(Label.OPTION_MY_INFO.text, new AppMyInfoRunnable(biblioteca)));
-        options.put(Label.OPTION_MY_BORROWING_COMMAND.text, new AppOption(Label.OPTION_MY_BORROWING.text, new AppMyBorrowRunnable(biblioteca)));
-        options.put(Label.OPTION_HELP_COMMAND.text, new AppOption(Label.OPTION_HELP.text, new AppInitialRunnable(options)));
-        options.put(Label.OPTION_EXIT_COMMAND.text, new AppOption(Label.OPTION_EXIT.text, new AppExitRunnable()));
+        options = new LinkedHashMap<String, AppRunnable>();
+        options.put(Label.OPTION_SHOW_ALL_COMMAND.text, new AppShowRunnable(Label.OPTION_SHOW_ALL.text, biblioteca, Rentable.class));
+        options.put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new AppShowRunnable(Label.OPTION_SHOW_BOOKS.text, biblioteca, Book.class));
+        options.put(Label.OPTION_SHOW_MOVIES_COMMAND.text, new AppShowRunnable(Label.OPTION_SHOW_MOVIES.text, biblioteca, Movie.class));
+        options.put(Label.OPTION_LOGIN_COMMAND.text, new AppLoginRunnable(Label.OPTION_LOGIN.text, biblioteca));
+        options.put(Label.OPTION_LOGOUT_COMMAND.text, new AppLogoutRunnable(Label.OPTION_LOGOUT.text, biblioteca));
+        options.put(Label.OPTION_CHECKOUT_COMMAND.text, new AppCheckOutRunnable(Label.OPTION_CHECKOUT.text, biblioteca));
+        options.put(Label.OPTION_RETURN_COMMAND.text, new AppReturnRunnable(Label.OPTION_RETURN.text, biblioteca));
+        options.put(Label.OPTION_MY_INFO_COMMAND.text, new AppMyInfoRunnable(Label.OPTION_MY_INFO.text, biblioteca));
+        options.put(Label.OPTION_MY_BORROWING_COMMAND.text, new AppMyBorrowRunnable(Label.OPTION_MY_BORROWING.text, biblioteca));
+        options.put(Label.OPTION_HELP_COMMAND.text, new AppInitialRunnable(Label.OPTION_HELP.text, options));
+        options.put(Label.OPTION_EXIT_COMMAND.text, new AppExitRunnable(Label.OPTION_EXIT.text));
         // Initialise initial tasks
-        initialTasks = new AppInitialRunnable(options);
+        initialTasks = new AppInitialRunnable("", options);
     }
 
     public void start() {
@@ -95,7 +95,7 @@ public class BibliotecaApp {
         String[] commandSplit = command.split(" ", 2);
         String option = commandSplit[0];
         String parameter = commandSplit.length > 1 ? commandSplit[1] : "";
-        AppOption selectedOption = options.getOrDefault(option, invalidOption);
+        AppRunnable selectedOption = options.getOrDefault(option, invalidOption);
         selectedOption.run(parameter);
         boolean isExitOption = selectedOption.getDescription().equals(Label.OPTION_EXIT.text);
         return isExitOption;

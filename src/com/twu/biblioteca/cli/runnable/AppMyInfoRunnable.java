@@ -1,15 +1,16 @@
 package com.twu.biblioteca.cli.runnable;
 
 import com.twu.biblioteca.Biblioteca;
+import com.twu.biblioteca.model.AppRunnable;
 import com.twu.biblioteca.model.Label;
-import com.twu.biblioteca.model.RunnableWithParameter;
 import com.twu.biblioteca.model.User;
 
-public class AppMyInfoRunnable implements RunnableWithParameter {
+public class AppMyInfoRunnable extends AppRunnable {
 
     private Biblioteca biblioteca;
 
-    public AppMyInfoRunnable(Biblioteca biblioteca) {
+    public AppMyInfoRunnable(String description, Biblioteca biblioteca) {
+        super(description);
         this.biblioteca = biblioteca;
     }
 

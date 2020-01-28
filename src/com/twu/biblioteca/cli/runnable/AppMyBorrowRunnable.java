@@ -6,11 +6,12 @@ import com.twu.biblioteca.model.*;
 
 import java.util.ArrayList;
 
-public class AppMyBorrowRunnable implements RunnableWithParameter {
+public class AppMyBorrowRunnable extends AppRunnable {
 
     private Biblioteca biblioteca;
 
-    public AppMyBorrowRunnable(Biblioteca biblioteca) {
+    public AppMyBorrowRunnable(String description, Biblioteca biblioteca) {
+        super(description);
         this.biblioteca = biblioteca;
     }
 

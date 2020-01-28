@@ -1,18 +1,17 @@
 package com.twu.biblioteca.cli.runnable;
 
-import com.sun.tools.javac.code.Attribute;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
+import com.twu.biblioteca.model.AppRunnable;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rentable;
-import com.twu.biblioteca.model.RunnableWithParameter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AppShowRunnable implements RunnableWithParameter {
+public class AppShowRunnable extends AppRunnable {
 
     private Biblioteca biblioteca;
     private Class targetClass;
@@ -22,10 +21,11 @@ public class AppShowRunnable implements RunnableWithParameter {
        put("all", Biblioteca.FILTER.ALL);
     }};
 
-    public AppShowRunnable(Biblioteca biblioteca) {
-        this(biblioteca, Rentable.class);
+    public AppShowRunnable(String description, Biblioteca biblioteca) {
+        this(description, biblioteca, Rentable.class);
     }
-    public AppShowRunnable(Biblioteca biblioteca, Class targetClass) {
+    public AppShowRunnable(String description, Biblioteca biblioteca, Class targetClass) {
+        super(description);
         this.targetClass = targetClass;
         this.biblioteca = biblioteca;
     }
