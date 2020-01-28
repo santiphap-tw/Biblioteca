@@ -1,11 +1,10 @@
 package com.twu.biblioteca.model;
 
-public class Movie {
-    private String title;
+public class Movie extends Rentable {
+
     private int year;
     private String director;
     private int rating;
-    private boolean available;
 
     public Movie(String title) {
         this(title,0,"Unknown",0);
@@ -19,10 +18,6 @@ public class Movie {
         this.available = true;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public int getYear() {
         return year;
     }
@@ -33,17 +28,5 @@ public class Movie {
 
     public int getRating() {
         return rating;
-    }
-
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public void doCheckOut() {
-        this.available = false;
-    }
-
-    public void doReturn() {
-        this.available = true;
     }
 }

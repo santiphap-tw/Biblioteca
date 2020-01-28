@@ -1,58 +1,59 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Rentable;
 
 import java.util.*;
 
 public class Biblioteca {
 
-    public enum BOOK_FILTER {
+    public enum FILTER {
         AVAILABLE,
         NOT_AVAILABLE,
         ALL
     }
 
-    private ArrayList<Book> books;
+    private ArrayList<Rentable> items;
 
     public Biblioteca() {
-        books = new ArrayList<Book>();
+        items = new ArrayList<Rentable>();
         addDefaultBooks();
     }
 
-    public ArrayList<Book> getBooks(BOOK_FILTER bookFilter) {
-        ArrayList<Book> books = new ArrayList<Book>();
-        for(Book book : this.books){
-            switch (bookFilter){
+    public ArrayList<Rentable> getItems(FILTER filter) {
+        ArrayList<Rentable> items = new ArrayList<Rentable>();
+        for(Rentable item : this.items){
+            switch (filter){
                 case AVAILABLE:
-                    if(book.isAvailable()) books.add(book);
+                    if(item.isAvailable()) items.add(item);
                     break;
                 case NOT_AVAILABLE:
-                    if(!book.isAvailable()) books.add(book);
+                    if(!item.isAvailable()) items.add(item);
                     break;
                 case ALL:
-                    books.add(book);
+                    items.add(item);
                     break;
             }
         }
-        return books;
+        return items;
     }
 
-    public boolean doCheckOut(String bookName) {
-        for(Book book : this.books) {
-            if(bookName.equals(book.getTitle())){
-                if(!book.isAvailable()) return false;
-                book.doCheckOut();
+    public boolean doCheckOut(String itemName) {
+        for(Rentable item : this.items) {
+            if(itemName.equals(item.getTitle())){
+                if(!item.isAvailable()) return false;
+                item.doCheckOut();
                 return true;
             }
         }
         return false;
     }
 
-    public boolean doReturn(String bookName) {
-        for(Book book : this.books) {
-            if(bookName.equals(book.getTitle())){
-                if(book.isAvailable()) return false;
-                book.doReturn();
+    public boolean doReturn(String itemName) {
+        for(Rentable item : this.items) {
+            if(itemName.equals(item.getTitle())){
+                if(item.isAvailable()) return false;
+                item.doReturn();
                 return true;
             }
         }
@@ -60,8 +61,8 @@ public class Biblioteca {
     }
 
     private void addDefaultBooks(){
-        books.add(new Book("Book A", "Santiphap A.", "01/01/2008"));
-        books.add(new Book("Book B", "Santiphap B.", "02/01/2008"));
-        books.add(new Book("Book C", "Santiphap C.", "03/01/2008"));
+        items.add(new Book("Book A", "Santiphap A.", "01/01/2008"));
+        items.add(new Book("Book B", "Santiphap B.", "02/01/2008"));
+        items.add(new Book("Book C", "Santiphap C.", "03/01/2008"));
     }
 }

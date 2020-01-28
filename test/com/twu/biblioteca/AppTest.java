@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 
 import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Rentable;
 import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.Movie;
 import org.junit.After;
@@ -52,7 +53,7 @@ public class AppTest {
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("Biblioteca app should have 2 books after checkout", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca app should have 2 books after checkout", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test(timeout=1000)
@@ -61,17 +62,17 @@ public class AppTest {
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("Biblioteca app should have 2 books after return", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca app should have 2 books after return", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test
     public void bibliotecaShouldHaveCheckOut() {
         Biblioteca biblioteca = new Biblioteca();
-        assertEquals("Biblioteca should have 3 books at start", 3, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca should have 3 books at start", 3, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
         biblioteca.doCheckOut("Book A");
-        assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
         biblioteca.doCheckOut("Book B");
-        assertEquals("Biblioteca should have 1 books after checkout", 1, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca should have 1 books after checkout", 1, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test
@@ -79,9 +80,9 @@ public class AppTest {
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.doCheckOut("Book A");
         biblioteca.doCheckOut("Book B");
-        assertEquals("Biblioteca should have 1 books at start", 1, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca should have 1 books at start", 1, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
         biblioteca.doReturn("Book A");
-        assertEquals("Biblioteca should have 2 books after return", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca should have 2 books after return", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test
