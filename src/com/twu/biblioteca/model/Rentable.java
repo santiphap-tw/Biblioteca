@@ -4,7 +4,7 @@ public abstract  class Rentable {
 
     protected String title;
     protected boolean available;
-    protected User loaner = null;
+    protected User borrower = null;
 
     public String getTitle() {
         return title;
@@ -14,19 +14,19 @@ public abstract  class Rentable {
         return available;
     }
 
-    public void doCheckOut(User loaner) {
-        this.loaner = loaner;
+    public void doCheckOut(User borrower) {
+        this.borrower = borrower;
         this.available = false;
-        loaner.checkOutItem(this);
+        borrower.checkOutItem(this);
     }
 
     public void doReturn() {
-        this.loaner.returnItem(this);
-        this.loaner = null;
+        this.borrower.returnItem(this);
+        this.borrower = null;
         this.available = true;
     }
 
-    public User getLoaner() {
-        return loaner;
+    public User getBorrower() {
+        return borrower;
     }
 }

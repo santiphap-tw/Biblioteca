@@ -2,11 +2,13 @@ package com.twu.biblioteca.cli.runnable;
 
 import com.sun.tools.javac.code.Attribute;
 import com.twu.biblioteca.Biblioteca;
+import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rentable;
 import com.twu.biblioteca.model.RunnableWithParameter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,24 +45,20 @@ public class AppShowRunnable implements RunnableWithParameter {
     }
 
     private void showListOfBooks(Biblioteca.FILTER filter) {
-        System.out.println("### Books List ###");
-        System.out.println("Title\t|\tAuthor\t|\tPublish Date");
-        int bookNumber = 1;
+        ArrayList<Book> books = new ArrayList<Book>();
         for(Rentable item : biblioteca.getItems(filter)) {
-            if(item.getClass() != Book.class) continue;
-            Book book = (Book) item;
-            System.out.println(bookNumber++ + ") " + book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate());
+            if(item.getClass() == Book.class) books.add((Book) item);
         }
+        boolean showBorrower = filter != Biblioteca.FILTER.AVAILABLE;
+        BibliotecaApp.printBooks(books, showBorrower);
     }
 
     private void showListOfMovies(Biblioteca.FILTER filter) {
-        System.out.println("### Movies List ###");
-        System.out.println("Title\t|\tYear\t|\tDirector\t|\tRating");
-        int movieNumber = 1;
+        ArrayList<Movie> movies = new ArrayList<Movie>();
         for(Rentable item : biblioteca.getItems(filter)) {
-            if(item.getClass() != Movie.class) continue;
-            Movie movie = (Movie) item;
-            System.out.println(movieNumber++ + ") " + movie.getTitle() + "\t|\t" + movie.getYear() + "\t|\t" + movie.getDirector() + "\t|\t" + movie.getRating());
+            if(item.getClass() == Movie.class) movies.add((Movie) item);
         }
+        boolean showBorrower = filter != Biblioteca.FILTER.AVAILABLE;
+        BibliotecaApp.printMovie(movies, showBorrower);
     }
 }

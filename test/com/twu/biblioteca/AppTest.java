@@ -137,7 +137,7 @@ public class AppTest {
         assertEquals("Book should have a title", "Title", book.getTitle());
         assertEquals("Book should have an author", "Author", book.getAuthor());
         assertEquals("Book should have a publish date", "Date", book.getPublishDate());
-        assertEquals("Book should have a loaner", null, book.getLoaner());
+        assertEquals("Book should have a borrower", null, book.getBorrower());
     }
 
     @Test
@@ -147,10 +147,10 @@ public class AppTest {
         assertEquals("Book should available", true, book.isAvailable());
         book.doCheckOut(user);
         assertEquals("Book should not available after check out", false, book.isAvailable());
-        assertEquals("Loaner should be user 111-1111", user.getId(), book.getLoaner().getId());
+        assertEquals("Borrower should be user 111-1111", user.getId(), book.getBorrower().getId());
         book.doReturn();
         assertEquals("Book should available after return", true, book.isAvailable());
-        assertEquals("Loaner should be none", null, book.getLoaner());
+        assertEquals("Borrower should be none", null, book.getBorrower());
     }
 
     @Test
@@ -160,7 +160,7 @@ public class AppTest {
         assertEquals("Movie should have a year", 2020, movie.getYear());
         assertEquals("Movie should have a director", "Director", movie.getDirector());
         assertEquals("Movie should have a rating", 10, movie.getRating());
-        assertEquals("Movie should have a loaner", null, movie.getLoaner());
+        assertEquals("Movie should have a borrower", null, movie.getBorrower());
     }
 
     @Test
@@ -170,10 +170,10 @@ public class AppTest {
         assertEquals("Movie should available", true, movie.isAvailable());
         movie.doCheckOut(user);
         assertEquals("Movie should not available after check out", false, movie.isAvailable());
-        assertEquals("Loaner should be user 111-1111", user.getId(), movie.getLoaner().getId());
+        assertEquals("Borrower should be user 111-1111", user.getId(), movie.getBorrower().getId());
         movie.doReturn();
         assertEquals("Movie should available after return", true, movie.isAvailable());
-        assertEquals("Loaner should be none", null, movie.getLoaner());
+        assertEquals("Borrower should be none", null, movie.getBorrower());
     }
 
     @Test

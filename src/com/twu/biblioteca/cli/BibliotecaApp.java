@@ -4,6 +4,7 @@ import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.runnable.*;
 import com.twu.biblioteca.model.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -61,6 +62,30 @@ public class BibliotecaApp {
                 case TERMINATE:
                     break;
             }
+        }
+    }
+
+    public static void printBooks(ArrayList<Book> books, boolean showBorrower) {
+        System.out.println("### Books List ###");
+        String header = "Title\t|\tAuthor\t|\tPublish Date";
+        if(showBorrower) header += "\t|\tBorrower";
+        System.out.println(header);
+        for(Book book : books) {
+            String bookInfo = book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate();
+            if(showBorrower) bookInfo += book.getBorrower() != null ? "\t|\t" + book.getBorrower().getName() : "\t|\t-";
+            System.out.println(bookInfo);
+        }
+    }
+
+    public static void printMovie(ArrayList<Movie> movies, boolean showBorrower) {
+        System.out.println("### Movies List ###");
+        String header = "Title\t|\tYear\t|\tDirector\t|\tRating";
+        if(showBorrower) header += "\t|\tBorrower";
+        System.out.println(header);
+        for(Movie movie : movies) {
+            String movieInfo = movie.getTitle() + "\t|\t" + movie.getYear() + "\t|\t" + movie.getDirector() + "\t|\t" + movie.getRating();
+            if(showBorrower) movieInfo += movie.getBorrower() != null ? "\t|\t" + movie.getBorrower().getName() : "\t|\t-";
+            System.out.println(movieInfo);
         }
     }
 

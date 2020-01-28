@@ -93,7 +93,7 @@ public class Biblioteca {
         for(Rentable item : this.items) {
             if(itemName.equals(item.getTitle())){
                 if(item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
-                if(currentUser != item.getLoaner()) return RESPONSE.AUTHORIZATION_ERROR;
+                if(currentUser != item.getBorrower()) return RESPONSE.AUTHORIZATION_ERROR;
                 item.doReturn();
                 return RESPONSE.SUCCESS;
             }
