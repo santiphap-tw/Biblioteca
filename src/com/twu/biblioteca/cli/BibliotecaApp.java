@@ -2,8 +2,7 @@ package com.twu.biblioteca.cli;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.runnable.*;
-import com.twu.biblioteca.model.Label;
-import com.twu.biblioteca.model.AppOption;
+import com.twu.biblioteca.model.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,7 +31,9 @@ public class BibliotecaApp {
         this.state = STATE.INITIAL;
         // Initialise option behaviors
         options = new LinkedHashMap<String, AppOption>();
-        options.put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new AppOption(Label.OPTION_SHOW_BOOKS.text, new AppShowRunnable(biblioteca)));
+        options.put(Label.OPTION_SHOW_ALL_COMMAND.text, new AppOption(Label.OPTION_SHOW_ALL.text, new AppShowRunnable(biblioteca, Rentable.class)));
+        options.put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new AppOption(Label.OPTION_SHOW_BOOKS.text, new AppShowRunnable(biblioteca, Book.class)));
+        options.put(Label.OPTION_SHOW_MOVIES_COMMAND.text, new AppOption(Label.OPTION_SHOW_MOVIES.text, new AppShowRunnable(biblioteca, Movie.class)));
         options.put(Label.OPTION_CHECKOUT_COMMAND.text, new AppOption(Label.OPTION_CHECKOUT.text, new AppCheckOutRunnable(biblioteca)));
         options.put(Label.OPTION_RETURN_COMMAND.text, new AppOption(Label.OPTION_RETURN.text, new AppReturnRunnable(biblioteca)));
         options.put(Label.OPTION_EXIT_COMMAND.text, new AppOption(Label.OPTION_EXIT.text, new AppExitRunnable()));

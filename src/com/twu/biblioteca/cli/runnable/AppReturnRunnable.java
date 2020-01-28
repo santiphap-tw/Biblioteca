@@ -18,8 +18,8 @@ public class AppReturnRunnable implements RunnableWithParameter {
     }
 
     @Override
-    public void run(String bookName) {
-        boolean isSuccess = biblioteca.doReturn(bookName.trim());
+    public void run(String itemName) {
+        boolean isSuccess = biblioteca.doReturn(itemName.trim());
         if(isSuccess)
             System.out.println(Label.RETURN_SUCCESS.text);
         else

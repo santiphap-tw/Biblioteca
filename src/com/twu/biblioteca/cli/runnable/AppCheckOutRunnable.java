@@ -18,8 +18,8 @@ public class AppCheckOutRunnable implements RunnableWithParameter {
     }
 
     @Override
-    public void run(String bookName) {
-        boolean isSuccess = biblioteca.doCheckOut(bookName.trim());
+    public void run(String itemName) {
+        boolean isSuccess = biblioteca.doCheckOut(itemName.trim());
         if(isSuccess)
             System.out.println(Label.CHECKOUT_SUCCESS.text);
         else

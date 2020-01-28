@@ -2,7 +2,10 @@ package com.twu.biblioteca;
 
 
 import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Label;
+import com.twu.biblioteca.model.Rentable;
 import com.twu.biblioteca.cli.BibliotecaApp;
+import com.twu.biblioteca.model.Movie;
 import org.junit.After;
 import org.junit.Test;
 
@@ -40,37 +43,51 @@ public class AppTest {
 
     @Test(timeout=1000)
     public void bibliotecaAppHaveShowCommand() {
-        simulateInput(new String[] {"show","exit"});
+        simulateInput(new String[] {Label.OPTION_SHOW_ALL_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
+        BibliotecaApp app = new BibliotecaApp();
+        app.start();
+    }
+
+    @Test(timeout=1000)
+    public void bibliotecaAppHaveShowBookCommand() {
+        simulateInput(new String[] {Label.OPTION_SHOW_BOOKS_COMMAND.text,Label.OPTION_EXIT_COMMAND.text});
+        BibliotecaApp app = new BibliotecaApp();
+        app.start();
+    }
+
+    @Test(timeout=1000)
+    public void bibliotecaAppHaveShowMovieCommand() {
+        simulateInput(new String[] {Label.OPTION_SHOW_MOVIES_COMMAND.text,Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
         app.start();
     }
 
     @Test(timeout=1000)
     public void bibliotecaAppHaveCheckOutCommand() {
-        simulateInput(new String[] {"checkout Book A","exit"});
+        simulateInput(new String[] {Label.OPTION_CHECKOUT_COMMAND.text + " Book A",Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("Biblioteca app should have 2 books after checkout", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca app should have 2 items after checkout", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test(timeout=1000)
     public void bibliotecaAppHaveReturnCommand() {
-        simulateInput(new String[] {"checkout Book A","checkout Book B","return Book A","exit"});
+        simulateInput(new String[] {Label.OPTION_CHECKOUT_COMMAND.text + " Book A",Label.OPTION_CHECKOUT_COMMAND.text + " Book B",Label.OPTION_RETURN_COMMAND.text + " Book A",Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("Biblioteca app should have 2 books after return", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca app should have 2 items after return", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test
     public void bibliotecaShouldHaveCheckOut() {
         Biblioteca biblioteca = new Biblioteca();
-        assertEquals("Biblioteca should have 3 books at start", 3, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca should have 3 books at start", 3, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
         biblioteca.doCheckOut("Book A");
-        assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca should have 2 books after checkout", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
         biblioteca.doCheckOut("Book B");
-        assertEquals("Biblioteca should have 1 books after checkout", 1, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca should have 1 books after checkout", 1, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test
@@ -78,9 +95,9 @@ public class AppTest {
         Biblioteca biblioteca = new Biblioteca();
         biblioteca.doCheckOut("Book A");
         biblioteca.doCheckOut("Book B");
-        assertEquals("Biblioteca should have 1 books at start", 1, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca should have 1 books at start", 1, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
         biblioteca.doReturn("Book A");
-        assertEquals("Biblioteca should have 2 books after return", 2, biblioteca.getBooks(Biblioteca.BOOK_FILTER.AVAILABLE).size());
+        assertEquals("Biblioteca should have 2 books after return", 2, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test
@@ -100,4 +117,24 @@ public class AppTest {
         book.doReturn();
         assertEquals("Book should available after return", true, book.isAvailable());
     }
+
+    @Test
+    public void movieShouldHaveTitleYearDirectorAndRating() {
+        Movie movie = new Movie("Title",2020,"Director",10);
+        assertEquals("Movie should have a title", "Title", movie.getTitle());
+        assertEquals("Movie should have a year", 2020, movie.getYear());
+        assertEquals("Movie should have a director", "Director", movie.getDirector());
+        assertEquals("Movie should have a rating", 10, movie.getRating());
+    }
+
+    @Test
+    public void MovieShouldHaveCheckOutAndReturn() {
+        Movie movie = new Movie("Title",2020,"Director",10);
+        assertEquals("Movie should available", true, movie.isAvailable());
+        movie.doCheckOut();
+        assertEquals("Movie should not available after check out", false, movie.isAvailable());
+        movie.doReturn();
+        assertEquals("Movie should available after return", true, movie.isAvailable());
+    }
+
 }
