@@ -32,70 +32,70 @@ public class AppTest {
     }
 
     @Test(timeout=1000)
-    public void bibliotecaAppHaveExitCommand() {
+    public void appHaveExitCommand() {
         simulateInput(Label.OPTION_EXIT_COMMAND.text);
         BibliotecaApp app = new BibliotecaApp();
         app.start();
     }
 
     @Test(timeout=1000)
-    public void bibliotecaAppHaveShowCommand() {
+    public void appHaveShowCommand() {
         simulateInput(new String[] {Label.OPTION_SHOW_ALL_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
         app.start();
     }
 
     @Test(timeout=1000)
-    public void bibliotecaAppHaveShowBookCommand() {
+    public void appHaveShowBookCommand() {
         simulateInput(new String[] {Label.OPTION_SHOW_BOOKS_COMMAND.text,Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
         app.start();
     }
 
     @Test(timeout=1000)
-    public void bibliotecaAppHaveShowMovieCommand() {
+    public void appHaveShowMovieCommand() {
         simulateInput(new String[] {Label.OPTION_SHOW_MOVIES_COMMAND.text,Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
         app.start();
     }
 
     @Test(timeout=1000)
-    public void bibliotecaAppHaveCheckOutCommand() {
+    public void appHaveCheckOutCommand() {
         simulateInput(new String[] {Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111", Label.OPTION_CHECKOUT_COMMAND.text + " Book A",Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("Biblioteca app should have 5 items after checkout", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
+        assertEquals("App should have 5 items after checkout", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test(timeout=1000)
-    public void bibliotecaAppHaveReturnCommand() {
+    public void appHaveReturnCommand() {
         simulateInput(new String[] {Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111", Label.OPTION_CHECKOUT_COMMAND.text + " Book A",Label.OPTION_CHECKOUT_COMMAND.text + " Book B",Label.OPTION_RETURN_COMMAND.text + " Book A",Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("Biblioteca app should have 5 items after return", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
+        assertEquals("App should have 5 items after return", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
     @Test(timeout=1000)
-    public void bibliotecaAppHaveLoginCommand() {
+    public void appHaveLoginCommand() {
         simulateInput(new String[] {Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111", Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("Biblioteca should logged in with user 111-1111", "111-1111", biblioteca.getCurrentUser().getId());
+        assertEquals("App should have logged in with user 111-1111", "111-1111", biblioteca.getCurrentUser().getId());
     }
 
     @Test(timeout=1000)
-    public void bibliotecaAppHaveLogoutCommand() {
+    public void appHaveLogoutCommand() {
         simulateInput(new String[] {Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111", Label.OPTION_LOGOUT_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("Biblioteca should logged out", null, biblioteca.getCurrentUser());
+        assertEquals("App should have logged out", null, biblioteca.getCurrentUser());
     }
     @Test(timeout=1000)
-    public void bibliotecaAppHaveHelpCommand() {
+    public void appHaveHelpCommand() {
         simulateInput(new String[] {Label.OPTION_HELP_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
         app.start();
