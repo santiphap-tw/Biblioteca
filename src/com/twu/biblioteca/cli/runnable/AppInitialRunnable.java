@@ -1,16 +1,16 @@
 package com.twu.biblioteca.cli.runnable;
 
-import com.twu.biblioteca.model.AppOption;
+import com.twu.biblioteca.model.AppRunnable;
 import com.twu.biblioteca.model.Label;
-import com.twu.biblioteca.model.RunnableWithParameter;
 
 import java.util.Map;
 
-public class AppInitialRunnable implements RunnableWithParameter {
+public class AppInitialRunnable extends AppRunnable {
 
-    private Map<String,AppOption> options;
+    private Map<String, AppRunnable> options;
 
-    public AppInitialRunnable(Map<String, AppOption> options) {
+    public AppInitialRunnable(String description, Map<String, AppRunnable> options) {
+        super(description);
         this.options = options;
     }
 

@@ -1,6 +1,7 @@
 package com.twu.biblioteca.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class User {
     private String id;
@@ -8,7 +9,7 @@ public class User {
     private String name;
     private String email;
     private String phone;
-    private ArrayList<Rentable> items;
+    private ArrayList<Rental> items;
 
     public User(String id, String password, String name, String email, String phone) {
         this.id = id;
@@ -16,7 +17,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.items = new ArrayList<Rentable>();
+        this.items = new ArrayList<Rental>();
     }
 
     public String getId() {
@@ -39,15 +40,17 @@ public class User {
         return phone;
     }
 
-    public ArrayList<Rentable> getItems() {
+    public ArrayList<Rental> getItems() {
+        // Sort items by class name
+        Collections.sort(items, (o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
         return items;
     }
 
-    public void checkOutItem(Rentable item) {
+    public void checkOutItem(Rental item) {
         this.items.add(item);
     }
 
-    public boolean returnItem(Rentable item) {
+    public boolean returnItem(Rental item) {
         return this.items.remove(item);
     }
 }

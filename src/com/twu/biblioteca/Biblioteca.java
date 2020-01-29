@@ -2,8 +2,7 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
-import com.twu.biblioteca.model.Rentable;
-import com.twu.biblioteca.model.User;
+import com.twu.biblioteca.model.Rental;
 
 import java.util.*;
 
@@ -21,22 +20,19 @@ public class Biblioteca {
         DEFAULT_ERROR
     }
 
-    private ArrayList<Rentable> items;
-    private ArrayList<User> users;
-    private User currentUser;
+    private ArrayList<Rental> items;
+    private BibliotecaUser userManager;
 
     public Biblioteca() {
-        items = new ArrayList<Rentable>();
-        users = new ArrayList<User>();
+        items = new ArrayList<Rental>();
+        userManager = new BibliotecaUser();
         addDefaultBooks();
         addDefaultMovies();
-        addDefaultUsers();
-        currentUser = null;
     }
 
-    public ArrayList<Rentable> getItems(FILTER filter) {
-        ArrayList<Rentable> items = new ArrayList<Rentable>();
-        for(Rentable item : this.items){
+    public ArrayList<Rental> getItems(FILTER filter) {
+        ArrayList<Rental> items = new ArrayList<Rental>();
+        for(Rental item : this.items){
             switch (filter){
                 case AVAILABLE:
                     if(item.isAvailable()) items.add(item);
@@ -49,39 +45,17 @@ public class Biblioteca {
                     break;
             }
         }
+        // Sort items by class name
+        Collections.sort(items, (o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
         return items;
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-
-    public User getCurrentUser() {
-        return currentUser;
-    }
-
-    public User login(String id, String password) {
-        for(User user : this.users){
-            if(user.getId().equals(id) && user.getPassword().equals(password)){
-                currentUser = user;
-                return user;
-            }
-        }
-        return null;
-    }
-
-    public User logout() {
-        User user = currentUser;
-        currentUser = null;
-        return user;
-    }
-
     public RESPONSE doCheckOut(String itemName) {
-        if(currentUser==null) return RESPONSE.AUTHORIZATION_ERROR;
-        for(Rentable item : this.items) {
+        if(userManager.getCurrentUser()==null) return RESPONSE.AUTHORIZATION_ERROR;
+        for(Rental item : this.items) {
             if(itemName.equals(item.getTitle())){
                 if(!item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
-                item.doCheckOut(currentUser);
+                item.doCheckOut(userManager.getCurrentUser());
                 return RESPONSE.SUCCESS;
             }
         }
@@ -89,11 +63,11 @@ public class Biblioteca {
     }
 
     public RESPONSE doReturn(String itemName) {
-        if(currentUser==null) return RESPONSE.AUTHORIZATION_ERROR;
-        for(Rentable item : this.items) {
+        if(userManager.getCurrentUser()==null) return RESPONSE.AUTHORIZATION_ERROR;
+        for(Rental item : this.items) {
             if(itemName.equals(item.getTitle())){
                 if(item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
-                if(currentUser != item.getBorrower()) return RESPONSE.AUTHORIZATION_ERROR;
+                if(userManager.getCurrentUser() != item.getBorrower()) return RESPONSE.AUTHORIZATION_ERROR;
                 item.doReturn();
                 return RESPONSE.SUCCESS;
             }
@@ -101,9 +75,8 @@ public class Biblioteca {
         return RESPONSE.DEFAULT_ERROR;
     }
 
-    public ArrayList<Rentable> getMyItems() {
-        if(currentUser == null) return new ArrayList<Rentable>();
-        return currentUser.getItems();
+    public BibliotecaUser user() {
+        return userManager;
     }
 
     private void addDefaultBooks(){
@@ -116,10 +89,5 @@ public class Biblioteca {
         items.add(new Movie("Movie A", 2008, "Santiphap A.", 8));
         items.add(new Movie("Movie B", 2013,"Santiphap B.", 9));
         items.add(new Movie("Movie C", 2020, "Santiphap C.", 10));
-    }
-    private void addDefaultUsers(){
-        users.add(new User("111-1111", "1111", "Santiphap A.", "santiphap.a@mail.com", "01-111-1111"));
-        users.add(new User("222-2222", "2222", "Santiphap B.", "santiphap.b@mail.com", "02-222-2222"));
-        users.add(new User("333-3333", "3333", "Santiphap C.", "santiphap.c@mail.com", "03-333-3333"));
     }
 }
