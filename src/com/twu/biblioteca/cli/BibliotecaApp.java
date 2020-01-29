@@ -35,7 +35,7 @@ public class BibliotecaApp {
         this.state = STATE.INITIAL;
         // Initialise option behaviors
         options = new LinkedHashMap<String, AppRunnable>();
-        options.put(Label.OPTION_SHOW_ALL_COMMAND.text, new AppShowRunnable(Label.OPTION_SHOW_ALL.text, biblioteca, Rentable.class));
+        options.put(Label.OPTION_SHOW_ALL_COMMAND.text, new AppShowRunnable(Label.OPTION_SHOW_ALL.text, biblioteca, Rental.class));
         options.put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new AppShowRunnable(Label.OPTION_SHOW_BOOKS.text, biblioteca, Book.class));
         options.put(Label.OPTION_SHOW_MOVIES_COMMAND.text, new AppShowRunnable(Label.OPTION_SHOW_MOVIES.text, biblioteca, Movie.class));
         options.put(Label.OPTION_LOGIN_COMMAND.text, new AppLoginRunnable(Label.OPTION_LOGIN.text, biblioteca));
@@ -70,10 +70,10 @@ public class BibliotecaApp {
         }
     }
 
-    public static void print(ArrayList<Rentable> items, Class<? extends Rentable> itemType, boolean showBorrower) {
-        ArrayList<Class<? extends Rentable>> printedHeader = new ArrayList<Class<? extends Rentable>>();
-        for(Rentable item : items) {
-            if(item.getClass() == itemType || itemType == Rentable.class){
+    public static void print(ArrayList<Rental> items, Class<? extends Rental> itemType, boolean showBorrower) {
+        ArrayList<Class<? extends Rental>> printedHeader = new ArrayList<Class<? extends Rental>>();
+        for(Rental item : items) {
+            if(item.getClass() == itemType || itemType == Rental.class){
                 // Check if header of this item type was already printed or not
                 boolean isAlreadyPrintHeader = printedHeader.contains(item.getClass());
                 if(!isAlreadyPrintHeader) {

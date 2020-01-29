@@ -1,6 +1,6 @@
 package com.twu.biblioteca.model;
 
-public class Book extends Rentable {
+public class Book extends Rental {
 
     private String author;
     private String publishDate;

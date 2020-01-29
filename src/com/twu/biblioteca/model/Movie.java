@@ -1,6 +1,6 @@
 package com.twu.biblioteca.model;
 
-public class Movie extends Rentable {
+public class Movie extends Rental {
 
     private int year;
     private String director;

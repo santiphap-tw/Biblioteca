@@ -18,7 +18,7 @@ public class AppMyBorrowRunnable extends AppRunnable {
         User user = biblioteca.user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
-            BibliotecaApp.print(user.getItems(), Rentable.class, false);
+            BibliotecaApp.print(user.getItems(), Rental.class, false);
         } else {
             System.out.println(Label.MY_INFO_FAIL.text);
         }

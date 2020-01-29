@@ -2,7 +2,7 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
-import com.twu.biblioteca.model.Rentable;
+import com.twu.biblioteca.model.Rental;
 
 import java.util.*;
 
@@ -20,19 +20,19 @@ public class Biblioteca {
         DEFAULT_ERROR
     }
 
-    private ArrayList<Rentable> items;
+    private ArrayList<Rental> items;
     private BibliotecaUser userManager;
 
     public Biblioteca() {
-        items = new ArrayList<Rentable>();
+        items = new ArrayList<Rental>();
         userManager = new BibliotecaUser();
         addDefaultBooks();
         addDefaultMovies();
     }
 
-    public ArrayList<Rentable> getItems(FILTER filter) {
-        ArrayList<Rentable> items = new ArrayList<Rentable>();
-        for(Rentable item : this.items){
+    public ArrayList<Rental> getItems(FILTER filter) {
+        ArrayList<Rental> items = new ArrayList<Rental>();
+        for(Rental item : this.items){
             switch (filter){
                 case AVAILABLE:
                     if(item.isAvailable()) items.add(item);
@@ -52,7 +52,7 @@ public class Biblioteca {
 
     public RESPONSE doCheckOut(String itemName) {
         if(userManager.getCurrentUser()==null) return RESPONSE.AUTHORIZATION_ERROR;
-        for(Rentable item : this.items) {
+        for(Rental item : this.items) {
             if(itemName.equals(item.getTitle())){
                 if(!item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
                 item.doCheckOut(userManager.getCurrentUser());
@@ -64,7 +64,7 @@ public class Biblioteca {
 
     public RESPONSE doReturn(String itemName) {
         if(userManager.getCurrentUser()==null) return RESPONSE.AUTHORIZATION_ERROR;
-        for(Rentable item : this.items) {
+        for(Rental item : this.items) {
             if(itemName.equals(item.getTitle())){
                 if(item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
                 if(userManager.getCurrentUser() != item.getBorrower()) return RESPONSE.AUTHORIZATION_ERROR;

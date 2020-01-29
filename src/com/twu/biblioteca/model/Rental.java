@@ -1,6 +1,6 @@
 package com.twu.biblioteca.model;
 
-public abstract  class Rentable {
+public abstract  class Rental {
 
     protected String title;
     protected boolean available;

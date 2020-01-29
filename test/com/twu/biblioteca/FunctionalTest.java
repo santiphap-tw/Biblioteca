@@ -51,7 +51,7 @@ public class FunctionalTest {
 
     @Test
     public void rentableShouldHaveCheckOutAndReturn() {
-        Rentable item = new Book("Title","Author","Date");
+        Rental item = new Book("Title","Author","Date");
         User user = new User("111-1111", "1234", "Name", "Email", "Phone");
         assertEquals("Book should available", true, item.isAvailable());
         item.doCheckOut(user);
