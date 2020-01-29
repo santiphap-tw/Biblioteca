@@ -24,7 +24,7 @@ public class AppLoginRunnable extends AppRunnable {
         String[] idAndPasswordSplit = idAndPassword.split(" ", 2);
         String id = idAndPasswordSplit[0];
         String password = idAndPasswordSplit.length > 1 ? idAndPasswordSplit[1] : "";
-        User user = biblioteca.login(id, password);
+        User user = biblioteca.user().login(id, password);
         boolean loginSuccess = user != null;
         if(loginSuccess)
             System.out.println(Label.LOGIN_SUCCESS.text + user.getName());

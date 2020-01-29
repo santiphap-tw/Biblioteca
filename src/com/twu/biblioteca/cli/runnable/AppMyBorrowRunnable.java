@@ -15,7 +15,7 @@ public class AppMyBorrowRunnable extends AppRunnable {
 
     @Override
     public void run() {
-        User user = biblioteca.getCurrentUser();
+        User user = biblioteca.user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
             BibliotecaApp.print(user.getItems(), Rentable.class, false);

@@ -10,7 +10,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class AppTest {
 
@@ -83,7 +82,7 @@ public class AppTest {
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("App should have logged in with user 111-1111", "111-1111", biblioteca.getCurrentUser().getId());
+        assertEquals("App should have logged in with user 111-1111", "111-1111", biblioteca.user().getCurrentUser().getId());
     }
 
     @Test(timeout=1000)
@@ -92,7 +91,7 @@ public class AppTest {
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
         app.start();
-        assertEquals("App should have logged out", null, biblioteca.getCurrentUser());
+        assertEquals("App should have logged out", null, biblioteca.user().getCurrentUser());
     }
 
     @Test(timeout=1000)
@@ -122,7 +121,7 @@ public class AppTest {
         assertEquals("Biblioteca should have 6 items at start", 6, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
         biblioteca.doCheckOut("Book A");
         assertEquals("Biblioteca should have 6 items after checkout without user", 6, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
-        biblioteca.login("111-1111", "1111");
+        biblioteca.user().login("111-1111", "1111");
         biblioteca.doCheckOut("Book A");
         biblioteca.doCheckOut("Movie A");
         assertEquals("Biblioteca should have 4 item after checkout with user", 4, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
@@ -131,17 +130,17 @@ public class AppTest {
     @Test
     public void bibliotecaShouldHaveReturn() {
         Biblioteca biblioteca = new Biblioteca();
-        biblioteca.login("111-1111", "1111");
+        biblioteca.user().login("111-1111", "1111");
         biblioteca.doCheckOut("Book A");
         biblioteca.doCheckOut("Movie A");
         assertEquals("Biblioteca should have 4 items ", 4, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
-        biblioteca.logout();
+        biblioteca.user().logout();
         biblioteca.doReturn("Book A");
         assertEquals("Biblioteca should have 4 item after return with no user", 4, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
-        biblioteca.login("111-1111", "1111");
+        biblioteca.user().login("111-1111", "1111");
         biblioteca.doReturn("Book A");
         assertEquals("Biblioteca should have 5 items after return with user", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
-        biblioteca.login("222-2222", "2222");
+        biblioteca.user().login("222-2222", "2222");
         biblioteca.doReturn("Movie A");
         assertEquals("Biblioteca should have 5 items after return with wrong user", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
@@ -204,25 +203,11 @@ public class AppTest {
     @Test
     public void bibliotecaShouldHaveUserAccess() {
         Biblioteca biblioteca = new Biblioteca();
-        assertEquals("Biblioteca should have users list", 3, biblioteca.getUsers().size());
-        assertEquals("Biblioteca should have no current user", null, biblioteca.getCurrentUser());
-        biblioteca.login("111-1111", "1111");
-        assertEquals("Biblioteca should have the current user", "111-1111", biblioteca.getCurrentUser().getId());
-        biblioteca.logout();
-        assertEquals("Biblioteca should have no current user", null, biblioteca.getCurrentUser());
-    }
-
-    @Test
-    public void bibliotecaShouldHaveCheckMyItems() {
-        Biblioteca biblioteca = new Biblioteca();
-        assertEquals("There is no items if not login", 0, biblioteca.getMyItems().size());
-        biblioteca.login("111-1111", "1111");
-        biblioteca.doCheckOut("Book A");
-        biblioteca.doCheckOut("Book B");
-        biblioteca.doCheckOut("Movie A");
-        assertEquals("User 111-1111 should have 3 items", 3, biblioteca.getMyItems().size());
-        biblioteca.doReturn("Movie A");
-        biblioteca.doReturn("Book A");
-        assertEquals("User 111-1111 should have 1 items", 1, biblioteca.getMyItems().size());
+        assertEquals("Biblioteca should have users list", 3, biblioteca.user().getUsers().size());
+        assertEquals("Biblioteca should have no current user", null, biblioteca.user().getCurrentUser());
+        biblioteca.user().login("111-1111", "1111");
+        assertEquals("Biblioteca should have the current user", "111-1111", biblioteca.user().getCurrentUser().getId());
+        biblioteca.user().logout();
+        assertEquals("Biblioteca should have no current user", null, biblioteca.user().getCurrentUser());
     }
 }

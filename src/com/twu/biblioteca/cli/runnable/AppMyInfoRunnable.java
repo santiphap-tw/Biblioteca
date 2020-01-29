@@ -16,7 +16,7 @@ public class AppMyInfoRunnable extends AppRunnable {
 
     @Override
     public void run() {
-        User user = biblioteca.getCurrentUser();
+        User user = biblioteca.user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
             System.out.println("ID: \t" + user.getId());

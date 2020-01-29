@@ -16,7 +16,7 @@ public class AppLogoutRunnable extends AppRunnable {
 
     @Override
     public void run() {
-        User user = biblioteca.logout();
+        User user = biblioteca.user().logout();
         System.out.println(Label.LOGOUT_SUCCESS.text + user.getName());
     }
 
