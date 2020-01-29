@@ -29,4 +29,17 @@ public class Movie extends Rentable {
     public int getRating() {
         return rating;
     }
+
+    public String header (boolean showBorrower) {
+        String header = "------- Movies List -------\n";
+        header += "Title\t|\tYear\t|\tDirector\t|\tRating";
+        if(showBorrower) header += "\t|\tBorrower";
+        return header;
+    }
+
+    public String info(boolean showBorrower) {
+        String movieInfo = this.getTitle() + "\t|\t" + this.getYear() + "\t|\t" + this.getDirector() + "\t|\t" + this.getRating();
+        if(showBorrower) movieInfo += this.getBorrower() != null ? "\t|\t" + this.getBorrower().getName() : "\t|\t-";
+        return movieInfo;
+    }
 }

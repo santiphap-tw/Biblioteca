@@ -29,4 +29,17 @@ public abstract  class Rentable {
     public User getBorrower() {
         return borrower;
     }
+
+    public String header (boolean showBorrower) {
+        String header = "------- Item List -------\n";
+        header += "Title\t|\tType";
+        if(showBorrower) header += "\t|\tBorrower";
+        return header;
+    }
+
+    public String info(boolean showBorrower) {
+        String itemInfo = this.getTitle() + "\t|\t" + this.getClass().getName();
+        if(showBorrower) itemInfo += this.getBorrower() != null ? "\t|\t" + this.getBorrower().getName() : "\t|\t-";
+        return itemInfo;
+    }
 }

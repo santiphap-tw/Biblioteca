@@ -4,10 +4,7 @@ import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.runnable.*;
 import com.twu.biblioteca.model.*;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class BibliotecaApp {
 
@@ -67,27 +64,18 @@ public class BibliotecaApp {
         }
     }
 
-    public static void printBooks(ArrayList<Book> books, boolean showBorrower) {
-        System.out.println("### Books List ###");
-        String header = "Title\t|\tAuthor\t|\tPublish Date";
-        if(showBorrower) header += "\t|\tBorrower";
-        System.out.println(header);
-        for(Book book : books) {
-            String bookInfo = book.getTitle() + "\t|\t" + book.getAuthor() + "\t|\t" + book.getPublishDate();
-            if(showBorrower) bookInfo += book.getBorrower() != null ? "\t|\t" + book.getBorrower().getName() : "\t|\t-";
-            System.out.println(bookInfo);
-        }
-    }
-
-    public static void printMovie(ArrayList<Movie> movies, boolean showBorrower) {
-        System.out.println("### Movies List ###");
-        String header = "Title\t|\tYear\t|\tDirector\t|\tRating";
-        if(showBorrower) header += "\t|\tBorrower";
-        System.out.println(header);
-        for(Movie movie : movies) {
-            String movieInfo = movie.getTitle() + "\t|\t" + movie.getYear() + "\t|\t" + movie.getDirector() + "\t|\t" + movie.getRating();
-            if(showBorrower) movieInfo += movie.getBorrower() != null ? "\t|\t" + movie.getBorrower().getName() : "\t|\t-";
-            System.out.println(movieInfo);
+    public static void print(ArrayList<Rentable> items, Class<? extends Rentable> itemType, boolean showBorrower) {
+        ArrayList<Class<? extends Rentable>> printedHeader = new ArrayList<Class<? extends Rentable>>();
+        for(Rentable item : items) {
+            if(item.getClass() == itemType || itemType == Rentable.class){
+                // Check if header of this item type was already printed or not
+                boolean isAlreadyPrintHeader = printedHeader.contains(item.getClass());
+                if(!isAlreadyPrintHeader) {
+                    System.out.println(item.header(showBorrower));
+                    printedHeader.add(item.getClass());
+                }
+                System.out.println((itemType.cast(item)).info(showBorrower));
+            }
         }
     }
 

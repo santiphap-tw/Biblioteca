@@ -49,6 +49,8 @@ public class Biblioteca {
                     break;
             }
         }
+        // Sort items by class name
+        Collections.sort(items, (o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
         return items;
     }
 

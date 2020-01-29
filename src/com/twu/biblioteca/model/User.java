@@ -1,6 +1,7 @@
 package com.twu.biblioteca.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class User {
     private String id;
@@ -40,6 +41,8 @@ public class User {
     }
 
     public ArrayList<Rentable> getItems() {
+        // Sort items by class name
+        Collections.sort(items, (o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
         return items;
     }
 
