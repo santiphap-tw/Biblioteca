@@ -3,7 +3,6 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.model.*;
 import com.twu.biblioteca.cli.BibliotecaApp;
-import org.junit.After;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;

@@ -1,6 +1,5 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.model.Rentable;
 import com.twu.biblioteca.model.User;
 
 import java.util.ArrayList;
