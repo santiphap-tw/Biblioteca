@@ -5,12 +5,12 @@ import com.twu.biblioteca.model.User;
 
 import java.util.ArrayList;
 
-public class BIbliotecaUser {
+public class BibliotecaUser {
     private ArrayList<User> users;
     private User currentUser;
 
 
-    public BIbliotecaUser() {
+    public BibliotecaUser() {
         users = new ArrayList<User>();
         addDefaultUsers();
         currentUser = null;

@@ -3,7 +3,6 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rentable;
-import com.twu.biblioteca.model.User;
 
 import java.util.*;
 
@@ -22,11 +21,11 @@ public class Biblioteca {
     }
 
     private ArrayList<Rentable> items;
-    private BIbliotecaUser userManager;
+    private BibliotecaUser userManager;
 
     public Biblioteca() {
         items = new ArrayList<Rentable>();
-        userManager = new BIbliotecaUser();
+        userManager = new BibliotecaUser();
         addDefaultBooks();
         addDefaultMovies();
     }
@@ -76,7 +75,7 @@ public class Biblioteca {
         return RESPONSE.DEFAULT_ERROR;
     }
 
-    public BIbliotecaUser user() {
+    public BibliotecaUser user() {
         return userManager;
     }
 
