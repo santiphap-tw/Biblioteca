@@ -13,105 +13,104 @@ import static org.junit.Assert.assertEquals;
 
 public class CommandTest {
 
-    private final InputStream originalIn = System.in;
-
-    private void simulateInput(String input) {
-        ByteArrayInputStream inContent = new ByteArrayInputStream(input.getBytes());
-        System.setIn(inContent);
-    }
-
-    private void simulateInput(String[] inputs) {
-        String input = String.join(System.getProperty("line.separator"), inputs);
-        simulateInput(input);
-    }
-
-    @After
-    public void stopSimulateInput() {
-        System.setIn(originalIn);
-    }
-
     @Test(timeout=1000)
+    public void appCanHandleInput() {
+        String input = Label.OPTION_EXIT_COMMAND.text;
+        InputStream originalInputStream = System.in;
+        ByteArrayInputStream inputContent = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inputContent);
+        BibliotecaApp app = new BibliotecaApp();
+        app.start();
+        System.setIn(originalInputStream);
+    }
+
+    @Test
     public void appHaveExitCommand() {
-        simulateInput(Label.OPTION_EXIT_COMMAND.text);
         BibliotecaApp app = new BibliotecaApp();
-        app.start();
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_EXIT_COMMAND.text);
+        assertEquals("Exit command should have exit response", BibliotecaApp.RESPONSE.EXIT, response);
     }
 
-    @Test(timeout=1000)
+    @Test
     public void appHaveShowCommand() {
-        simulateInput(new String[] {Label.OPTION_SHOW_ALL_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
-        app.start();
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_SHOW_ALL_COMMAND.text);
+        assertEquals("Show command should be valid", BibliotecaApp.RESPONSE.VALID, response);
     }
 
-    @Test(timeout=1000)
+    @Test
     public void appHaveShowBookCommand() {
-        simulateInput(new String[] {Label.OPTION_SHOW_BOOKS_COMMAND.text,Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
-        app.start();
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_SHOW_BOOKS_COMMAND.text);
+        assertEquals("Show book command should be valid", BibliotecaApp.RESPONSE.VALID, response);
     }
 
-    @Test(timeout=1000)
+    @Test
     public void appHaveShowMovieCommand() {
-        simulateInput(new String[] {Label.OPTION_SHOW_MOVIES_COMMAND.text,Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
-        app.start();
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_SHOW_MOVIES_COMMAND.text);
+        assertEquals("Show movie command should be valid", BibliotecaApp.RESPONSE.VALID, response);
     }
 
-    @Test(timeout=1000)
+    @Test
     public void appHaveCheckOutCommand() {
-        simulateInput(new String[] {Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111", Label.OPTION_CHECKOUT_COMMAND.text + " Book A",Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
-        app.start();
+        app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_CHECKOUT_COMMAND.text + " Book A");
+        assertEquals("Check out command should be valid", BibliotecaApp.RESPONSE.VALID, response);
         assertEquals("App should have 5 items after checkout", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
-    @Test(timeout=1000)
+    @Test
     public void appHaveReturnCommand() {
-        simulateInput(new String[] {Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111", Label.OPTION_CHECKOUT_COMMAND.text + " Book A",Label.OPTION_CHECKOUT_COMMAND.text + " Book B",Label.OPTION_RETURN_COMMAND.text + " Book A",Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
-        app.start();
+        app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
+        app.selectOption(Label.OPTION_CHECKOUT_COMMAND.text + " Book A");
+        app.selectOption(Label.OPTION_CHECKOUT_COMMAND.text + " Book B");
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_RETURN_COMMAND.text + " Book A");
+        assertEquals("Return command should be valid", BibliotecaApp.RESPONSE.VALID, response);
         assertEquals("App should have 5 items after return", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
     }
 
-    @Test(timeout=1000)
+    @Test
     public void appHaveLoginCommand() {
-        simulateInput(new String[] {Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111", Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
-        app.start();
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
+        assertEquals("Login command should be valid", BibliotecaApp.RESPONSE.VALID, response);
         assertEquals("App should have logged in with user 111-1111", "111-1111", biblioteca.user().getCurrentUser().getId());
     }
 
-    @Test(timeout=1000)
+    @Test
     public void appHaveLogoutCommand() {
-        simulateInput(new String[] {Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111", Label.OPTION_LOGOUT_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
-        app.start();
+        app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_LOGOUT_COMMAND.text);
+        assertEquals("Logout command should be valid", BibliotecaApp.RESPONSE.VALID, response);
         assertEquals("App should have logged out", null, biblioteca.user().getCurrentUser());
     }
 
-    @Test(timeout=1000)
+    @Test
     public void appHaveHelpCommand() {
-        simulateInput(new String[] {Label.OPTION_HELP_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
-        app.start();
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_HELP_COMMAND.text);
+        assertEquals("Help command should be valid", BibliotecaApp.RESPONSE.VALID, response);
     }
 
-    @Test(timeout=1000)
+    @Test
     public void appHaveMyInfoCommand() {
-        simulateInput(new String[] {Label.OPTION_MY_INFO_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
-        app.start();
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_MY_INFO_COMMAND.text);
+        assertEquals("My info command should be valid", BibliotecaApp.RESPONSE.VALID, response);
     }
 
-    @Test(timeout=1000)
+    @Test
     public void appHaveMyBorrowingCommand() {
-        simulateInput(new String[] {Label.OPTION_MY_BORROWING_COMMAND.text, Label.OPTION_EXIT_COMMAND.text});
         BibliotecaApp app = new BibliotecaApp();
-        app.start();
+        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_MY_BORROWING_COMMAND.text);
+        assertEquals("Borrowing command should be valid", BibliotecaApp.RESPONSE.VALID, response);
     }
 }

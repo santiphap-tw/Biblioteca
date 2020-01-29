@@ -14,6 +14,12 @@ public class BibliotecaApp {
         TERMINATE
     }
 
+    public enum RESPONSE {
+        VALID,
+        INVALID,
+        EXIT
+    }
+
     private STATE state;
     private Biblioteca biblioteca;
     private Scanner sc = new Scanner(System.in);
@@ -54,8 +60,8 @@ public class BibliotecaApp {
                 case RUNNING:
                     System.out.print(Label.OPTION_INPUT_PROMPT.text);
                     String option = sc.nextLine();
-                    boolean isExitOption = selectOption(option);
-                    if(isExitOption)
+                    RESPONSE response = selectOption(option);
+                    if(response == RESPONSE.EXIT)
                         this.state = BibliotecaApp.STATE.TERMINATE;
                     break;
                 case TERMINATE:
@@ -79,13 +85,16 @@ public class BibliotecaApp {
         }
     }
 
-    private boolean selectOption(String command) {
+    public RESPONSE selectOption(String command) {
         String[] commandSplit = command.split(" ", 2);
         String option = commandSplit[0];
         String parameter = commandSplit.length > 1 ? commandSplit[1] : "";
         AppRunnable selectedOption = options.getOrDefault(option, invalidOption);
         selectedOption.run(parameter);
         boolean isExitOption = selectedOption.getDescription().equals(Label.OPTION_EXIT.text);
-        return isExitOption;
+        boolean isInvalidOption = selectedOption == invalidOption;
+        if(isExitOption) return RESPONSE.EXIT;
+        if(isInvalidOption) return RESPONSE.INVALID;
+        return RESPONSE.VALID;
     }
 }
