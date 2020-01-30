@@ -21,8 +21,14 @@ public class LogoutOperation extends AppOperation {
     public ArrayList<String> run(String parameter) {
         ArrayList<String> output = new ArrayList<String>();
 
-        User user = biblioteca.user().logout();
-        output.add(Label.LOGOUT_SUCCESS.text + user.getName());
+        boolean isLoggedIn = biblioteca.user().getCurrentUser() != null;
+        if(isLoggedIn) {
+            User user = biblioteca.user().logout();
+            output.add(Label.LOGOUT_SUCCESS.text + user.getName());
+        }
+        else {
+            output.add(Label.AUTHORIZATION_ERROR.text);
+        }
 
         response = BibliotecaApp.RESPONSE.VALID;
         return output;
