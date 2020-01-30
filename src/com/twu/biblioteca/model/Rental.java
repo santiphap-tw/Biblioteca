@@ -21,7 +21,7 @@ public abstract  class Rental {
     }
 
     public void doReturn() {
-        this.borrower.returnItem(this);
+        if(this.borrower != null) this.borrower.returnItem(this);
         this.borrower = null;
         this.available = true;
     }
