@@ -3,7 +3,6 @@ package com.twu.biblioteca.unit.cli.operation;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.ItemPrinter;
 import com.twu.biblioteca.cli.operation.MyBorrowOperation;
-import com.twu.biblioteca.cli.operation.ReturnOperation;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.Rental;
 import org.junit.Before;

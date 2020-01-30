@@ -1,6 +1,5 @@
 package com.twu.biblioteca.unit;
 
-import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.BibliotecaUser;
 import com.twu.biblioteca.model.User;
 import org.junit.Before;

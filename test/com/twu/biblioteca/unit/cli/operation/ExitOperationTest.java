@@ -1,8 +1,6 @@
 package com.twu.biblioteca.unit.cli.operation;
 
-import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
-import com.twu.biblioteca.cli.operation.CheckOutOperation;
 import com.twu.biblioteca.cli.operation.ExitOperation;
 import com.twu.biblioteca.model.Label;
 import org.junit.Before;

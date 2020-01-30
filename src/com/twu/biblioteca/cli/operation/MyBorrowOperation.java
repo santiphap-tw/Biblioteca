@@ -3,7 +3,10 @@ package com.twu.biblioteca.cli.operation;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.cli.ItemPrinter;
-import com.twu.biblioteca.model.*;
+import com.twu.biblioteca.model.AppOperation;
+import com.twu.biblioteca.model.Label;
+import com.twu.biblioteca.model.Rental;
+import com.twu.biblioteca.model.User;
 
 import java.util.ArrayList;
 

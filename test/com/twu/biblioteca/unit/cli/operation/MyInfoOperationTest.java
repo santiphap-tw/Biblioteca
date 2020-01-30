@@ -1,7 +1,6 @@
 package com.twu.biblioteca.unit.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
-import com.twu.biblioteca.cli.operation.LogoutOperation;
 import com.twu.biblioteca.cli.operation.MyInfoOperation;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.User;

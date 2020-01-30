@@ -1,6 +1,5 @@
 package com.twu.biblioteca.unit.model;
 
-import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Rental;
 import com.twu.biblioteca.model.User;
