@@ -20,8 +20,7 @@ public class BibliotecaTest {
 
     @Test
     public void getItemsTest() {
-
-        // Initial Operation for testing
+        // Setup Operation
         biblioteca.user().login("111-1111", "1111");
         biblioteca.doCheckOut("Book A");
         ArrayList<Rental> items = new ArrayList<Rental>();
@@ -46,7 +45,7 @@ public class BibliotecaTest {
 
     @Test
     public void doCheckOutTest() {
-        // Initial Operation for testing
+        // Setup Operation
         biblioteca.user().login("111-1111", "1111");
 
         //Positive Testing
@@ -62,7 +61,7 @@ public class BibliotecaTest {
 
     @Test
     public void doReturnTest() {
-        // Initial Operation for testing
+        // Setup Operation
         biblioteca.user().login("111-1111", "1111");
         biblioteca.doCheckOut("Book A");
         biblioteca.doCheckOut("Book B");
@@ -86,7 +85,6 @@ public class BibliotecaTest {
 
     @Test
     public void userTest() {
-        // No logic in user(), just return userManager object
-        // userManager object will be tested in BibliotecaUserTest
+        // Getter method
     }
 }
