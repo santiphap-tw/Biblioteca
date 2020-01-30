@@ -25,10 +25,10 @@ public class BibliotecaApp {
 
     private STATE state;
     private Biblioteca biblioteca;
-    private Scanner sc = new Scanner(System.in);
     private Map<String, AppOperation> options;
     private AppOperation initialTasks;
     private final AppOperation invalidOption = new InvalidOperation(Label.OPTION_INVALID.text);
+    private Scanner sc = new Scanner(System.in);
 
     public BibliotecaApp() {
         this(new Biblioteca());
@@ -36,7 +36,7 @@ public class BibliotecaApp {
     public BibliotecaApp(Biblioteca biblioteca) {
         this.biblioteca = biblioteca;
         this.state = STATE.INITIAL;
-        // Initialise option behaviors
+        // Initialize options
         options = new LinkedHashMap<String, AppOperation>();
         options.put(Label.OPTION_SHOW_ALL_COMMAND.text, new ShowOperation(Label.OPTION_SHOW_ALL.text, biblioteca, Rental.class));
         options.put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new ShowOperation(Label.OPTION_SHOW_BOOKS.text, biblioteca, Book.class));
@@ -49,7 +49,7 @@ public class BibliotecaApp {
         options.put(Label.OPTION_MY_BORROWING_COMMAND.text, new MyBorrowOperation(Label.OPTION_MY_BORROWING.text, biblioteca));
         options.put(Label.OPTION_HELP_COMMAND.text, new StartOperation(Label.OPTION_HELP.text, options));
         options.put(Label.OPTION_EXIT_COMMAND.text, new ExitOperation(Label.OPTION_EXIT.text));
-        // Initialise initial tasks
+        // Initialize initial tasks
         initialTasks = new StartOperation("", options);
     }
 
@@ -81,7 +81,7 @@ public class BibliotecaApp {
 
         AppOperation selectedOption = options.getOrDefault(option, invalidOption);
         ArrayList<String> output = selectedOption.run(parameter);
-        printOutput(output);
+        this.printOutput(output);
         RESPONSE response = selectedOption.getResponse();
         return response;
     }
