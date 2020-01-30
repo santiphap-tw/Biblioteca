@@ -14,6 +14,7 @@ public class RentalTest {
 
     @Before
     public void initialize() {
+        // Given
         rental = new Book("Test");
     }
 
@@ -29,21 +30,23 @@ public class RentalTest {
 
     @Test
     public void doCheckOut() {
-        // Setup Operation
+        // Given
         User user = new User("111-1111", "1111", "Name", "Email", "Phone");
-
+        // When
         rental.doCheckOut(user);
+        // Then
         assertEquals("rental should not available after checkout", false, rental.isAvailable());
         assertEquals("borrower should be the same user", user, rental.getBorrower());
     }
 
     @Test
     public void doReturn() {
-        // Setup Operation
+        // Given
         User user = new User("111-1111", "1111", "Name", "Email", "Phone");
         rental.doCheckOut(user);
-
+        // When
         rental.doReturn();
+        // Then
         assertEquals("rental should available after return", true, rental.isAvailable());
         assertEquals("borrower should be null", null, rental.getBorrower());
     }

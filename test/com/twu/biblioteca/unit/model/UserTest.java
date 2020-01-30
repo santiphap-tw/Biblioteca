@@ -17,49 +17,56 @@ public class UserTest {
 
     @Before
     public void initialize() {
+        // Given
         user = new User("111-1111", "1111", "Name", "Email", "Phone");
     }
 
     @Test
     public void getItemsTest() {
-        // Setup Operation
+        // Given
         Book book1 = new Book("Book1");
         Book book2 = new Book("Book2");
         Movie movie = new Movie("Movie");
-        user.checkOutItem(book1);
-        user.checkOutItem(movie);
-        user.checkOutItem(book2);
-
         ArrayList<Rental> expectedItemOrder = new ArrayList<Rental>();
         expectedItemOrder.add(book1);
         expectedItemOrder.add(book2);
         expectedItemOrder.add(movie);
+        // When
+        user.checkOutItem(book1);
+        user.checkOutItem(movie);
+        user.checkOutItem(book2);
+        // Then
         assertEquals("getItems should be sorted", expectedItemOrder, user.getItems());
     }
 
     @Test
     public void checkOutItem() {
-        // Setup Operation
+        // Given
         Book book = new Book("Book");
-
+        // When
         user.checkOutItem(book);
+        // Then
         assertEquals("user should have 1 item", 1, user.getItems().size());
     }
 
     @Test
     public void returnItem() {
-        // Setup Operation
+        // Given
         Book book = new Book("Book");
         Movie movie = new Movie("Movie");
         user.checkOutItem(book);
         user.checkOutItem(movie);
 
         // Positive Test
+        // When
         user.returnItem(book);
+        // Then
         assertEquals("user should have 1 item from 2 after return correct item", 1, user.getItems().size());
 
         // Negative Test
+        // When
         user.returnItem(book);
+        // Then
         assertEquals("user should have 1 item from 1 after return wrong item", 1, user.getItems().size());
     }
 }

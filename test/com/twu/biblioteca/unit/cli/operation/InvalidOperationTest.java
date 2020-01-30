@@ -16,12 +16,15 @@ public class InvalidOperationTest {
 
     @Before
     public void initialize(){
+        // Given
         invalidOperation = new InvalidOperation("");
     }
 
     @Test
     public void invalidTest() {
+        // When
         ArrayList<String> output = invalidOperation.run("");
+        // Then
         boolean isInvalid = output.stream().anyMatch(text -> text.equals(Label.OPTION_INVALID.text));
         isInvalid = isInvalid & invalidOperation.getResponse().equals(BibliotecaApp.RESPONSE.INVALID);
         assertEquals("Invalid operation should invalid", true, isInvalid);

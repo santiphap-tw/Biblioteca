@@ -17,22 +17,26 @@ public class LoginOperationTest {
 
     @Before
     public void initialize(){
+        // Given
         biblioteca = new Biblioteca();
         loginOperation = new LoginOperation("", biblioteca);
     }
 
     @Test
     public void loginTest() {
-        // Setup operation
         ArrayList<String> output;
 
         // Positive test
+        // When
         output = loginOperation.run("111-1111 1111");
+        // Then
         boolean isSuccess = output.stream().anyMatch(text -> text.contains(Label.LOGIN_SUCCESS.text));
         assertEquals("login should be success", true, isSuccess);
 
         // Negative test
+        // When
         output = loginOperation.run("111-1111 0000");
+        // Then
         boolean isFail = output.stream().anyMatch(text -> text.contains(Label.LOGIN_FAIL.text));
         assertEquals("login should be fail", true, isFail);
     }

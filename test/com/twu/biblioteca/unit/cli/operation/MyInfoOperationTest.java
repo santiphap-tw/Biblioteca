@@ -19,11 +19,12 @@ public class MyInfoOperationTest {
 
     @Before
     public void initialize(){
+        // Given
         biblioteca = new Biblioteca();
         myInfoOperation = new MyInfoOperation("", biblioteca);
         biblioteca.user().login("111-1111", "1111");
-        expectedOutput = new ArrayList<String>();
         User currentUser = biblioteca.user().getCurrentUser();
+        expectedOutput = new ArrayList<String>();
         expectedOutput.add("ID: \t" + currentUser.getId());
         expectedOutput.add("Name: \t" + currentUser.getName());
         expectedOutput.add("Email: \t" + currentUser.getEmail());
@@ -32,17 +33,21 @@ public class MyInfoOperationTest {
 
     @Test
     public void myInfoTest() {
-        // Setup operation
         ArrayList<String> output;
 
         // Positive test
+        // When
         output = myInfoOperation.run("");
+        // Then
         boolean isSuccess = output.equals(expectedOutput);
         assertEquals("my info should be success", true, isSuccess);
 
         // Negative test
+        // Given
         biblioteca.user().logout();
+        // When
         output = myInfoOperation.run("");
+        // Then
         boolean isFail = output.stream().anyMatch(text -> text.equals(Label.MY_INFO_FAIL.text));
         assertEquals("my info should be fail", true, isFail);
     }
