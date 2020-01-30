@@ -11,7 +11,7 @@ import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
 
-public class CommandTest {
+public class BibliotecaAppCommandTest {
 
     @Test(timeout=1000)
     public void appCanHandleInput() {
