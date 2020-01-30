@@ -20,7 +20,7 @@ public class ItemPrinter {
             output.add("Title\t|\tYear\t|\tDirector\t|\tRating" + (isShowBorrower ? "\t|\tBorrower" : ""));
         }
         else {
-            output.add("------- Item List -------");
+            output.add("------- Items List -------");
             output.add("Title\t|\tType" + (isShowBorrower ? "\t|\tBorrower" : ""));
         }
         return output;
