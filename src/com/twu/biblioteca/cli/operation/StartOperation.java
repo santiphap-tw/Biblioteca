@@ -1,15 +1,15 @@
-package com.twu.biblioteca.cli.runnable;
+package com.twu.biblioteca.cli.operation;
 
-import com.twu.biblioteca.model.AppRunnable;
+import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 
 import java.util.Map;
 
-public class AppInitialRunnable extends AppRunnable {
+public class StartOperation extends AppOperation {
 
-    private Map<String, AppRunnable> options;
+    private Map<String, AppOperation> options;
 
-    public AppInitialRunnable(String description, Map<String, AppRunnable> options) {
+    public StartOperation(String description, Map<String, AppOperation> options) {
         super(description);
         this.options = options;
     }

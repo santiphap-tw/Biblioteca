@@ -1,11 +1,11 @@
-package com.twu.biblioteca.cli.runnable;
+package com.twu.biblioteca.cli.operation;
 
-import com.twu.biblioteca.model.AppRunnable;
+import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 
-public class AppExitRunnable extends AppRunnable {
+public class ExitOperation extends AppOperation {
 
-    public AppExitRunnable(String description) {
+    public ExitOperation(String description) {
         super(description);
     }
 

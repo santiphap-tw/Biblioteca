@@ -1,11 +1,11 @@
-package com.twu.biblioteca.cli.runnable;
+package com.twu.biblioteca.cli.operation;
 
-import com.twu.biblioteca.model.AppRunnable;
+import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 
-public class AppInvalidRunnable extends AppRunnable {
+public class InvalidOperation extends AppOperation {
 
-    public AppInvalidRunnable(String description) {
+    public InvalidOperation(String description) {
         super(description);
     }
 

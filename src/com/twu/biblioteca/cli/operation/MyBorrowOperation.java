@@ -1,14 +1,14 @@
-package com.twu.biblioteca.cli.runnable;
+package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.*;
 
-public class AppMyBorrowRunnable extends AppRunnable {
+public class MyBorrowOperation extends AppOperation {
 
     private Biblioteca biblioteca;
 
-    public AppMyBorrowRunnable(String description, Biblioteca biblioteca) {
+    public MyBorrowOperation(String description, Biblioteca biblioteca) {
         super(description);
         this.biblioteca = biblioteca;
     }

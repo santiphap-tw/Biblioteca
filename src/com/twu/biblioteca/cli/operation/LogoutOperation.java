@@ -1,15 +1,15 @@
-package com.twu.biblioteca.cli.runnable;
+package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
-import com.twu.biblioteca.model.AppRunnable;
+import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.User;
 
-public class AppLogoutRunnable extends AppRunnable {
+public class LogoutOperation extends AppOperation {
 
     private Biblioteca biblioteca;
 
-    public AppLogoutRunnable(String description, Biblioteca biblioteca) {
+    public LogoutOperation(String description, Biblioteca biblioteca) {
         super(description);
         this.biblioteca = biblioteca;
     }

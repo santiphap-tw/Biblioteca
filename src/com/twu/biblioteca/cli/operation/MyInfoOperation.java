@@ -1,15 +1,15 @@
-package com.twu.biblioteca.cli.runnable;
+package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
-import com.twu.biblioteca.model.AppRunnable;
+import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.User;
 
-public class AppMyInfoRunnable extends AppRunnable {
+public class MyInfoOperation extends AppOperation {
 
     private Biblioteca biblioteca;
 
-    public AppMyInfoRunnable(String description, Biblioteca biblioteca) {
+    public MyInfoOperation(String description, Biblioteca biblioteca) {
         super(description);
         this.biblioteca = biblioteca;
     }

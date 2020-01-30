@@ -1,10 +1,10 @@
 package com.twu.biblioteca.model;
 
-public abstract class AppRunnable implements Runnable {
+public abstract class AppOperation implements Runnable {
 
     private String description;
 
-    public AppRunnable(String description) {
+    public AppOperation(String description) {
         this.description = description;
     }
 

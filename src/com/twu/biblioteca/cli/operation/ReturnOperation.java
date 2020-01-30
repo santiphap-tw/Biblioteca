@@ -1,14 +1,14 @@
-package com.twu.biblioteca.cli.runnable;
+package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
-import com.twu.biblioteca.model.AppRunnable;
+import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 
-public class AppCheckOutRunnable extends AppRunnable {
+public class ReturnOperation extends AppOperation {
 
     private Biblioteca biblioteca;
 
-    public AppCheckOutRunnable(String description, Biblioteca biblioteca) {
+    public ReturnOperation(String description, Biblioteca biblioteca) {
         super(description);
         this.biblioteca = biblioteca;
     }
@@ -20,11 +20,11 @@ public class AppCheckOutRunnable extends AppRunnable {
 
     @Override
     public void run(String itemName) {
-        Biblioteca.RESPONSE isSuccess = biblioteca.doCheckOut(itemName.trim());
+        Biblioteca.RESPONSE isSuccess = biblioteca.doReturn(itemName.trim());
         if(isSuccess == Biblioteca.RESPONSE.SUCCESS)
-            System.out.println(Label.CHECKOUT_SUCCESS.text);
+            System.out.println(Label.RETURN_SUCCESS.text);
         else if(isSuccess == Biblioteca.RESPONSE.DEFAULT_ERROR)
-            System.out.println(Label.CHECKOUT_FAIL.text);
+            System.out.println(Label.RETURN_FAIL.text);
         else if(isSuccess == Biblioteca.RESPONSE.AUTHORIZATION_ERROR)
             System.out.println(Label.AUTHORIZATION_ERROR.text);
     }
