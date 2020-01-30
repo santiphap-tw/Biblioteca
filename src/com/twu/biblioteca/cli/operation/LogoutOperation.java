@@ -27,7 +27,7 @@ public class LogoutOperation extends AppOperation {
             output.add(Label.LOGOUT_SUCCESS.text + user.getName());
         }
         else {
-            output.add(Label.AUTHORIZATION_ERROR.text);
+            output.add(Label.MY_INFO_FAIL.text);
         }
 
         response = BibliotecaApp.RESPONSE.VALID;

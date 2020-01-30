@@ -35,7 +35,7 @@ public class LogoutOperationTest {
 
         // Negative test
         output = logoutOperation.run("");
-        boolean isFail = output.stream().anyMatch(text -> text.contains(Label.AUTHORIZATION_ERROR.text));
+        boolean isFail = output.stream().anyMatch(text -> text.contains(Label.MY_INFO_FAIL.text));
         assertEquals("login should be fail", true, isFail);
     }
 }
