@@ -1,6 +1,7 @@
-package com.twu.biblioteca;
+package com.twu.biblioteca.integration;
 
 
+import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.*;
 import org.junit.Test;
 
