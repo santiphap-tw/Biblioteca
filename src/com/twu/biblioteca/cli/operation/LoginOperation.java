@@ -20,17 +20,17 @@ public class LoginOperation extends AppOperation {
     @Override
     public ArrayList<String> run(String idAndPassword) {
         ArrayList<String> output = new ArrayList<String>();
-
+        ////////////
         String[] idAndPasswordSplit = idAndPassword.split(" ", 2);
         String id = idAndPasswordSplit[0];
         String password = idAndPasswordSplit.length > 1 ? idAndPasswordSplit[1] : "";
-        User user = biblioteca.user().login(id, password);
-        boolean loginSuccess = user != null;
+        biblioteca.user().login(id, password);
+        boolean loginSuccess = (biblioteca.user().getCurrentUser() != null);
         if(loginSuccess)
-            output.add(Label.LOGIN_SUCCESS.text + user.getName());
+            output.add(Label.LOGIN_SUCCESS.text + biblioteca.user().getCurrentUser().getName());
         else
             output.add(Label.LOGIN_FAIL.text);
-
+        ////////////
         response = BibliotecaApp.RESPONSE.VALID;
         return output;
     }

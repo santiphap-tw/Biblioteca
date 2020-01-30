@@ -19,14 +19,14 @@ public class StartOperation extends AppOperation {
     @Override
     public ArrayList<String> run(String parameter) {
         ArrayList<String> output = new ArrayList<String>();
-
+        ////////////
         output.add(Label.WELCOME.text);
         output.add(Label.OPTION_PROMPT.text);
         if(options != null)
             options.forEach((command, option) -> {
                 output.add(command+ "\t\t" + option.getDescription());
             });
-
+        ////////////
         response = BibliotecaApp.RESPONSE.VALID;
         return output;
     }

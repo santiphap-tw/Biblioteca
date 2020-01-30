@@ -32,12 +32,12 @@ public class ShowOperation extends AppOperation {
     @Override
     public ArrayList<String> run(String parameter) {
         ArrayList<String> output = new ArrayList<String>();
-
+        ////////////
         Biblioteca.FILTER filter = stringToFilter.getOrDefault(parameter, Biblioteca.FILTER.AVAILABLE);
         boolean showBorrower = filter != Biblioteca.FILTER.AVAILABLE;
         ArrayList<Rental> items = biblioteca.getItems(filter);
         output.addAll(ItemPrinter.collection(items,targetClass,showBorrower));
-
+        ////////////
         response = BibliotecaApp.RESPONSE.VALID;
         return output;
     }

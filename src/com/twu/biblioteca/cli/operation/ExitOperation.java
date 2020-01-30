@@ -15,7 +15,9 @@ public class ExitOperation extends AppOperation {
     @Override
     public ArrayList<String> run(String parameter) {
         ArrayList<String> output = new ArrayList<String>();
+        ////////////
         output.add(Label.EXIT.text);
+        ////////////
         response = BibliotecaApp.RESPONSE.EXIT;
         return output;
     }

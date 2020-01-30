@@ -22,7 +22,7 @@ public class MyBorrowOperation extends AppOperation {
     @Override
     public ArrayList<String> run(String parameter) {
         ArrayList<String> output = new ArrayList<String>();
-
+        ////////////
         User user = biblioteca.user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
@@ -30,7 +30,7 @@ public class MyBorrowOperation extends AppOperation {
         } else {
             output.add(Label.MY_INFO_FAIL.text);
         }
-
+        ////////////
         response = BibliotecaApp.RESPONSE.VALID;
         return output;
     }

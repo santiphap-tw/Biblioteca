@@ -20,7 +20,7 @@ public class LogoutOperation extends AppOperation {
     @Override
     public ArrayList<String> run(String parameter) {
         ArrayList<String> output = new ArrayList<String>();
-
+        ////////////
         boolean isLoggedIn = biblioteca.user().getCurrentUser() != null;
         if(isLoggedIn) {
             User user = biblioteca.user().logout();
@@ -29,7 +29,7 @@ public class LogoutOperation extends AppOperation {
         else {
             output.add(Label.MY_INFO_FAIL.text);
         }
-
+        ////////////
         response = BibliotecaApp.RESPONSE.VALID;
         return output;
     }

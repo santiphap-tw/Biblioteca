@@ -15,7 +15,9 @@ public class InvalidOperation extends AppOperation {
     @Override
     public ArrayList<String> run(String parameter) {
         ArrayList<String> output = new ArrayList<String>();
+        ////////////
         output.add(Label.OPTION_INVALID.text);
+        ////////////
         response = BibliotecaApp.RESPONSE.INVALID;
         return output;
     }

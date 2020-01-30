@@ -19,15 +19,19 @@ public class ReturnOperation extends AppOperation {
     @Override
     public ArrayList<String> run(String itemName) {
         ArrayList<String> output = new ArrayList<String>();
-
+        ////////////
         Biblioteca.RESPONSE isSuccess = biblioteca.doReturn(itemName.trim());
-        if(isSuccess == Biblioteca.RESPONSE.SUCCESS)
-            output.add(Label.RETURN_SUCCESS.text);
-        else if(isSuccess == Biblioteca.RESPONSE.DEFAULT_ERROR)
-            output.add(Label.RETURN_FAIL.text);
-        else if(isSuccess == Biblioteca.RESPONSE.AUTHORIZATION_ERROR)
-            output.add(Label.AUTHORIZATION_ERROR.text);
-
+        switch (isSuccess) {
+            case SUCCESS:
+                output.add(Label.RETURN_SUCCESS.text);
+                break;
+            case DEFAULT_ERROR:
+                output.add(Label.RETURN_FAIL.text);
+                break;
+            case AUTHORIZATION_ERROR:
+                output.add(Label.AUTHORIZATION_ERROR.text);
+        }
+        ////////////
         response = BibliotecaApp.RESPONSE.VALID;
         return output;
     }
