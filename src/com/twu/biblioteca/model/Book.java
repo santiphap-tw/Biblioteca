@@ -23,17 +23,4 @@ public class Book extends Rental {
     public String getPublishDate() {
         return publishDate;
     }
-
-    public String header (boolean showBorrower) {
-        String header = "------- Book List -------\n";
-        header += "Title\t|\tAuthor\t|\tPublish Date";
-        if(showBorrower) header += "\t|\tBorrower";
-        return header;
-    }
-
-    public String info(boolean showBorrower) {
-        String bookInfo = this.getTitle() + "\t|\t" + this.getAuthor() + "\t|\t" + this.getPublishDate();
-        if(showBorrower) bookInfo += this.getBorrower() != null ? "\t|\t" + this.getBorrower().getName() : "\t|\t-";
-        return bookInfo;
-    }
 }

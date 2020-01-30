@@ -1,8 +1,11 @@
 package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
+import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
+
+import java.util.ArrayList;
 
 public class CheckOutOperation extends AppOperation {
 
@@ -14,18 +17,18 @@ public class CheckOutOperation extends AppOperation {
     }
 
     @Override
-    public void run() {
-        run("");
-    }
+    public ArrayList<String> run(String itemName) {
+        ArrayList<String> output = new ArrayList<String>();
 
-    @Override
-    public void run(String itemName) {
         Biblioteca.RESPONSE isSuccess = biblioteca.doCheckOut(itemName.trim());
         if(isSuccess == Biblioteca.RESPONSE.SUCCESS)
-            System.out.println(Label.CHECKOUT_SUCCESS.text);
+            output.add(Label.CHECKOUT_SUCCESS.text);
         else if(isSuccess == Biblioteca.RESPONSE.DEFAULT_ERROR)
-            System.out.println(Label.CHECKOUT_FAIL.text);
+            output.add(Label.CHECKOUT_FAIL.text);
         else if(isSuccess == Biblioteca.RESPONSE.AUTHORIZATION_ERROR)
-            System.out.println(Label.AUTHORIZATION_ERROR.text);
+            output.add(Label.AUTHORIZATION_ERROR.text);
+
+        response = BibliotecaApp.RESPONSE.VALID;
+        return output;
     }
 }

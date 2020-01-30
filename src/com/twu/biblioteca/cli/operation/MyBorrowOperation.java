@@ -2,7 +2,13 @@ package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
-import com.twu.biblioteca.model.*;
+import com.twu.biblioteca.cli.ItemPrinter;
+import com.twu.biblioteca.model.AppOperation;
+import com.twu.biblioteca.model.Label;
+import com.twu.biblioteca.model.Rental;
+import com.twu.biblioteca.model.User;
+
+import java.util.ArrayList;
 
 public class MyBorrowOperation extends AppOperation {
 
@@ -14,18 +20,18 @@ public class MyBorrowOperation extends AppOperation {
     }
 
     @Override
-    public void run() {
+    public ArrayList<String> run(String parameter) {
+        ArrayList<String> output = new ArrayList<String>();
+
         User user = biblioteca.user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
-            BibliotecaApp.print(user.getItems(), Rental.class, false);
+            output.addAll(ItemPrinter.collection(user.getItems(),Rental.class,false));
         } else {
-            System.out.println(Label.MY_INFO_FAIL.text);
+            output.add(Label.MY_INFO_FAIL.text);
         }
-    }
 
-    @Override
-    public void run(String parameter) {
-        run();
+        response = BibliotecaApp.RESPONSE.VALID;
+        return output;
     }
 }

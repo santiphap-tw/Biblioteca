@@ -1,16 +1,25 @@
 package com.twu.biblioteca.model;
 
-public abstract class AppOperation implements Runnable {
+import com.twu.biblioteca.cli.BibliotecaApp;
 
-    private String description;
+import java.util.ArrayList;
+
+public abstract class AppOperation{
+
+    protected String description;
+    protected BibliotecaApp.RESPONSE response;
 
     public AppOperation(String description) {
         this.description = description;
     }
 
-    public abstract void run(String parameter);
+    public abstract ArrayList<String> run(String parameter);
 
     public String getDescription() {
         return description;
+    }
+
+    public BibliotecaApp.RESPONSE getResponse() {
+        return response;
     }
 }

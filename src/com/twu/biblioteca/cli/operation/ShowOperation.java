@@ -2,6 +2,7 @@ package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
+import com.twu.biblioteca.cli.ItemPrinter;
 import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Rental;
 
@@ -29,15 +30,15 @@ public class ShowOperation extends AppOperation {
     }
 
     @Override
-    public void run() {
-        run("available");
-    }
+    public ArrayList<String> run(String parameter) {
+        ArrayList<String> output = new ArrayList<String>();
 
-    @Override
-    public void run(String parameter) {
         Biblioteca.FILTER filter = stringToFilter.getOrDefault(parameter, Biblioteca.FILTER.AVAILABLE);
         boolean showBorrower = filter != Biblioteca.FILTER.AVAILABLE;
         ArrayList<Rental> items = biblioteca.getItems(filter);
-        BibliotecaApp.print(items, targetClass, showBorrower);
+        output.addAll(ItemPrinter.collection(items,targetClass,showBorrower));
+
+        response = BibliotecaApp.RESPONSE.VALID;
+        return output;
     }
 }

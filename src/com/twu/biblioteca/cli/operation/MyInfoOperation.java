@@ -1,9 +1,12 @@
 package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
+import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.User;
+
+import java.util.ArrayList;
 
 public class MyInfoOperation extends AppOperation {
 
@@ -15,21 +18,21 @@ public class MyInfoOperation extends AppOperation {
     }
 
     @Override
-    public void run() {
+    public ArrayList<String> run(String parameter) {
+        ArrayList<String> output = new ArrayList<String>();
+
         User user = biblioteca.user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
-            System.out.println("ID: \t" + user.getId());
-            System.out.println("Name: \t" + user.getName());
-            System.out.println("Email: \t" + user.getEmail());
-            System.out.println("Phone: \t" + user.getPhone());
+            output.add("ID: \t" + user.getId());
+            output.add("Name: \t" + user.getName());
+            output.add("Email: \t" + user.getEmail());
+            output.add("Phone: \t" + user.getPhone());
         } else {
-            System.out.println(Label.MY_INFO_FAIL.text);
+            output.add(Label.MY_INFO_FAIL.text);
         }
-    }
 
-    @Override
-    public void run(String parameter) {
-        run();
+        response = BibliotecaApp.RESPONSE.VALID;
+        return output;
     }
 }

@@ -30,6 +30,7 @@ public class BibliotecaUser {
                 return user;
             }
         }
+        currentUser = null;
         return null;
     }
 

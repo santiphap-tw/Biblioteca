@@ -1,8 +1,10 @@
 package com.twu.biblioteca.cli.operation;
 
+import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class StartOperation extends AppOperation {
@@ -15,24 +17,17 @@ public class StartOperation extends AppOperation {
     }
 
     @Override
-    public void run() {
-        showWelcomeMessage();
-        showOptions();
-    }
+    public ArrayList<String> run(String parameter) {
+        ArrayList<String> output = new ArrayList<String>();
 
-    @Override
-    public void run(String parameter) {
-        showOptions();
-    }
+        output.add(Label.WELCOME.text);
+        output.add(Label.OPTION_PROMPT.text);
+        if(options != null)
+            options.forEach((command, option) -> {
+                output.add(command+ "\t\t" + option.getDescription());
+            });
 
-    private void showWelcomeMessage() {
-        System.out.println(Label.WELCOME.text);
-    }
-
-    private void showOptions() {
-        System.out.println(Label.OPTION_PROMPT.text);
-        options.forEach((command, option) -> {
-            System.out.println(command+ "\t\t" + option.getDescription());
-        });
+        response = BibliotecaApp.RESPONSE.VALID;
+        return output;
     }
 }

@@ -50,7 +50,7 @@ public class User {
         this.items.add(item);
     }
 
-    public boolean returnItem(Rental item) {
-        return this.items.remove(item);
+    public void returnItem(Rental item) {
+        this.items.remove(item);
     }
 }
