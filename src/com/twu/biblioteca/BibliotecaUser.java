@@ -24,13 +24,12 @@ public class BibliotecaUser {
     }
 
     public User login(String id, String password) {
-        for(User user : this.users){
-            if(user.getId().equals(id) && user.getPassword().equals(password)){
-                currentUser = user;
-                return user;
-            }
-        }
-        return null;
+        User user = this.users.stream()
+                .filter(u -> u.getId().equals(id) && u.getPassword().equals(password))
+                .findFirst()
+                .orElse(null);
+        currentUser = user;
+        return user;
     }
 
     public User logout() {

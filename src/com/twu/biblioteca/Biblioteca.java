@@ -4,7 +4,9 @@ import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rental;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class Biblioteca {
 
@@ -31,19 +33,21 @@ public class Biblioteca {
     }
 
     public ArrayList<Rental> getItems(FILTER filter) {
-        ArrayList<Rental> items = new ArrayList<Rental>();
-        for(Rental item : this.items){
-            switch (filter){
-                case AVAILABLE:
-                    if(item.isAvailable()) items.add(item);
-                    break;
-                case NOT_AVAILABLE:
-                    if(!item.isAvailable()) items.add(item);
-                    break;
-                case ALL:
-                    items.add(item);
-                    break;
-            }
+        ArrayList<Rental> items = new ArrayList<>();
+        switch (filter){
+            case AVAILABLE:
+                items = this.items.stream()
+                        .filter(item -> item.isAvailable() == true)
+                        .collect(Collectors.toCollection(ArrayList::new));
+                break;
+            case NOT_AVAILABLE:
+                items = this.items.stream()
+                        .filter(item -> item.isAvailable() == false)
+                        .collect(Collectors.toCollection(ArrayList::new));
+                break;
+            case ALL:
+                items = this.items;
+                break;
         }
         // Sort items by class name
         Collections.sort(items, (o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
@@ -52,25 +56,31 @@ public class Biblioteca {
 
     public RESPONSE doCheckOut(String itemName) {
         if(userManager.getCurrentUser()==null) return RESPONSE.AUTHORIZATION_ERROR;
-        for(Rental item : this.items) {
-            if(itemName.equals(item.getTitle())){
-                if(!item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
-                item.doCheckOut(userManager.getCurrentUser());
-                return RESPONSE.SUCCESS;
-            }
+        Rental item = items.stream()
+                .filter(it -> it.getTitle().equals(itemName))
+                .findFirst()
+                .orElse(null);
+        boolean itemExist = item != null;
+        if(itemExist) {
+            if(item.isAvailable() == false) return RESPONSE.DEFAULT_ERROR;
+            item.doCheckOut(userManager.getCurrentUser());
+            return RESPONSE.SUCCESS;
         }
         return RESPONSE.DEFAULT_ERROR;
     }
 
     public RESPONSE doReturn(String itemName) {
         if(userManager.getCurrentUser()==null) return RESPONSE.AUTHORIZATION_ERROR;
-        for(Rental item : this.items) {
-            if(itemName.equals(item.getTitle())){
-                if(item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
-                if(userManager.getCurrentUser() != item.getBorrower()) return RESPONSE.AUTHORIZATION_ERROR;
-                item.doReturn();
-                return RESPONSE.SUCCESS;
-            }
+        Rental item = items.stream()
+                .filter(it -> it.getTitle().equals(itemName))
+                .findFirst()
+                .orElse(null);
+        boolean itemExist = item != null;
+        if(itemExist) {
+            if(item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
+            if(userManager.getCurrentUser() != item.getBorrower()) return RESPONSE.AUTHORIZATION_ERROR;
+            item.doReturn();
+            return RESPONSE.SUCCESS;
         }
         return RESPONSE.DEFAULT_ERROR;
     }

@@ -1,15 +1,16 @@
-package com.twu.biblioteca.cli.runnable;
+package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
-import com.twu.biblioteca.model.AppRunnable;
+import com.twu.biblioteca.cli.ItemPrinter;
+import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Rental;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AppShowRunnable extends AppRunnable {
+public class ShowOperation extends AppOperation {
 
     private Biblioteca biblioteca;
     private Class<? extends Rental> targetClass;
@@ -19,25 +20,25 @@ public class AppShowRunnable extends AppRunnable {
        put("all", Biblioteca.FILTER.ALL);
     }};
 
-    public AppShowRunnable(String description, Biblioteca biblioteca) {
+    public ShowOperation(String description, Biblioteca biblioteca) {
         this(description, biblioteca, Rental.class);
     }
-    public AppShowRunnable(String description, Biblioteca biblioteca, Class<? extends Rental> targetClass) {
+    public ShowOperation(String description, Biblioteca biblioteca, Class<? extends Rental> targetClass) {
         super(description);
         this.targetClass = targetClass;
         this.biblioteca = biblioteca;
     }
 
     @Override
-    public void run() {
-        run("available");
-    }
-
-    @Override
-    public void run(String parameter) {
+    public ArrayList<String> run(String parameter) {
+        ArrayList<String> output = new ArrayList<String>();
+        ////////////
         Biblioteca.FILTER filter = stringToFilter.getOrDefault(parameter, Biblioteca.FILTER.AVAILABLE);
         boolean showBorrower = filter != Biblioteca.FILTER.AVAILABLE;
         ArrayList<Rental> items = biblioteca.getItems(filter);
-        BibliotecaApp.print(items, targetClass, showBorrower);
+        output.addAll(ItemPrinter.collection(items,targetClass,showBorrower));
+        ////////////
+        response = BibliotecaApp.RESPONSE.VALID;
+        return output;
     }
 }
