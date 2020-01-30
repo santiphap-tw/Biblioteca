@@ -2,6 +2,7 @@ package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
+import com.twu.biblioteca.cli.ItemPrinter;
 import com.twu.biblioteca.model.*;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class MyBorrowOperation extends AppOperation {
         User user = biblioteca.user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
-            BibliotecaApp.print(user.getItems(), Rental.class, false);
+            output.addAll(ItemPrinter.collection(user.getItems(),Rental.class,false));
         } else {
             output.add(Label.MY_INFO_FAIL.text);
         }

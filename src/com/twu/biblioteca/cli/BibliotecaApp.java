@@ -70,21 +70,6 @@ public class BibliotecaApp {
         }
     }
 
-    public static void print(ArrayList<Rental> items, Class<? extends Rental> itemType, boolean showBorrower) {
-        ArrayList<Class<? extends Rental>> printedHeader = new ArrayList<Class<? extends Rental>>();
-        for(Rental item : items) {
-            if(item.getClass() == itemType || itemType == Rental.class){
-                // Check if header of this item type was already printed or not
-                boolean isAlreadyPrintHeader = printedHeader.contains(item.getClass());
-                if(!isAlreadyPrintHeader) {
-                    System.out.println(item.header(showBorrower));
-                    printedHeader.add(item.getClass());
-                }
-                System.out.println((itemType.cast(item)).info(showBorrower));
-            }
-        }
-    }
-
     public RESPONSE selectOption(String command) {
         // Split command into option & parameter
         String[] commandSplit = command.split(" ", 2);
