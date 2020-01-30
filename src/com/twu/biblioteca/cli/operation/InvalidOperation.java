@@ -1,7 +1,10 @@
 package com.twu.biblioteca.cli.operation;
 
+import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
+
+import java.util.ArrayList;
 
 public class InvalidOperation extends AppOperation {
 
@@ -10,12 +13,10 @@ public class InvalidOperation extends AppOperation {
     }
 
     @Override
-    public void run(String parameter) {
-        run();
-    }
-
-    @Override
-    public void run() {
-        System.out.println(Label.OPTION_INVALID.text);
+    public ArrayList<String> run(String parameter) {
+        ArrayList<String> output = new ArrayList<String>();
+        output.add(Label.OPTION_INVALID.text);
+        response = BibliotecaApp.RESPONSE.INVALID;
+        return output;
     }
 }

@@ -24,7 +24,7 @@ public class BibliotecaApp {
     private Biblioteca biblioteca;
     private Scanner sc = new Scanner(System.in);
     private Map<String, AppOperation> options;
-    private Runnable initialTasks;
+    private AppOperation initialTasks;
     private final AppOperation invalidOption = new InvalidOperation(Label.OPTION_INVALID.text);
 
     public BibliotecaApp() {
@@ -54,7 +54,7 @@ public class BibliotecaApp {
         while(this.state != BibliotecaApp.STATE.TERMINATE) {
             switch (this.state) {
                 case INITIAL:
-                    initialTasks.run();
+                    printOutput(initialTasks.run(""));
                     this.state = BibliotecaApp.STATE.RUNNING;
                     break;
                 case RUNNING:
@@ -86,15 +86,21 @@ public class BibliotecaApp {
     }
 
     public RESPONSE selectOption(String command) {
+        // Split command into option & parameter
         String[] commandSplit = command.split(" ", 2);
         String option = commandSplit[0];
         String parameter = commandSplit.length > 1 ? commandSplit[1] : "";
+
         AppOperation selectedOption = options.getOrDefault(option, invalidOption);
-        selectedOption.run(parameter);
-        boolean isExitOption = selectedOption.getDescription().equals(Label.OPTION_EXIT.text);
-        boolean isInvalidOption = selectedOption == invalidOption;
-        if(isExitOption) return RESPONSE.EXIT;
-        if(isInvalidOption) return RESPONSE.INVALID;
-        return RESPONSE.VALID;
+        ArrayList<String> output = selectedOption.run(parameter);
+        printOutput(output);
+        RESPONSE response = selectedOption.getResponse();
+        return response;
+    }
+
+    public static void printOutput(ArrayList<String> output){
+        output.forEach(line -> {
+            System.out.println(line);
+        });
     }
 }

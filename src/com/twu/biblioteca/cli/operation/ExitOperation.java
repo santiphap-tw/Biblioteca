@@ -1,7 +1,10 @@
 package com.twu.biblioteca.cli.operation;
 
+import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
+
+import java.util.ArrayList;
 
 public class ExitOperation extends AppOperation {
 
@@ -10,12 +13,10 @@ public class ExitOperation extends AppOperation {
     }
 
     @Override
-    public void run() {
-        System.out.println(Label.EXIT.text);
-    }
-
-    @Override
-    public void run(String parameter) {
-        run();
+    public ArrayList<String> run(String parameter) {
+        ArrayList<String> output = new ArrayList<String>();
+        output.add(Label.EXIT.text);
+        response = BibliotecaApp.RESPONSE.EXIT;
+        return output;
     }
 }
