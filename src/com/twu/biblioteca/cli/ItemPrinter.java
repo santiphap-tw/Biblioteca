@@ -46,16 +46,16 @@ public class ItemPrinter {
         ArrayList<String> output = new ArrayList<String>();
         ArrayList<Class<? extends Rental>> isHeaderPrinted = new ArrayList<Class<? extends Rental>>();
         Collections.sort(items, (o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
-        items.forEach(item -> {
-            if(item.getClass() == itemType || itemType == Rental.class){
-                // Check if header of this item type was already printed or not
-                boolean isAlreadyPrintHeader = isHeaderPrinted.contains(item.getClass());
-                if(!isAlreadyPrintHeader) {
-                    output.addAll(ItemPrinter.header(item.getClass(),isShowBorrower));
-                    isHeaderPrinted.add(item.getClass());
-                }
-                output.addAll(ItemPrinter.item(item, isShowBorrower));
-            }
+        items.stream()
+                .filter(item -> item.getClass() == itemType || itemType == Rental.class)
+                .forEach(item -> {
+                    // Check if header of this item type was already printed or not
+                    boolean isAlreadyPrintHeader = isHeaderPrinted.contains(item.getClass());
+                    if(!isAlreadyPrintHeader) {
+                        output.addAll(ItemPrinter.header(item.getClass(), isShowBorrower));
+                        isHeaderPrinted.add(item.getClass());
+                    }
+                    output.addAll(ItemPrinter.item(item, isShowBorrower));
         });
         return output;
     }
