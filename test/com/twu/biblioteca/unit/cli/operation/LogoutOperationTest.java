@@ -17,6 +17,7 @@ public class LogoutOperationTest {
 
     @Before
     public void initialize(){
+        // Given
         biblioteca = new Biblioteca();
         logoutOperation = new LogoutOperation("", biblioteca);
         biblioteca.user().login("111-1111", "1111");
@@ -24,16 +25,19 @@ public class LogoutOperationTest {
 
     @Test
     public void logoutTest() {
-        // Setup operation
         ArrayList<String> output;
 
         // Positive test
+        // When
         output = logoutOperation.run("");
+        // Then
         boolean isSuccess = output.stream().anyMatch(text -> text.contains(Label.LOGOUT_SUCCESS.text));
         assertEquals("logout should be success", true, isSuccess);
 
         // Negative test
+        // When
         output = logoutOperation.run("");
+        // Then
         boolean isFail = output.stream().anyMatch(text -> text.contains(Label.MY_INFO_FAIL.text));
         assertEquals("login should be fail", true, isFail);
     }

@@ -15,12 +15,15 @@ public class StartOperationTest {
 
     @Before
     public void initialize(){
+        // Given
         startOperation = new StartOperation("", null);
     }
 
     @Test
     public void startTest() {
+        // When
         ArrayList<String> output = startOperation.run("");
+        // Then
         boolean isWelcomeText = output.stream().anyMatch(text -> text.equals(Label.WELCOME.text));
         boolean isOptionPromptText = output.stream().anyMatch(text -> text.equals(Label.OPTION_PROMPT.text));
         assertEquals("Start should show welcome & option prompt text", true, isWelcomeText & isOptionPromptText);

@@ -16,12 +16,15 @@ public class ExitOperationTest {
 
     @Before
     public void initialize(){
+        // Given
         exitOperation = new ExitOperation("");
     }
 
     @Test
     public void exitTest() {
+        // When
         ArrayList<String> output = exitOperation.run("");
+        // Then
         boolean isExit = output.stream().anyMatch(text -> text.equals(Label.EXIT.text));
         isExit = isExit & exitOperation.getResponse().equals(BibliotecaApp.RESPONSE.EXIT);
         assertEquals("Exit operation should exit", true, isExit);

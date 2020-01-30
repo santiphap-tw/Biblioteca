@@ -20,6 +20,7 @@ public class MyBorrowOperationTest {
 
     @Before
     public void initialize(){
+        // Given
         biblioteca = new Biblioteca();
         myBorrowOperation = new MyBorrowOperation("", biblioteca);
         biblioteca.user().login("111-1111", "1111");
@@ -32,16 +33,20 @@ public class MyBorrowOperationTest {
 
     @Test
     public void myBorrowTest() {
-        // Setup operation
         ArrayList<String> output;
 
         // Positive test
+        // When
         output = myBorrowOperation.run("");
+        // Then
         assertEquals("borrowing should return as expected", expectedOutput, output);
 
         // Negative test
+        // Given
         biblioteca.user().logout();
+        // When
         output = myBorrowOperation.run("");
+        // Then
         boolean isFail = output.stream().anyMatch(text -> text.equals(Label.MY_INFO_FAIL.text));
         assertEquals("borrowing should be fail", true, isFail);
     }
