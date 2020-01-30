@@ -32,7 +32,7 @@ public class MyInfoOperationTest {
     }
 
     @Test
-    public void checkOutTest() {
+    public void myInfoTest() {
         // Setup operation
         ArrayList<String> output;
 

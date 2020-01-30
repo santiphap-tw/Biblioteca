@@ -26,7 +26,7 @@ public class ReturnOperationTest {
     }
 
     @Test
-    public void checkOutTest() {
+    public void returnTest() {
         // Setup operation
         ArrayList<String> output;
 

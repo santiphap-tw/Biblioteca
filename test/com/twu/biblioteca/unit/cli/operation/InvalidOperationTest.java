@@ -21,7 +21,7 @@ public class InvalidOperationTest {
     }
 
     @Test
-    public void exitTest() {
+    public void invalidTest() {
         ArrayList<String> output = invalidOperation.run("");
         boolean isInvalid = output.stream().anyMatch(text -> text.equals(Label.OPTION_INVALID.text));
         isInvalid = isInvalid & invalidOperation.getResponse().equals(BibliotecaApp.RESPONSE.INVALID);

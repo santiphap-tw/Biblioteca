@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class LoginOperationTest {
-    
+
     private Biblioteca biblioteca;
     private LoginOperation loginOperation;
 
@@ -23,7 +23,7 @@ public class LoginOperationTest {
     }
 
     @Test
-    public void checkOutTest() {
+    public void loginTest() {
         // Setup operation
         ArrayList<String> output;
 

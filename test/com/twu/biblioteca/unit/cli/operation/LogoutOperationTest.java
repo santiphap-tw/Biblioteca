@@ -24,7 +24,7 @@ public class LogoutOperationTest {
     }
 
     @Test
-    public void checkOutTest() {
+    public void logoutTest() {
         // Setup operation
         ArrayList<String> output;
 
