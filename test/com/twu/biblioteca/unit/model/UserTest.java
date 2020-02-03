@@ -22,25 +22,26 @@ public class UserTest {
     }
 
     @Test
-    public void getItemsTest() {
+    public void shouldGetItem() {
         // Given
         Book book1 = new Book("Book1");
         Book book2 = new Book("Book2");
         Movie movie = new Movie("Movie");
+        user.checkOutItem(book1);
+        user.checkOutItem(movie);
+        user.checkOutItem(book2);
+        // When
+        ArrayList<Rental> items = user.getItems();
+        // Then
         ArrayList<Rental> expectedItemOrder = new ArrayList<Rental>();
         expectedItemOrder.add(book1);
         expectedItemOrder.add(book2);
         expectedItemOrder.add(movie);
-        // When
-        user.checkOutItem(book1);
-        user.checkOutItem(movie);
-        user.checkOutItem(book2);
-        // Then
-        assertEquals("getItems should be sorted", expectedItemOrder, user.getItems());
+        assertEquals("getItems should be sorted", expectedItemOrder, items);
     }
 
     @Test
-    public void checkOutItem() {
+    public void shouldCheckOut() {
         // Given
         Book book = new Book("Book");
         // When
@@ -50,20 +51,24 @@ public class UserTest {
     }
 
     @Test
-    public void returnItem() {
+    public void shouldReturnCorrectItem() {
         // Given
         Book book = new Book("Book");
         Movie movie = new Movie("Movie");
         user.checkOutItem(book);
         user.checkOutItem(movie);
-
-        // Positive Test
         // When
         user.returnItem(book);
         // Then
         assertEquals("user should have 1 item from 2 after return correct item", 1, user.getItems().size());
+    }
 
-        // Negative Test
+    @Test
+    public void shouldNotReturnWrongItem() {
+        // Given
+        Book book = new Book("Book");
+        Movie movie = new Movie("Movie");
+        user.checkOutItem(movie);
         // When
         user.returnItem(book);
         // Then

@@ -26,40 +26,53 @@ public class ReturnOperationTest {
     }
 
     @Test
-    public void returnTest() {
-        ArrayList<String> output;
-
-        // Positive test
+    public void shouldReturnCorrectItem() {
+        // Given
         // When
-        output = returnOperation.run("Book A");
+        ArrayList<String> output = returnOperation.run("Book A");
         // Then
         boolean isSuccess = output.stream().anyMatch(text -> text.equals(Label.RETURN_SUCCESS.text));
         assertEquals("return should be success", true, isSuccess);
+    }
 
-        // Negative test - Not available item
+    @Test
+    public void shouldNotReturnAvailableItem() {
+        // Given
+        returnOperation.run("Book A");
         // When
-        output = returnOperation.run("Book A");
+        ArrayList<String> output = returnOperation.run("Book A");
         // Then
         boolean isFailWhenNotAvailable = output.stream().anyMatch(text -> text.equals(Label.RETURN_FAIL.text));
         assertEquals("return should be fail", true, isFailWhenNotAvailable);
+    }
+
+    @Test
+    public void shouldNotReturnWrongItem() {
+        // Given
         // When
-        output = returnOperation.run("Book Z");
+        ArrayList<String> output = returnOperation.run("Book Z");
         // Then
         boolean isFailWhenIncorrectName = output.stream().anyMatch(text -> text.equals(Label.RETURN_FAIL.text));
         assertEquals("return should be fail", true, isFailWhenIncorrectName);
+    }
 
-        // Negative test - Authorization Error
+    @Test
+    public void shouldNotReturnNoUer() {
         // Given
         biblioteca.user().logout();
         // When
-        output = returnOperation.run("Movie A");
+        ArrayList<String> output = returnOperation.run("Movie A");
         // Then
         boolean isFailWhenNotLoggedIn = output.stream().anyMatch(text -> text.equals(Label.AUTHORIZATION_ERROR.text));
         assertEquals("return should be fail", true, isFailWhenNotLoggedIn);
+    }
+
+    @Test
+    public void shouldNotReturnWrongUser() {
         // Given
         biblioteca.user().login("222-2222", "2222");
         // When
-        output = returnOperation.run("Movie A");
+        ArrayList<String> output = returnOperation.run("Movie A");
         // Then
         boolean isFailWhenWrongUser = output.stream().anyMatch(text -> text.equals(Label.AUTHORIZATION_ERROR.text));
         assertEquals("return should be fail", true, isFailWhenWrongUser);

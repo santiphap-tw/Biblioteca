@@ -24,19 +24,21 @@ public class LogoutOperationTest {
     }
 
     @Test
-    public void logoutTest() {
-        ArrayList<String> output;
-
-        // Positive test
+    public void shouldLogoutCurrentUser() {
+        // Given
         // When
-        output = logoutOperation.run("");
+        ArrayList<String> output = logoutOperation.run("");
         // Then
         boolean isSuccess = output.stream().anyMatch(text -> text.contains(Label.LOGOUT_SUCCESS.text));
         assertEquals("logout should be success", true, isSuccess);
+    }
 
-        // Negative test
+    @Test
+    public void shouldNotLogoutIfNoUser() {
+        // Given
+        logoutOperation.run("");
         // When
-        output = logoutOperation.run("");
+        ArrayList<String> output = logoutOperation.run("");
         // Then
         boolean isFail = output.stream().anyMatch(text -> text.contains(Label.MY_INFO_FAIL.text));
         assertEquals("login should be fail", true, isFail);
