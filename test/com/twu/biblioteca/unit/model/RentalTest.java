@@ -19,17 +19,7 @@ public class RentalTest {
     }
 
     @Test
-    public void getTitleTest() {
-        // Getter method
-    }
-
-    @Test
-    public void isAvailableTest() {
-        // Getter method
-    }
-
-    @Test
-    public void doCheckOut() {
+    public void shouldCheckOut() {
         // Given
         User user = new User("111-1111", "1111", "Name", "Email", "Phone");
         // When
@@ -40,7 +30,7 @@ public class RentalTest {
     }
 
     @Test
-    public void doReturn() {
+    public void shouldReturn() {
         // Given
         User user = new User("111-1111", "1111", "Name", "Email", "Phone");
         rental.doCheckOut(user);
@@ -49,10 +39,5 @@ public class RentalTest {
         // Then
         assertEquals("rental should available after return", true, rental.isAvailable());
         assertEquals("borrower should be null", null, rental.getBorrower());
-    }
-
-    @Test
-    public void getBorrower() {
-        // Getter method
     }
 }
