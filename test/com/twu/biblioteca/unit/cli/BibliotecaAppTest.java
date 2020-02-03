@@ -3,6 +3,7 @@ package com.twu.biblioteca.unit.cli;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.Label;
+import org.junit.After;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -14,24 +15,28 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class BibliotecaAppTest {
+
+    @After
+    public void revertToOriginalInputOutputStream() {
+        System.setIn(System.in);
+        System.setOut(System.out);
+    }
+
     @Test(timeout = 1000)
-    public void startTest() {
+    public void shouldExitAfterInputExitCommand() { // To test if the app can handle input or not
         // Given
         String input = Label.OPTION_EXIT_COMMAND.text;
-        InputStream originalInputStream = System.in;
         ByteArrayInputStream inputContent = new ByteArrayInputStream(input.getBytes());
         System.setIn(inputContent);
         // When
         BibliotecaApp app = new BibliotecaApp();
         app.start();
         // Then
-        // App should exit
-        // After
-        System.setIn(originalInputStream);
+        // App should finish running
     }
 
     @Test
-    public void selectOptionExitTest() {
+    public void shouldHaveExitCommand() {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
@@ -41,7 +46,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void selectOptionShowTest() {
+    public void shouldHaveShowCommand() {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
@@ -51,7 +56,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void selectOptionShowBookTest() {
+    public void shouldHaveShowBookCommand() {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
@@ -61,7 +66,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void selectOptionShowMovieTest() {
+    public void shouldHaveShowMovieCommand() {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
@@ -71,7 +76,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void selectOptionCheckOutTest() {
+    public void shouldHaveCheckOutCommand() {
         // Given
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
@@ -84,7 +89,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void selectOptionReturnTest() {
+    public void shouldHaveReturnCommand() {
         // Given
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
@@ -99,7 +104,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void selectOptionLoginTest() {
+    public void shouldHaveLoginCommand() {
         // Given
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
@@ -111,7 +116,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void selectOptionLogoutTest() {
+    public void shouldHaveLogoutCommand() {
         // Given
         Biblioteca biblioteca = new Biblioteca();
         BibliotecaApp app = new BibliotecaApp(biblioteca);
@@ -124,7 +129,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void selectOptionHelpTest() {
+    public void shouldHaveHelpCommand() {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
@@ -134,7 +139,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void selectOptionMyInfoTest() {
+    public void shouldHaveMyInfoCommand() {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
@@ -144,7 +149,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void selectOptionMyBorrowingTest() {
+    public void shouldHaveMyBorrowingCommand() {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
@@ -154,12 +159,10 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void printOutputTest() {
-        // Before - Setup I/O
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        PrintStream originalOut = System.out;
-        System.setOut(new PrintStream(outContent));
+    public void shouldHavePrintOutputCommand() {
         // Given
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
         ArrayList<String> output = new ArrayList<String>();
         output.add("test line 1");
         output.add("test line 2");
@@ -167,7 +170,5 @@ public class BibliotecaAppTest {
         BibliotecaApp.printOutput(output);
         // Then
         assertEquals("printOutput should print same as input", "test line 1\ntest line 2\n", outContent.toString());
-        // After - Setup I/O
-        System.setOut(originalOut);
     }
 }
