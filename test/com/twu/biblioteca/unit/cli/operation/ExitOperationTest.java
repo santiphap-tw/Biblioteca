@@ -12,16 +12,10 @@ import static org.junit.Assert.assertEquals;
 
 public class ExitOperationTest {
 
-    private ExitOperation exitOperation;
-
-    @Before
-    public void initialize(){
-        // Given
-        exitOperation = new ExitOperation("");
-    }
-
     @Test
-    public void exitTest() {
+    public void shouldExit() {
+        // Given
+        ExitOperation exitOperation = new ExitOperation("");
         // When
         ArrayList<String> output = exitOperation.run("");
         // Then

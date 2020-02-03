@@ -24,33 +24,42 @@ public class CheckOutOperationTest {
     }
 
     @Test
-    public void checkOutTest() {
-        ArrayList<String> output;
-
-        // Positive test
+    public void shouldCheckOutCorrectItem() {
+        // Given
         // When
-        output = checkOutOperation.run("Book A");
+        ArrayList<String> output = checkOutOperation.run("Book A");
         // Then
         boolean isSuccess = output.stream().anyMatch(text -> text.equals(Label.CHECKOUT_SUCCESS.text));
         assertEquals("checkOut should be success", true, isSuccess);
+    }
 
-        // Negative test - Not available item
+    @Test
+    public void shouldNotCheckOutNotAvailableItem() {
+        // Given
+        checkOutOperation.run("Book A");
         // When
-        output = checkOutOperation.run("Book A");
+        ArrayList<String> output = checkOutOperation.run("Book A");
         // Then
         boolean isFailWhenNotAvailable = output.stream().anyMatch(text -> text.equals(Label.CHECKOUT_FAIL.text));
         assertEquals("checkOut should be fail", true, isFailWhenNotAvailable);
+    }
+
+    @Test
+    public void shouldNotCheckOutWrongItem() {
+        // Given
         // When
-        output = checkOutOperation.run("Book Z");
+        ArrayList<String> output = checkOutOperation.run("Book Z");
         // Then
         boolean isFailWhenIncorrectName = output.stream().anyMatch(text -> text.equals(Label.CHECKOUT_FAIL.text));
         assertEquals("checkOut should be fail", true, isFailWhenIncorrectName);
+    }
 
-        // Negative test - Authorization Error
+    @Test
+    public void shouldNotCheckOutUnauthorizedUser() {
         // Given
         biblioteca.user().logout();
         // When
-        output = checkOutOperation.run("Book B");
+        ArrayList<String> output = checkOutOperation.run("Book B");
         // Then
         boolean isFailWhenNotLoggedIn = output.stream().anyMatch(text -> text.equals(Label.AUTHORIZATION_ERROR.text));
         assertEquals("checkOut should be fail", true, isFailWhenNotLoggedIn);

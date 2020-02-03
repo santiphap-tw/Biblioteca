@@ -32,20 +32,20 @@ public class MyBorrowOperationTest {
     }
 
     @Test
-    public void myBorrowTest() {
-        ArrayList<String> output;
-
-        // Positive test
+    public void shouldShowMyBorrowingIfLoggedIn() {
+        // Given
         // When
-        output = myBorrowOperation.run("");
+        ArrayList<String> output = myBorrowOperation.run("");
         // Then
         assertEquals("borrowing should return as expected", expectedOutput, output);
+    }
 
-        // Negative test
+    @Test
+    public void shouldNotShowMyBorrowingIfNotLoggedIn() {
         // Given
         biblioteca.user().logout();
         // When
-        output = myBorrowOperation.run("");
+        ArrayList<String> output = myBorrowOperation.run("");
         // Then
         boolean isFail = output.stream().anyMatch(text -> text.equals(Label.MY_INFO_FAIL.text));
         assertEquals("borrowing should be fail", true, isFail);

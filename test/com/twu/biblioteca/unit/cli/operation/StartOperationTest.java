@@ -11,16 +11,10 @@ import static org.junit.Assert.assertEquals;
 
 public class StartOperationTest {
 
-    private StartOperation startOperation;
-
-    @Before
-    public void initialize(){
-        // Given
-        startOperation = new StartOperation("", null);
-    }
-
     @Test
-    public void startTest() {
+    public void shouldShowWelcomeAndOptionPrompt() {
+        // Given
+        StartOperation startOperation = new StartOperation("", null);
         // When
         ArrayList<String> output = startOperation.run("");
         // Then

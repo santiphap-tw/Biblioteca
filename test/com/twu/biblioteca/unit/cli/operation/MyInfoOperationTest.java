@@ -32,21 +32,21 @@ public class MyInfoOperationTest {
     }
 
     @Test
-    public void myInfoTest() {
-        ArrayList<String> output;
-
-        // Positive test
+    public void shouldShowMyInfoIfLoggedIn() {
+        // Given
         // When
-        output = myInfoOperation.run("");
+        ArrayList<String> output = myInfoOperation.run("");
         // Then
         boolean isSuccess = output.equals(expectedOutput);
         assertEquals("my info should be success", true, isSuccess);
+    }
 
-        // Negative test
+    @Test
+    public void shouldNotShowMyInfoIfNotLoggedIn() {
         // Given
         biblioteca.user().logout();
         // When
-        output = myInfoOperation.run("");
+        ArrayList<String> output = myInfoOperation.run("");
         // Then
         boolean isFail = output.stream().anyMatch(text -> text.equals(Label.MY_INFO_FAIL.text));
         assertEquals("my info should be fail", true, isFail);

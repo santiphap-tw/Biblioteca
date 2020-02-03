@@ -28,129 +28,140 @@ public class ShowOperationTest {
     }
 
     @Test
-    public void showTest() {
+    public void shouldShowAvailableIfNoParameter() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca);
-        ArrayList<String> output;
-        ArrayList<String> expectedOutput;
-        ArrayList<Rental> collection;
-
-        // Default Test
         // When
-        output = showOperation.run("");
+        ArrayList<String> output = showOperation.run("");
         // Then
         assertEquals("default show should be available ", showOperation.run("available"), output);
+    }
 
-        // Available test
+    @Test
+    public void shouldShowAvailable() {
         // Given
-        collection = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
-        expectedOutput = ItemPrinter.collection(collection, Rental.class, false);
+        ShowOperation showOperation = new ShowOperation("", biblioteca);
+        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
         // When
-        output = showOperation.run("available");
+        ArrayList<String> output = showOperation.run("available");
         // Then
+        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Rental.class, false);
         assertEquals("show available should be as expected", expectedOutput, output);
+    }
 
-        // Not Available test
+    @Test
+    public void shouldShowNotAvailable() {
         // Given
-        collection = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
-        expectedOutput = ItemPrinter.collection(collection, Rental.class, true);
+        ShowOperation showOperation = new ShowOperation("", biblioteca);
+        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
         // When
-        output = showOperation.run("not available");
+        ArrayList<String> output = showOperation.run("not available");
         // Then
+        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Rental.class, true);
         assertEquals("show not available should be as expected", expectedOutput, output);
+    }
 
-        // Available test
+    @Test
+    public void shouldShowAll() {
         // Given
-        collection = biblioteca.getItems(Biblioteca.FILTER.ALL);
-        expectedOutput = ItemPrinter.collection(collection, Rental.class, true);
+        ShowOperation showOperation = new ShowOperation("", biblioteca);
+        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.ALL);
         // When
-        output = showOperation.run("all");
+        ArrayList<String> output = showOperation.run("all");
         // Then
+        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Rental.class, true);
         assertEquals("show all should be as expected", expectedOutput, output);
     }
 
     @Test
-    public void showBookTest() {
+    public void shouldShowAvailableBookIfNoParameter() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
-        ArrayList<String> output;
-        ArrayList<String> expectedOutput;
-        ArrayList<Rental> collection;
-
-        // Default Test
         // When
-        output = showOperation.run("");
+        ArrayList<String> output = showOperation.run("");
         // Then
         assertEquals("default show book should be available ", showOperation.run("available"), output);
+    }
 
-        // Available test
+    @Test
+    public void shouldShowAvailableBook() {
         // Given
-        collection = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
-        expectedOutput = ItemPrinter.collection(collection, Book.class, false);
+        ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
+        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
         // When
-        output = showOperation.run("available");
+        ArrayList<String> output = showOperation.run("available");
         // Then
+        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Book.class, false);
         assertEquals("show book available should be as expected", expectedOutput, output);
+    }
 
-        // Not Available test
-        // When
+    @Test
+    public void shouldShowNotAvailableBook() {
         // Given
-        collection = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
-        expectedOutput = ItemPrinter.collection(collection, Book.class, true);
-        output = showOperation.run("not available");
+        ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
+        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
+        // When
+        ArrayList<String> output = showOperation.run("not available");
         // Then
+        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Book.class, true);
         assertEquals("show book not available should be as expected", expectedOutput, output);
+    }
 
-        // Available test
+    @Test
+    public void shouldShowAllBook() {
         // Given
-        collection = biblioteca.getItems(Biblioteca.FILTER.ALL);
-        expectedOutput = ItemPrinter.collection(collection, Book.class, true);
+        ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
+        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.ALL);
         // When
-        output = showOperation.run("all");
+        ArrayList<String> output = showOperation.run("all");
         // Then
+        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Book.class, true);
         assertEquals("show book all should be as expected", expectedOutput, output);
     }
 
     @Test
-    public void showMovieTest() {
-        // Setup operation
-        // Then
+    public void shouldShowAvailableMovieIfNoParameter() {
+        // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
-        ArrayList<String> output;
-        ArrayList<String> expectedOutput;
-        ArrayList<Rental> collection;
-
-        // Default Test
         // When
-        output = showOperation.run("");
+        ArrayList<String> output = showOperation.run("");
         // Then
         assertEquals("default show movie should be available ", showOperation.run("available"), output);
+    }
 
-        // Available test
+    @Test
+    public void shouldShowAvailableMovie() {
         // Given
-        collection = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
-        expectedOutput = ItemPrinter.collection(collection, Movie.class, false);
+        ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
+        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
         // When
-        output = showOperation.run("available");
+        ArrayList<String> output = showOperation.run("available");
         // Then
+        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Movie.class, false);
         assertEquals("show movie available should be as expected", expectedOutput, output);
+    }
 
-        // Not Available test
+    @Test
+    public void shouldShowNotAvailableMovie() {
         // Given
-        collection = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
-        expectedOutput = ItemPrinter.collection(collection, Movie.class, true);
+        ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
+        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
         // When
-        output = showOperation.run("not available");
+        ArrayList<String> output = showOperation.run("not available");
         // Then
+        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Movie.class, true);
         assertEquals("show movie not available should be as expected", expectedOutput, output);
+    }
 
-        // Available test
+    @Test
+    public void shouldShowAllMovie() {
         // Given
-        collection = biblioteca.getItems(Biblioteca.FILTER.ALL);
-        expectedOutput = ItemPrinter.collection(collection, Movie.class, true);
+        ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
+        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.ALL);
         // When
-        output = showOperation.run("all");
+        ArrayList<String> output = showOperation.run("all");
         // Then
+        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Movie.class, true);
         assertEquals("show movie all should be as expected", expectedOutput, output);
     }
 }

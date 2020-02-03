@@ -12,16 +12,10 @@ import static org.junit.Assert.assertEquals;
 
 public class InvalidOperationTest {
 
-    private InvalidOperation invalidOperation;
-
-    @Before
-    public void initialize(){
-        // Given
-        invalidOperation = new InvalidOperation("");
-    }
-
     @Test
-    public void invalidTest() {
+    public void shouldInvalid() {
+        // Given
+        InvalidOperation invalidOperation = new InvalidOperation("");
         // When
         ArrayList<String> output = invalidOperation.run("");
         // Then
