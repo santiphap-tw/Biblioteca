@@ -14,12 +14,13 @@ public class BibliotecaUserTest {
 
     @Before
     public void initialize() {
-        // Given...
+        // Given
         bibliotecaUser = new BibliotecaUser();
     }
 
     @Test
     public void shouldLoginCorrectUser() {
+        // Given
         // When
         User user = bibliotecaUser.login("111-1111", "1111");
         User currentUser = bibliotecaUser.getCurrentUser();
@@ -30,6 +31,7 @@ public class BibliotecaUserTest {
 
     @Test
     public void shouldNotLoginWrongUser() {
+        // Given
         // When
         User user = bibliotecaUser.login("xxx-xxxx", "xxxx");
         User currentUser = bibliotecaUser.getCurrentUser();
@@ -53,6 +55,7 @@ public class BibliotecaUserTest {
 
     @Test
     public void shouldNotLogoutWhenNoUser() {
+        // Given
         // When
         User loggedOutUser = bibliotecaUser.logout();
         User currentUser = bibliotecaUser.getCurrentUser();
