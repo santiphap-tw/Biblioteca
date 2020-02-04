@@ -24,7 +24,6 @@ public class BibliotecaApp {
     }
 
     private STATE state;
-    private Biblioteca biblioteca;
     private Map<String, AppOperation> options;
     private AppOperation initialTasks;
     private final AppOperation invalidOption = new InvalidOperation(Label.OPTION_INVALID.text);
@@ -34,7 +33,6 @@ public class BibliotecaApp {
         this(new Biblioteca());
     }
     public BibliotecaApp(Biblioteca biblioteca) {
-        this.biblioteca = biblioteca;
         this.state = STATE.INITIAL;
         // Initialize options
         options = new LinkedHashMap<String, AppOperation>();
@@ -81,14 +79,12 @@ public class BibliotecaApp {
 
         AppOperation selectedOption = options.getOrDefault(option, invalidOption);
         ArrayList<String> output = selectedOption.run(parameter);
-        this.printOutput(output);
+        BibliotecaApp.printOutput(output);
         RESPONSE response = selectedOption.getResponse();
         return response;
     }
 
     public static void printOutput(ArrayList<String> output){
-        output.forEach(line -> {
-            System.out.println(line);
-        });
+        output.forEach(System.out::println);
     }
 }

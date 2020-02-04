@@ -7,7 +7,7 @@ import com.twu.biblioteca.model.Rental;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ItemPrinter {
+public class Formatter {
 
     public static ArrayList<String> header(Class<? extends Rental> itemType, boolean isShowBorrower) {
         ArrayList<String> output = new ArrayList<String>();
@@ -45,17 +45,17 @@ public class ItemPrinter {
     public static ArrayList<String> collection(ArrayList<Rental> items,Class<? extends Rental> itemType, boolean isShowBorrower) {
         ArrayList<String> output = new ArrayList<String>();
         ArrayList<Class<? extends Rental>> isHeaderPrinted = new ArrayList<Class<? extends Rental>>();
-        Collections.sort(items, (o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
+        items.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
         items.stream()
                 .filter(item -> item.getClass() == itemType || itemType == Rental.class)
                 .forEach(item -> {
                     // Check if header of this item type was already printed or not
                     boolean isAlreadyPrintHeader = isHeaderPrinted.contains(item.getClass());
                     if(!isAlreadyPrintHeader) {
-                        output.addAll(ItemPrinter.header(item.getClass(), isShowBorrower));
+                        output.addAll(Formatter.header(item.getClass(), isShowBorrower));
                         isHeaderPrinted.add(item.getClass());
                     }
-                    output.addAll(ItemPrinter.item(item, isShowBorrower));
+                    output.addAll(Formatter.item(item, isShowBorrower));
         });
         return output;
     }

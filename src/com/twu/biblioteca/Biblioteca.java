@@ -37,12 +37,12 @@ public class Biblioteca {
         switch (filter){
             case AVAILABLE:
                 items = this.items.stream()
-                        .filter(item -> item.isAvailable() == true)
+                        .filter(Rental::isAvailable)
                         .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case NOT_AVAILABLE:
                 items = this.items.stream()
-                        .filter(item -> item.isAvailable() == false)
+                        .filter(item -> !item.isAvailable())
                         .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case ALL:
@@ -50,7 +50,7 @@ public class Biblioteca {
                 break;
         }
         // Sort items by class name
-        Collections.sort(items, (o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
+        items.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
         return items;
     }
 
@@ -62,7 +62,7 @@ public class Biblioteca {
                 .orElse(null);
         boolean itemExist = item != null;
         if(itemExist) {
-            if(item.isAvailable() == false) return RESPONSE.DEFAULT_ERROR;
+            if(!item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
             item.doCheckOut(userManager.getCurrentUser());
             return RESPONSE.SUCCESS;
         }

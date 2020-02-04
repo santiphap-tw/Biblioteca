@@ -42,7 +42,7 @@ public class User {
 
     public ArrayList<Rental> getItems() {
         // Sort items by class name
-        Collections.sort(items, (o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
+        items.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
         return items;
     }
 

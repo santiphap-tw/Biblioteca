@@ -12,13 +12,12 @@ import static org.junit.Assert.assertEquals;
 
 public class LoginOperationTest {
 
-    private Biblioteca biblioteca;
     private LoginOperation loginOperation;
 
     @Before
     public void initialize(){
         // Given
-        biblioteca = new Biblioteca();
+        Biblioteca biblioteca = new Biblioteca();
         loginOperation = new LoginOperation("", biblioteca);
     }
 

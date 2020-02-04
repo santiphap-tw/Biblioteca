@@ -2,7 +2,7 @@ package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
-import com.twu.biblioteca.cli.ItemPrinter;
+import com.twu.biblioteca.cli.Formatter;
 import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.Rental;
@@ -26,7 +26,7 @@ public class MyBorrowOperation extends AppOperation {
         User user = biblioteca.user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
-            output.addAll(ItemPrinter.collection(user.getItems(),Rental.class,false));
+            output.addAll(Formatter.collection(user.getItems(),Rental.class,false));
         } else {
             output.add(Label.MY_INFO_FAIL.text);
         }

@@ -12,13 +12,12 @@ import static org.junit.Assert.assertEquals;
 
 public class LogoutOperationTest {
 
-    private Biblioteca biblioteca;
     private LogoutOperation logoutOperation;
 
     @Before
     public void initialize(){
         // Given
-        biblioteca = new Biblioteca();
+        Biblioteca biblioteca = new Biblioteca();
         logoutOperation = new LogoutOperation("", biblioteca);
         biblioteca.user().login("111-1111", "1111");
     }

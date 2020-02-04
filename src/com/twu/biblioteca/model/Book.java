@@ -1,5 +1,7 @@
 package com.twu.biblioteca.model;
 
+import java.util.ArrayList;
+
 public class Book extends Rental {
 
     private String author;

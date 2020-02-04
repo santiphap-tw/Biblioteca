@@ -27,7 +27,7 @@ public class BibliotecaTest {
         // When
         ArrayList<Rental> items = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
         // Then
-        boolean isAllItemAvailable = items.stream().allMatch(item -> item.isAvailable() == true);
+        boolean isAllItemAvailable = items.stream().allMatch(Rental::isAvailable);
         assertEquals("getItems AVAILABLE should return only available items", true, isAllItemAvailable);
     }
 
@@ -39,7 +39,7 @@ public class BibliotecaTest {
         // When
         ArrayList<Rental> items = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
         // Then
-        boolean isAllItemNotAvailable = items.stream().allMatch(item -> item.isAvailable() == false);
+        boolean isAllItemNotAvailable = items.stream().allMatch(item -> !item.isAvailable());
         assertEquals("getItems NOT_AVAILABLE should return only not available items", true, isAllItemNotAvailable);
     }
 
@@ -51,8 +51,8 @@ public class BibliotecaTest {
         // When
         ArrayList<Rental> items = biblioteca.getItems(Biblioteca.FILTER.ALL);
         // Then
-        boolean isSomeItemAvailable = items.stream().anyMatch(item -> item.isAvailable() == true);
-        boolean isSomeItemNotAvailable = items.stream().anyMatch(item -> !item.isAvailable() == false);
+        boolean isSomeItemAvailable = items.stream().anyMatch(Rental::isAvailable);
+        boolean isSomeItemNotAvailable = items.stream().anyMatch(item -> !item.isAvailable());
         boolean isShowAllItem = isSomeItemAvailable & isSomeItemNotAvailable;
         assertEquals("getItems ALL should return both available and not available items", true, isShowAllItem);
     }

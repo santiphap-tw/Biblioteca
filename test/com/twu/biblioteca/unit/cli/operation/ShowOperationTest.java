@@ -1,7 +1,7 @@
 package com.twu.biblioteca.unit.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
-import com.twu.biblioteca.cli.ItemPrinter;
+import com.twu.biblioteca.cli.Formatter;
 import com.twu.biblioteca.cli.operation.ShowOperation;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
@@ -45,7 +45,7 @@ public class ShowOperationTest {
         // When
         ArrayList<String> output = showOperation.run("available");
         // Then
-        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Rental.class, false);
+        ArrayList<String> expectedOutput = Formatter.collection(collection, Rental.class, false);
         assertEquals("show available should be as expected", expectedOutput, output);
     }
 
@@ -57,7 +57,7 @@ public class ShowOperationTest {
         // When
         ArrayList<String> output = showOperation.run("not available");
         // Then
-        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Rental.class, true);
+        ArrayList<String> expectedOutput = Formatter.collection(collection, Rental.class, true);
         assertEquals("show not available should be as expected", expectedOutput, output);
     }
 
@@ -69,7 +69,7 @@ public class ShowOperationTest {
         // When
         ArrayList<String> output = showOperation.run("all");
         // Then
-        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Rental.class, true);
+        ArrayList<String> expectedOutput = Formatter.collection(collection, Rental.class, true);
         assertEquals("show all should be as expected", expectedOutput, output);
     }
 
@@ -91,7 +91,7 @@ public class ShowOperationTest {
         // When
         ArrayList<String> output = showOperation.run("available");
         // Then
-        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Book.class, false);
+        ArrayList<String> expectedOutput = Formatter.collection(collection, Book.class, false);
         assertEquals("show book available should be as expected", expectedOutput, output);
     }
 
@@ -103,7 +103,7 @@ public class ShowOperationTest {
         // When
         ArrayList<String> output = showOperation.run("not available");
         // Then
-        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Book.class, true);
+        ArrayList<String> expectedOutput = Formatter.collection(collection, Book.class, true);
         assertEquals("show book not available should be as expected", expectedOutput, output);
     }
 
@@ -115,7 +115,7 @@ public class ShowOperationTest {
         // When
         ArrayList<String> output = showOperation.run("all");
         // Then
-        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Book.class, true);
+        ArrayList<String> expectedOutput = Formatter.collection(collection, Book.class, true);
         assertEquals("show book all should be as expected", expectedOutput, output);
     }
 
@@ -137,7 +137,7 @@ public class ShowOperationTest {
         // When
         ArrayList<String> output = showOperation.run("available");
         // Then
-        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Movie.class, false);
+        ArrayList<String> expectedOutput = Formatter.collection(collection, Movie.class, false);
         assertEquals("show movie available should be as expected", expectedOutput, output);
     }
 
@@ -149,7 +149,7 @@ public class ShowOperationTest {
         // When
         ArrayList<String> output = showOperation.run("not available");
         // Then
-        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Movie.class, true);
+        ArrayList<String> expectedOutput = Formatter.collection(collection, Movie.class, true);
         assertEquals("show movie not available should be as expected", expectedOutput, output);
     }
 
@@ -161,7 +161,7 @@ public class ShowOperationTest {
         // When
         ArrayList<String> output = showOperation.run("all");
         // Then
-        ArrayList<String> expectedOutput = ItemPrinter.collection(collection, Movie.class, true);
+        ArrayList<String> expectedOutput = Formatter.collection(collection, Movie.class, true);
         assertEquals("show movie all should be as expected", expectedOutput, output);
     }
 }
