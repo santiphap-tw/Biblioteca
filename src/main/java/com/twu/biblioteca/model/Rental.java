@@ -1,5 +1,7 @@
 package com.twu.biblioteca.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 public abstract  class Rental {
 
     protected String title;
@@ -26,6 +28,7 @@ public abstract  class Rental {
         this.available = true;
     }
 
+    @JsonBackReference
     public User getBorrower() {
         return borrower;
     }
