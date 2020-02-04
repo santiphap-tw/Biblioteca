@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class CheckOutController {
+public class ReturnController {
 
-    @RequestMapping("/checkout/{name}")
-    public RestResponse doCheckOut(@PathVariable String name) {
-        Biblioteca.RESPONSE response = App.biblioteca.doCheckOut(name);
+    @RequestMapping("/return/{name}")
+    public RestResponse doReturn(@PathVariable String name) {
+        Biblioteca.RESPONSE response = App.biblioteca.doReturn(name);
         switch (response) {
             case SUCCESS:
-                return new RestResponse(RestResponse.STATUS.SUCCESS, Label.CHECKOUT_SUCCESS.text);
+                return new RestResponse(RestResponse.STATUS.SUCCESS, Label.RETURN_SUCCESS.text);
             case DEFAULT_ERROR:
-                return new RestResponse(RestResponse.STATUS.FAIL, Label.CHECKOUT_FAIL.text);
+                return new RestResponse(RestResponse.STATUS.FAIL, Label.RETURN_FAIL.text);
             case AUTHORIZATION_ERROR:
                 return new RestResponse(RestResponse.STATUS.FAIL, Label.AUTHORIZATION_ERROR.text);
         }

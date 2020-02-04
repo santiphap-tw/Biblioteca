@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes= App.class)
 @RunWith(SpringRunner.class)
-public class CheckOutControllerTest {
+public class ReturnControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
@@ -43,55 +43,70 @@ public class CheckOutControllerTest {
         // Login with some user
         User user = App.biblioteca.user().getUsers().get(0);
         App.biblioteca.user().login(user.getId(),user.getPassword());
-        // Get some item
+        // Checkout some item
         item = App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).get(0);
-    }
-
-    @Test
-    public void shouldCheckOutCorrectItem() throws Exception  {
-        // Given
-        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS, Label.CHECKOUT_SUCCESS.text);
-        String json = itemJson.write(expectedResult).getJson();
-        // When
-        this.mockMvc.perform(get("/checkout/" + item.getTitle()))
-                // Then
-                .andExpect(status().isOk())
-                .andExpect(content().json(json));
-    }
-
-    @Test
-    public void shouldNotCheckOutNAItem() throws Exception  {
-        // Given
         App.biblioteca.doCheckOut(item.getTitle());
-        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.CHECKOUT_FAIL.text);
-        String json = itemJson.write(expectedResult).getJson();
-        // When
-        this.mockMvc.perform(get("/checkout/" + item.getTitle()))
-                // Then
-                .andExpect(status().isOk())
-                .andExpect(content().json(json));
     }
 
     @Test
-    public void shouldNotCheckOutWrongItem() throws Exception  {
+    public void shouldReturnCorrectItem() throws Exception  {
         // Given
-        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.CHECKOUT_FAIL.text);
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS, Label.RETURN_SUCCESS.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/checkout/there_is_no_this_item_name"))
+        this.mockMvc.perform(get("/return/" + item.getTitle()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
     }
 
     @Test
-    public void shouldNotCheckOutWhenNotLogin() throws Exception  {
+    public void shouldNotReturnAvailableItem() throws Exception  {
+        // Given
+        App.biblioteca.doReturn(item.getTitle());
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.RETURN_FAIL.text);
+        String json = itemJson.write(expectedResult).getJson();
+        // When
+        this.mockMvc.perform(get("/return/" + item.getTitle()))
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(content().json(json));
+    }
+
+    @Test
+    public void shouldNotReturnWrongItem() throws Exception  {
+        // Given
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.RETURN_FAIL.text);
+        String json = itemJson.write(expectedResult).getJson();
+        // When
+        this.mockMvc.perform(get("/return/there_is_no_this_item_name"))
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(content().json(json));
+    }
+
+    @Test
+    public void shouldNotReturnWhenNotLogin() throws Exception  {
         // Given
         App.biblioteca.user().logout();
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.AUTHORIZATION_ERROR.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/checkout/" + item.getTitle()))
+        this.mockMvc.perform(get("/return/" + item.getTitle()))
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(content().json(json));
+    }
+
+    @Test
+    public void shouldNotReturnOthersItem() throws Exception  {
+        // Given
+        User user = App.biblioteca.user().getUsers().get(1);
+        App.biblioteca.user().login(user.getId(),user.getPassword());
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.AUTHORIZATION_ERROR.text);
+        String json = itemJson.write(expectedResult).getJson();
+        // When
+        this.mockMvc.perform(get("/return/" + item.getTitle()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
