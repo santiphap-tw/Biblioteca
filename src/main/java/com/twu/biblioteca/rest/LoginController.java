@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     @RequestMapping("/login")
-    public RestResponse getId(@RequestParam String id, @RequestParam String password) {
+    public RestResponse login(@RequestParam String id, @RequestParam String password) {
         User user = App.biblioteca.user().login(id,password);
         boolean isSuccess = user != null;
         if(isSuccess)
