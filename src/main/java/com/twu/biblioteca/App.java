@@ -2,7 +2,7 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.cli.BibliotecaApp;
 
-public class Main {
+public class App {
 
     public static void main(String[] args) {
         BibliotecaApp app = new BibliotecaApp();
