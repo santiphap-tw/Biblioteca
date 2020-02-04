@@ -34,29 +34,37 @@ public class LogoutControllerTest {
 
     @Before
     public void setup() {
+        // Given
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         App.biblioteca = new Biblioteca();
-        user = App.biblioteca.user().getUsers().get(0);
-        App.biblioteca.user().login(user.getId(),user.getPassword());
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
+        // Login with some user
+        user = App.biblioteca.user().getUsers().get(0);
+        App.biblioteca.user().login(user.getId(),user.getPassword());
     }
 
     @Test
     public void shouldLogoutWithUser() throws Exception  {
+        // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS, Label.LOGOUT_SUCCESS.text + user.getName());
         String json = itemJson.write(expectedResult).getJson();
+        // When
         this.mockMvc.perform(get("/logout"))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
     }
 
     @Test
     public void shouldNotLogoutWithoutUser() throws Exception  {
+        // Given
         App.biblioteca.user().logout();
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.MY_INFO_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
+        // When
         this.mockMvc.perform(get("/logout"))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
     }

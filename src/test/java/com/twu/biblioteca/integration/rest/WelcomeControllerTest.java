@@ -38,9 +38,12 @@ public class WelcomeControllerTest {
 
     @Test
     public void shouldShowWelcomeMessage() throws Exception {
+        // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS, Label.WELCOME.text);
         String json = itemJson.write(expectedResult).getJson();
+        // When
         this.mockMvc.perform(get("/"))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
     }

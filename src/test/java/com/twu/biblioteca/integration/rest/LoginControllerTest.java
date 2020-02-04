@@ -33,6 +33,7 @@ public class LoginControllerTest {
 
     @Before
     public void setup() {
+        // Given
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         App.biblioteca = new Biblioteca();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -41,20 +42,26 @@ public class LoginControllerTest {
 
     @Test
     public void shouldLoginWithCorrectUser() throws Exception  {
+        // Given
         User user = App.biblioteca.user().getUsers().get(0);
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS, Label.LOGIN_SUCCESS.text + user.getName());
         String json = itemJson.write(expectedResult).getJson();
+        // When
         this.mockMvc.perform(get("/login?id=" + user.getId() + "&password=" + user.getPassword()))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
     }
 
     @Test
     public void shouldNotLoginWithWrongUser() throws Exception  {
+        // Given
         User user = App.biblioteca.user().getUsers().get(0);
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.LOGIN_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
+        // When
         this.mockMvc.perform(get("/login?id=" + user.getId() + "&password=" + user.getPassword() + "xxx"))
+        // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
     }
