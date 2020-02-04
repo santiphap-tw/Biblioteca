@@ -3,9 +3,7 @@ package com.twu.biblioteca.integration.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twu.biblioteca.App;
 import com.twu.biblioteca.Biblioteca;
-import com.twu.biblioteca.model.Book;
-import com.twu.biblioteca.model.Movie;
-import com.twu.biblioteca.model.Rental;
+import com.twu.biblioteca.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +30,7 @@ public class ShowControllerTest {
     private WebApplicationContext wac;
 
     private MockMvc mockMvc;
-    private JacksonTester<ArrayList<Rental>> itemJson;
+    private JacksonTester<RestResponse> itemJson;
 
     @Before
     public void setup() {
@@ -44,7 +42,8 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowRentalAvailableWhenNoParam() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show"))
                 .andExpect(status().isOk())
@@ -53,7 +52,8 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowRentalAvailableWhenAvailableParam() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/available"))
                 .andExpect(status().isOk())
@@ -62,7 +62,8 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowRentalNotAvailableWhenNotAvailableParam() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/not_available"))
                 .andExpect(status().isOk())
@@ -71,7 +72,8 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowRentalAllWhenAllParam() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.ALL);
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.ALL));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/all"))
                 .andExpect(status().isOk())
@@ -80,9 +82,10 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowBookAvailableWhenBookParam() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
                 .filter(item -> item.getClass() == Book.class)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/book"))
                 .andExpect(status().isOk())
@@ -91,9 +94,10 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowMovieAvailableWhenMovieParam() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
                 .filter(item -> item.getClass() == Movie.class)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/movie"))
                 .andExpect(status().isOk())
@@ -102,9 +106,10 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowBookAvailableWhenBookAndAvailableParams() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
                 .filter(item -> item.getClass() == Book.class)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/book/available"))
                 .andExpect(status().isOk())
@@ -113,9 +118,10 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowBookNotAvailableWhenBookAndNotAvailableParams() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
                 .filter(item -> item.getClass() == Book.class)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/book/not_available"))
                 .andExpect(status().isOk())
@@ -124,9 +130,10 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowBookAllWhenBookAndAllParams() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
                 .filter(item -> item.getClass() == Book.class)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/book/all"))
                 .andExpect(status().isOk())
@@ -135,9 +142,10 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowMovieAvailableWhenMovieAndAvailableParams() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
                 .filter(item -> item.getClass() == Movie.class)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/movie/available"))
                 .andExpect(status().isOk())
@@ -146,9 +154,10 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowMovieNotAvailableWhenMovieAndNotAvailableParams() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
                 .filter(item -> item.getClass() == Movie.class)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/movie/not_available"))
                 .andExpect(status().isOk())
@@ -157,9 +166,10 @@ public class ShowControllerTest {
 
     @Test
     public void shouldShowMovieAllWhenMovieAndAllParams() throws Exception {
-        ArrayList<Rental> expectedResult = App.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
+        RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
+                App.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
                 .filter(item -> item.getClass() == Movie.class)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
         this.mockMvc.perform(get("/show/movie/available"))
                 .andExpect(status().isOk())

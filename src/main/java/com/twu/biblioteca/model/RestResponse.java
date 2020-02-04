@@ -8,18 +8,18 @@ public class RestResponse {
     }
 
     private STATUS status;
-    private String message;
+    private Object response;
 
-    public RestResponse(STATUS status, String message) {
+    public RestResponse(STATUS status, Object response) {
         this.status = status;
-        this.message = message;
+        this.response = response;
     }
 
     public STATUS getStatus() {
         return status;
     }
 
-    public String getMessage() {
-        return message;
+    public Object getResponse() {
+        return response;
     }
 }

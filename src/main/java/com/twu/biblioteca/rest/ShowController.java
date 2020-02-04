@@ -3,6 +3,7 @@ package com.twu.biblioteca.rest;
 import com.twu.biblioteca.App;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Rental;
+import com.twu.biblioteca.model.RestResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,12 +15,12 @@ import java.util.stream.Collectors;
 public class ShowController {
 
     @RequestMapping("/show")
-    public ArrayList<Rental> showNoParam() {
+    public RestResponse showNoParam() {
         return showTwoParams("rental", "available");
     }
 
     @RequestMapping("/show/{parameter}")
-    public ArrayList<Rental> showOneParam(@PathVariable String parameter) {
+    public RestResponse showOneParam(@PathVariable String parameter) {
         switch (parameter){
             case "available":
             case "not_available":
@@ -33,22 +34,25 @@ public class ShowController {
     }
 
     @RequestMapping("/show/{type}/{filter}")
-    public ArrayList<Rental> showTwoParams(@PathVariable String type, @PathVariable String filter) {
+    public RestResponse showTwoParams(@PathVariable String type, @PathVariable String filter) {
         switch (filter){
             case "available":
-                return App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+                return new RestResponse(RestResponse.STATUS.SUCCESS,
+                        App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
                         .filter(item -> isSameType(item,type))
-                        .collect(Collectors.toCollection(ArrayList::new));
+                        .collect(Collectors.toCollection(ArrayList::new)));
             case "not_available":
-                return App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
+                return new RestResponse(RestResponse.STATUS.SUCCESS,
+                        App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
                         .filter(item -> isSameType(item,type))
-                        .collect(Collectors.toCollection(ArrayList::new));
+                        .collect(Collectors.toCollection(ArrayList::new)));
             case "all":
-                return App.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
+                return new RestResponse(RestResponse.STATUS.SUCCESS,
+                        App.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
                         .filter(item -> isSameType(item,type))
-                        .collect(Collectors.toCollection(ArrayList::new));
+                        .collect(Collectors.toCollection(ArrayList::new)));
             default:
-                return null;
+                return new RestResponse(RestResponse.STATUS.FAIL,null);
         }
     }
 
