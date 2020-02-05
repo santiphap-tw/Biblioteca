@@ -2,6 +2,7 @@ package com.twu.biblioteca.unit.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.operation.MyInfoOperation;
+import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.User;
 import org.junit.Before;
@@ -13,6 +14,8 @@ import static org.junit.Assert.assertEquals;
 
 public class MyInfoOperationTest {
 
+    private User sampleUser1 = UserDatabase.getInstance().getUsers().get(0);
+
     private MyInfoOperation myInfoOperation;
     private ArrayList<String> expectedOutput;
 
@@ -21,7 +24,7 @@ public class MyInfoOperationTest {
         // Given
         Biblioteca.getInstance().initialize();
         myInfoOperation = new MyInfoOperation("");
-        Biblioteca.getInstance().user().login("111-1111", "1111");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
         User currentUser = Biblioteca.getInstance().user().getCurrentUser();
         expectedOutput = new ArrayList<String>();
         expectedOutput.add("ID: \t" + currentUser.getId());

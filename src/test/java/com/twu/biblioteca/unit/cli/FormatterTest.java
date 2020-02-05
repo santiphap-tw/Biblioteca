@@ -4,6 +4,7 @@ import com.twu.biblioteca.cli.Formatter;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rental;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,14 +13,20 @@ import static org.junit.Assert.assertEquals;
 
 public class FormatterTest {
 
-    @Test
-    public void shouldReturnRentalCollection() {
+    ArrayList<Rental> collection;
+
+    @Before
+    public void initialize() {
         // Given
-        ArrayList<Rental> collection = new ArrayList<>();
+        collection = new ArrayList<>();
         Book book = new Book("Book");
         Movie movie = new Movie("movie");
         collection.add(book);
         collection.add(movie);
+    }
+
+    @Test
+    public void shouldReturnRentalCollection() {
         // When
         ArrayList<String> output = Formatter.items(collection, Rental.class, false);
         // Then
@@ -33,12 +40,6 @@ public class FormatterTest {
 
     @Test
     public void shouldReturnBookCollection() {
-        // Given
-        ArrayList<Rental> collection = new ArrayList<>();
-        Book book = new Book("Book");
-        Movie movie = new Movie("movie");
-        collection.add(book);
-        collection.add(movie);
         // When
         ArrayList<String> output = Formatter.items(collection, Book.class, false);
         // Then
@@ -50,12 +51,6 @@ public class FormatterTest {
 
     @Test
     public void shouldReturnMovieCollection() {
-        // Given
-        ArrayList<Rental> collection = new ArrayList<>();
-        Book book = new Book("Book");
-        Movie movie = new Movie("movie");
-        collection.add(book);
-        collection.add(movie);
         // When
         ArrayList<String> output = Formatter.items(collection, Movie.class, false);
         // Then

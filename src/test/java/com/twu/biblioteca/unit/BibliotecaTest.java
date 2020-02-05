@@ -2,7 +2,11 @@ package com.twu.biblioteca.unit;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.database.RentalDatabase;
+import com.twu.biblioteca.database.UserDatabase;
+import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rental;
+import com.twu.biblioteca.model.User;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +16,10 @@ import static org.junit.Assert.assertEquals;
 
 public class BibliotecaTest {
 
+    private User sampleUser1 = UserDatabase.getInstance().getUsers().get(0);
+    private User sampleUser2 = UserDatabase.getInstance().getUsers().get(1);
+    private Rental sampleItem1 = RentalDatabase.getInstance().getItems(item -> item.getClass() == Book.class).get(0);
+    private Rental sampleItem2 = RentalDatabase.getInstance().getItems(item -> item.getClass() == Movie.class).get(0);
 
     @Before
     public void initialize() {
@@ -22,8 +30,8 @@ public class BibliotecaTest {
     @Test
     public void shouldGetAvailableItems() {
         // Given
-        Biblioteca.getInstance().user().login("111-1111", "1111");
-        Biblioteca.getInstance().doCheckOut("Book A");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
+        Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
         // When
         ArrayList<Rental> items = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE);
         // Then
@@ -34,8 +42,8 @@ public class BibliotecaTest {
     @Test
     public void shouldGetNotAvailableItems() {
         // Given
-        Biblioteca.getInstance().user().login("111-1111", "1111");
-        Biblioteca.getInstance().doCheckOut("Book A");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
+        Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
         // When
         ArrayList<Rental> items = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE);
         // Then
@@ -46,8 +54,8 @@ public class BibliotecaTest {
     @Test
     public void shouldGetAllItems() {
         // Given
-        Biblioteca.getInstance().user().login("111-1111", "1111");
-        Biblioteca.getInstance().doCheckOut("Book A");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
+        Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
         // When
         ArrayList<Rental> items = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL);
         // Then
@@ -60,9 +68,9 @@ public class BibliotecaTest {
     @Test
     public void shouldCheckOutAvailableItem() {
         // Given
-        Biblioteca.getInstance().user().login("111-1111", "1111");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
         // When
-        Biblioteca.RESPONSE response = Biblioteca.getInstance().doCheckOut("Book A");
+        Biblioteca.RESPONSE response = Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
         // Then
         assertEquals("doCheckOut should response success when checkout available item", Biblioteca.RESPONSE.SUCCESS, response);
     }
@@ -70,10 +78,10 @@ public class BibliotecaTest {
     @Test
     public void shouldNotCheckOutNotAvailableItem() {
         // Given
-        Biblioteca.getInstance().user().login("111-1111", "1111");
-        Biblioteca.getInstance().doCheckOut("Book A");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
+        Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
         // When
-        Biblioteca.RESPONSE response = Biblioteca.getInstance().doCheckOut("Book A");
+        Biblioteca.RESPONSE response = Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
         // Then
         assertEquals("doCheckOut should response default error when checkout non-available item", Biblioteca.RESPONSE.DEFAULT_ERROR, response);
     }
@@ -81,7 +89,7 @@ public class BibliotecaTest {
     @Test
     public void shouldNotCheckOutInvalidItem() {
         // Given
-        Biblioteca.getInstance().user().login("111-1111", "1111");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
         // When
         Biblioteca.RESPONSE response = Biblioteca.getInstance().doCheckOut("Book Z");
         // Then
@@ -91,11 +99,11 @@ public class BibliotecaTest {
     @Test
     public void shouldReturnCorrectItem() {
         // Given
-        Biblioteca.getInstance().user().login("111-1111", "1111");
-        Biblioteca.getInstance().doCheckOut("Book A");
-        Biblioteca.getInstance().doCheckOut("Book B");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
+        Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
+        Biblioteca.getInstance().doCheckOut(sampleItem2.getTitle());
         // When
-        Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn("Book A");
+        Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn(sampleItem1.getTitle());
         // Then
         assertEquals("doReturn should response success when return correct item", Biblioteca.RESPONSE.SUCCESS, response);
     }
@@ -103,9 +111,9 @@ public class BibliotecaTest {
     @Test
     public void shouldNotReturnAvailableItem() {
         // Given
-        Biblioteca.getInstance().user().login("111-1111", "1111");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
         // When
-        Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn("Book A");
+        Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn(sampleItem1.getTitle());
         // Then
         assertEquals("doReturn should response default error when return available item", Biblioteca.RESPONSE.DEFAULT_ERROR, response);
     }
@@ -113,7 +121,7 @@ public class BibliotecaTest {
     @Test
     public void shouldNotReturnWrongItem() {
         // Given
-        Biblioteca.getInstance().user().login("111-1111", "1111");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
         // When
         Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn("Book Z");
         // Then
@@ -123,11 +131,11 @@ public class BibliotecaTest {
     @Test
     public void shouldNotReturnWrongUser() {
         // Given
-        Biblioteca.getInstance().user().login("111-1111", "1111");
-        Biblioteca.getInstance().doCheckOut("Book A");
-        Biblioteca.getInstance().user().login("222-2222", "2222");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
+        Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
+        Biblioteca.getInstance().user().login(sampleUser2.getId(), sampleUser2.getPassword());
         // When
-        Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn("Book A");
+        Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn(sampleItem1.getTitle());
         // Then
         assertEquals("doReturn should response authorization error when return item of different user", Biblioteca.RESPONSE.AUTHORIZATION_ERROR, response);
     }

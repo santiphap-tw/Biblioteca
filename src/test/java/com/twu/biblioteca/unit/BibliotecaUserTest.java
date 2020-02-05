@@ -1,6 +1,7 @@
 package com.twu.biblioteca.unit;
 
 import com.twu.biblioteca.BibliotecaUser;
+import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,21 +12,23 @@ public class BibliotecaUserTest {
 
 
     private BibliotecaUser bibliotecaUser;
+    private User sampleUser;
 
     @Before
     public void initialize() {
         // Given
         bibliotecaUser = new BibliotecaUser();
+        sampleUser = UserDatabase.getInstance().getUsers().get(0);
     }
 
     @Test
     public void shouldLoginCorrectUser() {
         // Given
         // When
-        User user = bibliotecaUser.login("111-1111", "1111");
+        User user = bibliotecaUser.login(sampleUser.getId(), sampleUser.getPassword());
         User currentUser = bibliotecaUser.getCurrentUser();
         // Then
-        assertEquals("login should return user 111-1111", "111-1111", user.getId());
+        assertEquals("login should return user " + sampleUser.getId(), sampleUser.getId(), user.getId());
         assertEquals("Current user should same as the logged in user", user, currentUser);
     }
 
@@ -43,12 +46,12 @@ public class BibliotecaUserTest {
     @Test
     public void shouldLogoutWhenHaveUser() {
         // Given
-        bibliotecaUser.login("111-1111", "1111");
+        bibliotecaUser.login(sampleUser.getId(), sampleUser.getPassword());
         // When
         User loggedOutUser = bibliotecaUser.logout();
         User currentUser = bibliotecaUser.getCurrentUser();
         // Then
-        assertEquals("logout should return user 111-1111", "111-1111", loggedOutUser.getId());
+        assertEquals("logout should return user " + sampleUser.getId(), sampleUser.getId(), loggedOutUser.getId());
         assertEquals("Current user should be null", null, currentUser);
     }
 

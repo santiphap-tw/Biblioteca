@@ -3,8 +3,9 @@ package com.twu.biblioteca.unit.cli.operation;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.Formatter;
 import com.twu.biblioteca.cli.operation.MyBorrowOperation;
-import com.twu.biblioteca.model.Label;
-import com.twu.biblioteca.model.Rental;
+import com.twu.biblioteca.database.RentalDatabase;
+import com.twu.biblioteca.database.UserDatabase;
+import com.twu.biblioteca.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +15,11 @@ import static org.junit.Assert.assertEquals;
 
 public class MyBorrowOperationTest {
 
+    private User sampleUser1 = UserDatabase.getInstance().getUsers().get(0);
+    private Rental sampleItem1 = RentalDatabase.getInstance().getItems(item -> item.getClass() == Book.class).get(0);
+    private Rental sampleItem2 = RentalDatabase.getInstance().getItems(item -> item.getClass() == Movie.class).get(0);
+    private Rental sampleItem3 = RentalDatabase.getInstance().getItems(item -> item.getClass() == Book.class).get(1);
+
     private MyBorrowOperation myBorrowOperation;
     private ArrayList<String> expectedOutput;
 
@@ -22,10 +28,10 @@ public class MyBorrowOperationTest {
         // Given
         Biblioteca.getInstance().initialize();
         myBorrowOperation = new MyBorrowOperation("");
-        Biblioteca.getInstance().user().login("111-1111", "1111");
-        Biblioteca.getInstance().doCheckOut("Book A");
-        Biblioteca.getInstance().doCheckOut("Movie A");
-        Biblioteca.getInstance().doCheckOut("Book B");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
+        Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
+        Biblioteca.getInstance().doCheckOut(sampleItem2.getTitle());
+        Biblioteca.getInstance().doCheckOut(sampleItem3.getTitle());
         ArrayList<Rental> collection = Biblioteca.getInstance().user().getCurrentUser().getItems();
         expectedOutput = Formatter.items(collection, Rental.class, false);
     }
