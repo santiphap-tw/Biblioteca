@@ -2,6 +2,7 @@ package com.twu.biblioteca.unit.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.operation.MyInfoOperation;
+import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.User;
 import org.junit.Before;
@@ -13,17 +14,18 @@ import static org.junit.Assert.assertEquals;
 
 public class MyInfoOperationTest {
 
-    private Biblioteca biblioteca;
+    private User sampleUser1 = UserDatabase.getInstance().getUsers().get(0);
+
     private MyInfoOperation myInfoOperation;
     private ArrayList<String> expectedOutput;
 
     @Before
     public void initialize(){
         // Given
-        biblioteca = new Biblioteca();
-        myInfoOperation = new MyInfoOperation("", biblioteca);
-        biblioteca.user().login("111-1111", "1111");
-        User currentUser = biblioteca.user().getCurrentUser();
+        Biblioteca.getInstance().initialize();
+        myInfoOperation = new MyInfoOperation("");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
+        User currentUser = Biblioteca.getInstance().user().getCurrentUser();
         expectedOutput = new ArrayList<String>();
         expectedOutput.add("ID: \t" + currentUser.getId());
         expectedOutput.add("Name: \t" + currentUser.getName());
@@ -44,7 +46,7 @@ public class MyInfoOperationTest {
     @Test
     public void shouldNotShowMyInfoIfNotLoggedIn() {
         // Given
-        biblioteca.user().logout();
+        Biblioteca.getInstance().user().logout();
         // When
         ArrayList<String> output = myInfoOperation.run("");
         // Then

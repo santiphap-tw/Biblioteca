@@ -1,9 +1,12 @@
 package com.twu.biblioteca.integration.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.twu.biblioteca.App;
 import com.twu.biblioteca.Biblioteca;
-import com.twu.biblioteca.model.*;
+import com.twu.biblioteca.WebApp;
+import com.twu.biblioteca.database.RentalDatabase;
+import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Movie;
+import com.twu.biblioteca.model.RestResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes= App.class)
+@SpringBootTest(classes= WebApp.class)
 @RunWith(SpringRunner.class)
 public class ShowControllerTest {
 
@@ -36,7 +39,7 @@ public class ShowControllerTest {
     public void setup() {
         // Given
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        App.biblioteca = new Biblioteca();
+        Biblioteca.getInstance().initialize();
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
     }
@@ -45,7 +48,7 @@ public class ShowControllerTest {
     public void shouldShowRentalAvailableWhenNoParam() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE));
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE));
         String json = itemJson.write(expectedResult).getJson();
         // When
         this.mockMvc.perform(get("/show"))
@@ -58,7 +61,7 @@ public class ShowControllerTest {
     public void shouldShowRentalAvailableWhenAvailableParam() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE));
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE));
         String json = itemJson.write(expectedResult).getJson();
         // When
         this.mockMvc.perform(get("/show/available"))
@@ -71,7 +74,7 @@ public class ShowControllerTest {
     public void shouldShowRentalNotAvailableWhenNotAvailableParam() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE));
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE));
         String json = itemJson.write(expectedResult).getJson();
         // When
         this.mockMvc.perform(get("/show/not_available"))
@@ -84,7 +87,7 @@ public class ShowControllerTest {
     public void shouldShowRentalAllWhenAllParam() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.ALL));
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL));
         String json = itemJson.write(expectedResult).getJson();
         // When
         this.mockMvc.perform(get("/show/all"))
@@ -97,7 +100,7 @@ public class ShowControllerTest {
     public void shouldShowBookAvailableWhenBookParam() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).stream()
                 .filter(item -> item.getClass() == Book.class)
                 .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
@@ -112,7 +115,7 @@ public class ShowControllerTest {
     public void shouldShowMovieAvailableWhenMovieParam() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).stream()
                 .filter(item -> item.getClass() == Movie.class)
                 .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
@@ -127,7 +130,7 @@ public class ShowControllerTest {
     public void shouldShowBookAvailableWhenBookAndAvailableParams() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).stream()
                 .filter(item -> item.getClass() == Book.class)
                 .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
@@ -142,7 +145,7 @@ public class ShowControllerTest {
     public void shouldShowBookNotAvailableWhenBookAndNotAvailableParams() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE).stream()
                 .filter(item -> item.getClass() == Book.class)
                 .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
@@ -157,7 +160,7 @@ public class ShowControllerTest {
     public void shouldShowBookAllWhenBookAndAllParams() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).stream()
                 .filter(item -> item.getClass() == Book.class)
                 .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
@@ -172,7 +175,7 @@ public class ShowControllerTest {
     public void shouldShowMovieAvailableWhenMovieAndAvailableParams() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).stream()
                 .filter(item -> item.getClass() == Movie.class)
                 .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
@@ -187,7 +190,7 @@ public class ShowControllerTest {
     public void shouldShowMovieNotAvailableWhenMovieAndNotAvailableParams() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE).stream()
                 .filter(item -> item.getClass() == Movie.class)
                 .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();
@@ -202,7 +205,7 @@ public class ShowControllerTest {
     public void shouldShowMovieAllWhenMovieAndAllParams() throws Exception {
         // Given
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS,
-                App.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
+                RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).stream()
                 .filter(item -> item.getClass() == Movie.class)
                 .collect(Collectors.toCollection(ArrayList::new)));
         String json = itemJson.write(expectedResult).getJson();

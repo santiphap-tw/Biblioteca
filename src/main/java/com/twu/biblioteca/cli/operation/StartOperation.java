@@ -1,6 +1,5 @@
 package com.twu.biblioteca.cli.operation;
 
-import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 
@@ -27,7 +26,6 @@ public class StartOperation extends AppOperation {
                 output.add(command+ "\t\t" + option.getDescription());
             });
         ////////////
-        response = BibliotecaApp.RESPONSE.VALID;
         return output;
     }
 }

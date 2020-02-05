@@ -2,13 +2,15 @@ package com.twu.biblioteca.unit.cli;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
-import com.twu.biblioteca.model.Label;
+import com.twu.biblioteca.cli.operation.*;
+import com.twu.biblioteca.database.RentalDatabase;
+import com.twu.biblioteca.database.UserDatabase;
+import com.twu.biblioteca.model.*;
 import org.junit.After;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
@@ -16,6 +18,10 @@ import static org.junit.Assert.assertEquals;
 
 public class BibliotecaAppTest {
 
+    private User sampleUser1 = UserDatabase.getInstance().getUsers().get(0);
+    private Rental sampleItem1 = RentalDatabase.getInstance().getItems(item -> item.getClass() == Book.class).get(0);
+    private Rental sampleItem2 = RentalDatabase.getInstance().getItems(item -> item.getClass() == Movie.class).get(0);
+    
     @After
     public void revertToOriginalInputOutputStream() {
         System.setIn(System.in);
@@ -40,9 +46,10 @@ public class BibliotecaAppTest {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_EXIT_COMMAND.text);
+        ArrayList<String> response = app.runCommand(Label.OPTION_EXIT_COMMAND.text);
         // Then
-        assertEquals("Exit command should have exit response", BibliotecaApp.RESPONSE.EXIT, response);
+        ArrayList<String> expectedResponse = (new ExitOperation("")).run("");
+        assertEquals("Exit command should have exit response", expectedResponse, response);
     }
 
     @Test
@@ -50,9 +57,10 @@ public class BibliotecaAppTest {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_SHOW_ALL_COMMAND.text);
+        ArrayList<String> response = app.runCommand(Label.OPTION_SHOW_ALL_COMMAND.text);
         // Then
-        assertEquals("Show command should be valid", BibliotecaApp.RESPONSE.VALID, response);
+        ArrayList<String> expectedResponse = (new ShowOperation("")).run("");
+        assertEquals("Show command should be show operation", expectedResponse, response);
     }
 
     @Test
@@ -60,9 +68,10 @@ public class BibliotecaAppTest {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_SHOW_BOOKS_COMMAND.text);
+        ArrayList<String> response = app.runCommand(Label.OPTION_SHOW_BOOKS_COMMAND.text);
         // Then
-        assertEquals("Show book command should be valid", BibliotecaApp.RESPONSE.VALID, response);
+        ArrayList<String> expectedResponse = (new ShowOperation("", Book.class)).run("");
+        assertEquals("Show book command should be show book operation", expectedResponse, response);
     }
 
     @Test
@@ -70,62 +79,63 @@ public class BibliotecaAppTest {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_SHOW_MOVIES_COMMAND.text);
+        ArrayList<String> response = app.runCommand(Label.OPTION_SHOW_MOVIES_COMMAND.text);
         // Then
-        assertEquals("Show movie command should be valid", BibliotecaApp.RESPONSE.VALID, response);
+        ArrayList<String> expectedResponse = (new ShowOperation("", Movie.class)).run("");
+        assertEquals("Show movie command should be show movie operation", expectedResponse, response);
     }
 
     @Test
     public void shouldHaveCheckOutCommand() {
         // Given
-        Biblioteca biblioteca = new Biblioteca();
-        BibliotecaApp app = new BibliotecaApp(biblioteca);
-        app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
+        BibliotecaApp app = new BibliotecaApp();
+        Biblioteca.getInstance().user().login(sampleUser1.getId(),sampleUser1.getPassword());
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_CHECKOUT_COMMAND.text + " Book A");
+        ArrayList<String> response = app.runCommand(Label.OPTION_CHECKOUT_COMMAND.text + " " + sampleItem1.getTitle());
         // Then
-        assertEquals("Check out command should be valid", BibliotecaApp.RESPONSE.VALID, response);
-        assertEquals("App should have 5 items after checkout", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
+        Biblioteca.getInstance().doReturn(sampleItem1.getTitle());
+        ArrayList<String> expectedResponse = (new CheckOutOperation("")).run(sampleItem1.getTitle());
+        assertEquals("Check out command should be checkout operation", expectedResponse, response);
     }
 
     @Test
     public void shouldHaveReturnCommand() {
         // Given
-        Biblioteca biblioteca = new Biblioteca();
-        BibliotecaApp app = new BibliotecaApp(biblioteca);
-        app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
-        app.selectOption(Label.OPTION_CHECKOUT_COMMAND.text + " Book A");
-        app.selectOption(Label.OPTION_CHECKOUT_COMMAND.text + " Book B");
+        BibliotecaApp app = new BibliotecaApp();
+        Biblioteca.getInstance().user().login(sampleUser1.getId(),sampleUser1.getPassword());
+        app.runCommand(Label.OPTION_CHECKOUT_COMMAND.text + " " + sampleItem1.getTitle());
+        app.runCommand(Label.OPTION_CHECKOUT_COMMAND.text + " " + sampleItem2.getTitle());
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_RETURN_COMMAND.text + " Book A");
+        ArrayList<String> response = app.runCommand(Label.OPTION_RETURN_COMMAND.text + " " + sampleItem1.getTitle());
         // Then
-        assertEquals("Return command should be valid", BibliotecaApp.RESPONSE.VALID, response);
-        assertEquals("App should have 5 items after return", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
+        Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
+        ArrayList<String> expectedResponse = (new ReturnOperation("")).run(sampleItem1.getTitle());
+        assertEquals("Return command should be return operation", expectedResponse, response);
     }
 
     @Test
     public void shouldHaveLoginCommand() {
         // Given
-        Biblioteca biblioteca = new Biblioteca();
-        BibliotecaApp app = new BibliotecaApp(biblioteca);
+        BibliotecaApp app = new BibliotecaApp();
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
+        ArrayList<String> response = app.runCommand(Label.OPTION_LOGIN_COMMAND.text + " " + sampleUser1.getId() + " " + sampleUser1.getPassword());
         // Then
-        assertEquals("Login command should be valid", BibliotecaApp.RESPONSE.VALID, response);
-        assertEquals("App should have logged in with user 111-1111", "111-1111", biblioteca.user().getCurrentUser().getId());
+        Biblioteca.getInstance().user().logout();
+        ArrayList<String> expectedResponse = (new LoginOperation("")).run(sampleUser1.getId() + " " + sampleUser1.getPassword());
+        assertEquals("Login command should be login operation", expectedResponse, response);
     }
 
     @Test
     public void shouldHaveLogoutCommand() {
         // Given
-        Biblioteca biblioteca = new Biblioteca();
-        BibliotecaApp app = new BibliotecaApp(biblioteca);
-        app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
+        BibliotecaApp app = new BibliotecaApp();
+        Biblioteca.getInstance().user().login(sampleUser1.getId(),sampleUser1.getPassword());
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_LOGOUT_COMMAND.text);
+        ArrayList<String> response = app.runCommand(Label.OPTION_LOGOUT_COMMAND.text);
         // Then
-        assertEquals("Logout command should be valid", BibliotecaApp.RESPONSE.VALID, response);
-        assertEquals("App should have logged out", null, biblioteca.user().getCurrentUser());
+        Biblioteca.getInstance().user().login("111-1111", "1111");
+        ArrayList<String> expectedResponse = (new LogoutOperation("")).run("");
+        assertEquals("Logout command should be logout operation", expectedResponse, response);
     }
 
     @Test
@@ -133,29 +143,36 @@ public class BibliotecaAppTest {
         // Given
         BibliotecaApp app = new BibliotecaApp();
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_HELP_COMMAND.text);
+        ArrayList<String> response = app.runCommand(Label.OPTION_HELP_COMMAND.text);
         // Then
-        assertEquals("Help command should be valid", BibliotecaApp.RESPONSE.VALID, response);
+        ArrayList<String> expectedResponse = (new StartOperation("", null)).run("");
+        assertEquals("Help command should be start operation", expectedResponse.get(0), response.get(0));
     }
 
     @Test
     public void shouldHaveMyInfoCommand() {
         // Given
         BibliotecaApp app = new BibliotecaApp();
+        Biblioteca.getInstance().user().login(sampleUser1.getId(),sampleUser1.getPassword());
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_MY_INFO_COMMAND.text);
+        ArrayList<String> response = app.runCommand(Label.OPTION_MY_INFO_COMMAND.text);
         // Then
-        assertEquals("My info command should be valid", BibliotecaApp.RESPONSE.VALID, response);
+        ArrayList<String> expectedResponse = (new MyInfoOperation("")).run("");
+        assertEquals("My info command should be myinfo operation", expectedResponse, response);
     }
 
     @Test
     public void shouldHaveMyBorrowingCommand() {
         // Given
         BibliotecaApp app = new BibliotecaApp();
+        Biblioteca.getInstance().user().login(sampleUser1.getId(),sampleUser1.getPassword());
+        Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
+        Biblioteca.getInstance().doCheckOut("Movie A");
         // When
-        BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_MY_BORROWING_COMMAND.text);
+        ArrayList<String> response = app.runCommand(Label.OPTION_MY_BORROWING_COMMAND.text);
         // Then
-        assertEquals("Borrowing command should be valid", BibliotecaApp.RESPONSE.VALID, response);
+        ArrayList<String> expectedResponse = (new MyBorrowOperation("")).run("");
+        assertEquals("Borrowing command should be myborrow operation", expectedResponse, response);
     }
 
     @Test

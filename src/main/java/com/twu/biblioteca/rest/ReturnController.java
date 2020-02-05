@@ -1,6 +1,5 @@
 package com.twu.biblioteca.rest;
 
-import com.twu.biblioteca.App;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
@@ -13,7 +12,7 @@ public class ReturnController {
 
     @RequestMapping("/return/{name}")
     public RestResponse doReturn(@PathVariable String name) {
-        Biblioteca.RESPONSE response = App.biblioteca.doReturn(name);
+        Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn(name);
         switch (response) {
             case SUCCESS:
                 return new RestResponse(RestResponse.STATUS.SUCCESS, Label.RETURN_SUCCESS.text);

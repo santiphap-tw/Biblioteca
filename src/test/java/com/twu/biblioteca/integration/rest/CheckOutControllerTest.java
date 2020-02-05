@@ -1,8 +1,10 @@
 package com.twu.biblioteca.integration.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.twu.biblioteca.App;
 import com.twu.biblioteca.Biblioteca;
+import com.twu.biblioteca.WebApp;
+import com.twu.biblioteca.database.RentalDatabase;
+import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.Rental;
 import com.twu.biblioteca.model.RestResponse;
@@ -22,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes= App.class)
+@SpringBootTest(classes= WebApp.class)
 @RunWith(SpringRunner.class)
 public class CheckOutControllerTest {
 
@@ -37,14 +39,14 @@ public class CheckOutControllerTest {
     public void setup() {
         // Given
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        App.biblioteca = new Biblioteca();
+        Biblioteca.getInstance().initialize();
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
         // Login with some user
-        User user = App.biblioteca.user().getUsers().get(0);
-        App.biblioteca.user().login(user.getId(),user.getPassword());
+        User user = UserDatabase.getInstance().getUsers().get(0);
+        Biblioteca.getInstance().user().login(user.getId(),user.getPassword());
         // Get some item
-        item = App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).get(0);
+        item = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).get(0);
     }
 
     @Test
@@ -62,7 +64,7 @@ public class CheckOutControllerTest {
     @Test
     public void shouldNotCheckOutNAItem() throws Exception  {
         // Given
-        App.biblioteca.doCheckOut(item.getTitle());
+        Biblioteca.getInstance().doCheckOut(item.getTitle());
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.CHECKOUT_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
@@ -87,7 +89,7 @@ public class CheckOutControllerTest {
     @Test
     public void shouldNotCheckOutWhenNotLogin() throws Exception  {
         // Given
-        App.biblioteca.user().logout();
+        Biblioteca.getInstance().user().logout();
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.AUTHORIZATION_ERROR.text);
         String json = itemJson.write(expectedResult).getJson();
         // When

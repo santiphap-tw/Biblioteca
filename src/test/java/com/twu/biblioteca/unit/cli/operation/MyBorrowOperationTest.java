@@ -3,8 +3,9 @@ package com.twu.biblioteca.unit.cli.operation;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.Formatter;
 import com.twu.biblioteca.cli.operation.MyBorrowOperation;
-import com.twu.biblioteca.model.Label;
-import com.twu.biblioteca.model.Rental;
+import com.twu.biblioteca.database.RentalDatabase;
+import com.twu.biblioteca.database.UserDatabase;
+import com.twu.biblioteca.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,21 +15,25 @@ import static org.junit.Assert.assertEquals;
 
 public class MyBorrowOperationTest {
 
-    private Biblioteca biblioteca;
+    private User sampleUser1 = UserDatabase.getInstance().getUsers().get(0);
+    private Rental sampleItem1 = RentalDatabase.getInstance().getItems(item -> item.getClass() == Book.class).get(0);
+    private Rental sampleItem2 = RentalDatabase.getInstance().getItems(item -> item.getClass() == Movie.class).get(0);
+    private Rental sampleItem3 = RentalDatabase.getInstance().getItems(item -> item.getClass() == Book.class).get(1);
+
     private MyBorrowOperation myBorrowOperation;
     private ArrayList<String> expectedOutput;
 
     @Before
     public void initialize(){
         // Given
-        biblioteca = new Biblioteca();
-        myBorrowOperation = new MyBorrowOperation("", biblioteca);
-        biblioteca.user().login("111-1111", "1111");
-        biblioteca.doCheckOut("Book A");
-        biblioteca.doCheckOut("Movie A");
-        biblioteca.doCheckOut("Book B");
-        ArrayList<Rental> collection = biblioteca.user().getCurrentUser().getItems();
-        expectedOutput = Formatter.collection(collection, Rental.class, false);
+        Biblioteca.getInstance().initialize();
+        myBorrowOperation = new MyBorrowOperation("");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
+        Biblioteca.getInstance().doCheckOut(sampleItem1.getTitle());
+        Biblioteca.getInstance().doCheckOut(sampleItem2.getTitle());
+        Biblioteca.getInstance().doCheckOut(sampleItem3.getTitle());
+        ArrayList<Rental> collection = Biblioteca.getInstance().user().getCurrentUser().getItems();
+        expectedOutput = Formatter.items(collection, Rental.class, false);
     }
 
     @Test
@@ -43,7 +48,7 @@ public class MyBorrowOperationTest {
     @Test
     public void shouldNotShowMyBorrowingIfNotLoggedIn() {
         // Given
-        biblioteca.user().logout();
+        Biblioteca.getInstance().user().logout();
         // When
         ArrayList<String> output = myBorrowOperation.run("");
         // Then

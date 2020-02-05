@@ -2,7 +2,9 @@ package com.twu.biblioteca.unit.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.operation.LogoutOperation;
+import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Label;
+import com.twu.biblioteca.model.User;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,14 +14,15 @@ import static org.junit.Assert.assertEquals;
 
 public class LogoutOperationTest {
 
+    private User sampleUser1 = UserDatabase.getInstance().getUsers().get(0);
+
     private LogoutOperation logoutOperation;
 
     @Before
     public void initialize(){
         // Given
-        Biblioteca biblioteca = new Biblioteca();
-        logoutOperation = new LogoutOperation("", biblioteca);
-        biblioteca.user().login("111-1111", "1111");
+        logoutOperation = new LogoutOperation("");
+        Biblioteca.getInstance().user().login(sampleUser1.getId(), sampleUser1.getPassword());
     }
 
     @Test

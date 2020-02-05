@@ -4,6 +4,7 @@ import com.twu.biblioteca.cli.Formatter;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rental;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,40 +13,22 @@ import static org.junit.Assert.assertEquals;
 
 public class FormatterTest {
 
-    @Test
-    public void shouldReturnRentalHeader() {
-        // Given
-        // When
-        ArrayList<String> output = Formatter.header(Rental.class, false);
-        // Then
-        boolean hasLabel = output.stream().anyMatch(text -> text.contains("Items List"));
-        assertEquals("Rental header should have a label", true, hasLabel);
-        long countField = output.get(1).chars().filter(ch -> ch == '|').count() + 1;
-        assertEquals("Rental header should have 2 field", 2, countField);
-    }
+    ArrayList<Rental> collection;
 
-    @Test
-    public void shouldReturnRentalItem() {
+    @Before
+    public void initialize() {
         // Given
-        Rental item = new Rental() {
-        };
-        // When
-        ArrayList<String> output = Formatter.item(item, false);
-        // Then
-        long countField = output.get(0).chars().filter(ch -> ch == '|').count() + 1;
-        assertEquals("Rental item should have 2 field", 2, countField);
-    }
-
-    @Test
-    public void shouldReturnRentalCollection() {
-        // Given
-        ArrayList<Rental> collection = new ArrayList<>();
+        collection = new ArrayList<>();
         Book book = new Book("Book");
         Movie movie = new Movie("movie");
         collection.add(book);
         collection.add(movie);
+    }
+
+    @Test
+    public void shouldReturnRentalCollection() {
         // When
-        ArrayList<String> output = Formatter.collection(collection, Rental.class, false);
+        ArrayList<String> output = Formatter.items(collection, Rental.class, false);
         // Then
         boolean hasBookLabel = output.stream().anyMatch(text -> text.contains("Books List"));
         assertEquals("Rental collection should have book header", true, hasBookLabel);
@@ -56,38 +39,9 @@ public class FormatterTest {
     }
 
     @Test
-    public void shouldReturnBookHeader() {
-        // Given
-        // When
-        ArrayList<String> output = Formatter.header(Book.class, false);
-        // Then
-        boolean hasLabel = output.stream().anyMatch(text -> text.contains("Books List"));
-        assertEquals("Book header should have a label", true, hasLabel);
-        long countField = output.get(1).chars().filter(ch -> ch == '|').count() + 1;
-        assertEquals("Book header should have 3 field", 3, countField);
-    }
-
-    @Test
-    public void shouldReturnBookItem() {
-        // Given
-        Book item = new Book("Book");
-        // When
-        ArrayList<String> output = Formatter.item(item, false);
-        // Then
-        long countField = output.get(0).chars().filter(ch -> ch == '|').count() + 1;
-        assertEquals("Book item should have 3 field", 3, countField);
-    }
-
-    @Test
     public void shouldReturnBookCollection() {
-        // Given
-        ArrayList<Rental> collection = new ArrayList<>();
-        Book book = new Book("Book");
-        Movie movie = new Movie("movie");
-        collection.add(book);
-        collection.add(movie);
         // When
-        ArrayList<String> output = Formatter.collection(collection, Book.class, false);
+        ArrayList<String> output = Formatter.items(collection, Book.class, false);
         // Then
         boolean hasBookLabel = output.stream().anyMatch(text -> text.contains("Books List"));
         assertEquals("Book collection should have book header", true, hasBookLabel);
@@ -96,38 +50,9 @@ public class FormatterTest {
     }
 
     @Test
-    public void shouldReturnMovieHeader() {
-        // Given
-        // When
-        ArrayList<String> output = Formatter.header(Movie.class, false);
-        // Then
-        boolean hasLabel = output.stream().anyMatch(text -> text.contains("Movies List"));
-        assertEquals("Movie header should have a label", true, hasLabel);
-        long countField = output.get(1).chars().filter(ch -> ch == '|').count() + 1;
-        assertEquals("Movie header should have 4 field", 4, countField);
-    }
-
-    @Test
-    public void shouldReturnMovieItem() {
-        // Given
-        Movie item = new Movie("movie");
-        // When
-        ArrayList<String> output = Formatter.item(item, false);
-        // Then
-        long countField = output.get(0).chars().filter(ch -> ch == '|').count() + 1;
-        assertEquals("Movie item should have 4 field", 4, countField);
-    }
-
-    @Test
     public void shouldReturnMovieCollection() {
-        // Given
-        ArrayList<Rental> collection = new ArrayList<>();
-        Book book = new Book("Book");
-        Movie movie = new Movie("movie");
-        collection.add(book);
-        collection.add(movie);
         // When
-        ArrayList<String> output = Formatter.collection(collection, Movie.class, false);
+        ArrayList<String> output = Formatter.items(collection, Movie.class, false);
         // Then
         boolean hasMovieLabel = output.stream().anyMatch(text -> text.contains("Movies List"));
         assertEquals("Movie collection should have movie header", true, hasMovieLabel);

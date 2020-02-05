@@ -1,20 +1,11 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.model.Book;
-import com.twu.biblioteca.model.Movie;
+import com.twu.biblioteca.database.RentalDatabase;
+import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Rental;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class Biblioteca {
 
-    public enum FILTER {
-        AVAILABLE,
-        NOT_AVAILABLE,
-        ALL
-    }
 
     public enum RESPONSE {
         SUCCESS,
@@ -22,47 +13,33 @@ public class Biblioteca {
         DEFAULT_ERROR
     }
 
-    private ArrayList<Rental> items;
+    private static Biblioteca instance;
     private BibliotecaUser userManager;
 
     public Biblioteca() {
-        items = new ArrayList<Rental>();
-        userManager = new BibliotecaUser();
-        addDefaultBooks();
-        addDefaultMovies();
+        instance = this;
+        initialize();
     }
 
-    public ArrayList<Rental> getItems(FILTER filter) {
-        ArrayList<Rental> items = new ArrayList<>();
-        switch (filter){
-            case AVAILABLE:
-                items = this.items.stream()
-                        .filter(Rental::isAvailable)
-                        .collect(Collectors.toCollection(ArrayList::new));
-                break;
-            case NOT_AVAILABLE:
-                items = this.items.stream()
-                        .filter(item -> !item.isAvailable())
-                        .collect(Collectors.toCollection(ArrayList::new));
-                break;
-            case ALL:
-                items = this.items;
-                break;
-        }
-        // Sort items by class name
-        items.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
-        return items;
+    public static Biblioteca getInstance() {
+        if(instance == null) instance = new Biblioteca();
+        return instance;
+    }
+
+    public void initialize() {
+        userManager = new BibliotecaUser();
+        UserDatabase.getInstance().initialize();
+        RentalDatabase.getInstance().initialize();
     }
 
     public RESPONSE doCheckOut(String itemName) {
         if(userManager.getCurrentUser()==null) return RESPONSE.AUTHORIZATION_ERROR;
-        Rental item = items.stream()
-                .filter(it -> it.getTitle().equals(itemName))
+        Rental item = RentalDatabase.getInstance().getItems().stream()
+                .filter(it -> it.getTitle().equals(itemName) && it.isAvailable())
                 .findFirst()
                 .orElse(null);
         boolean itemExist = item != null;
         if(itemExist) {
-            if(!item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
             item.doCheckOut(userManager.getCurrentUser());
             return RESPONSE.SUCCESS;
         }
@@ -71,13 +48,12 @@ public class Biblioteca {
 
     public RESPONSE doReturn(String itemName) {
         if(userManager.getCurrentUser()==null) return RESPONSE.AUTHORIZATION_ERROR;
-        Rental item = items.stream()
-                .filter(it -> it.getTitle().equals(itemName))
+        Rental item = RentalDatabase.getInstance().getItems().stream()
+                .filter(it -> it.getTitle().equals(itemName) && !it.isAvailable())
                 .findFirst()
                 .orElse(null);
         boolean itemExist = item != null;
         if(itemExist) {
-            if(item.isAvailable()) return RESPONSE.DEFAULT_ERROR;
             if(userManager.getCurrentUser() != item.getBorrower()) return RESPONSE.AUTHORIZATION_ERROR;
             item.doReturn();
             return RESPONSE.SUCCESS;
@@ -87,17 +63,5 @@ public class Biblioteca {
 
     public BibliotecaUser user() {
         return userManager;
-    }
-
-    private void addDefaultBooks(){
-        items.add(new Book("Book A", "Santiphap A.", "01/01/2008"));
-        items.add(new Book("Book B", "Santiphap B.", "02/01/2008"));
-        items.add(new Book("Book C", "Santiphap C.", "03/01/2008"));
-    }
-
-    private void addDefaultMovies(){
-        items.add(new Movie("Movie A", 2008, "Santiphap A.", 8));
-        items.add(new Movie("Movie B", 2013,"Santiphap B.", 9));
-        items.add(new Movie("Movie C", 2020, "Santiphap C.", 10));
     }
 }

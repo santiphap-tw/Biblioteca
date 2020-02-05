@@ -1,8 +1,10 @@
 package com.twu.biblioteca.integration.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.twu.biblioteca.App;
 import com.twu.biblioteca.Biblioteca;
+import com.twu.biblioteca.WebApp;
+import com.twu.biblioteca.database.RentalDatabase;
+import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.Rental;
 import com.twu.biblioteca.model.RestResponse;
@@ -22,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes= App.class)
+@SpringBootTest(classes= WebApp.class)
 @RunWith(SpringRunner.class)
 public class ProfileControllerTest {
 
@@ -37,19 +39,19 @@ public class ProfileControllerTest {
     public void setup() {
         // Given
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        App.biblioteca = new Biblioteca();
+        Biblioteca.getInstance().initialize();
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
         // Login with some user
-        user = App.biblioteca.user().getUsers().get(0);
-        App.biblioteca.user().login(user.getId(),user.getPassword());
+        user = UserDatabase.getInstance().getUsers().get(0);
+        Biblioteca.getInstance().user().login(user.getId(),user.getPassword());
         // Checkout some items
-        Rental item1 = App.biblioteca.getItems(Biblioteca.FILTER.ALL).get(0);
-        Rental item2 = App.biblioteca.getItems(Biblioteca.FILTER.ALL).get(1);
-        Rental item3 = App.biblioteca.getItems(Biblioteca.FILTER.ALL).get(4);
-        App.biblioteca.doCheckOut(item1.getTitle());
-        App.biblioteca.doCheckOut(item3.getTitle());
-        App.biblioteca.doCheckOut(item2.getTitle());
+        Rental item1 = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).get(0);
+        Rental item2 = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).get(1);
+        Rental item3 = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).get(4);
+        Biblioteca.getInstance().doCheckOut(item1.getTitle());
+        Biblioteca.getInstance().doCheckOut(item3.getTitle());
+        Biblioteca.getInstance().doCheckOut(item2.getTitle());
     }
 
     @Test
@@ -67,7 +69,7 @@ public class ProfileControllerTest {
     @Test
     public void shouldNotShowInfoWhenNotLogin() throws Exception  {
         // Given
-        App.biblioteca.user().logout();
+        Biblioteca.getInstance().user().logout();
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.MY_INFO_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
