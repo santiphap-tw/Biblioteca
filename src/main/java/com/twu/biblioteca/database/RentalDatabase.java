@@ -5,6 +5,8 @@ import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rental;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class RentalDatabase {
 
@@ -30,6 +32,14 @@ public class RentalDatabase {
     public ArrayList<Rental> getItems() {
         items.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
         return items;
+    }
+
+    public ArrayList<Rental> getItems(Predicate<? super Rental> filter) {
+        ArrayList<Rental> filteredItems = this.getItems().stream()
+                .filter(filter)
+                .collect(Collectors.toCollection(ArrayList::new));
+        filteredItems.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
+        return filteredItems;
     }
 
     private void addDefaultBooks(){

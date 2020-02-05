@@ -5,7 +5,6 @@ import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Rental;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class Biblioteca {
 
@@ -33,21 +32,15 @@ public class Biblioteca {
         ArrayList<Rental> items = new ArrayList<>();
         switch (filter){
             case AVAILABLE:
-                items = RentalDatabase.getInstance().getItems().stream()
-                        .filter(Rental::isAvailable)
-                        .collect(Collectors.toCollection(ArrayList::new));
+                items = RentalDatabase.getInstance().getItems(Rental::isAvailable);
                 break;
             case NOT_AVAILABLE:
-                items = RentalDatabase.getInstance().getItems().stream()
-                        .filter(item -> !item.isAvailable())
-                        .collect(Collectors.toCollection(ArrayList::new));
+                items = RentalDatabase.getInstance().getItems(item -> !item.isAvailable());
                 break;
             case ALL:
                 items = RentalDatabase.getInstance().getItems();
                 break;
         }
-        // Sort items by class name
-        items.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
         return items;
     }
 
