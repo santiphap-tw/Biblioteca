@@ -5,12 +5,13 @@ import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
 import com.twu.biblioteca.model.User;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class LogoutController {
 
-    @RequestMapping("/logout")
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public RestResponse logout() {
         User user = Biblioteca.getInstance().user().logout();
         boolean isSuccess = user != null;

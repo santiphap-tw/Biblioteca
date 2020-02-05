@@ -5,13 +5,14 @@ import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
 import com.twu.biblioteca.model.User;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class LoginController {
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public RestResponse login(@RequestParam String id, @RequestParam String password) {
         User user = Biblioteca.getInstance().user().login(id,password);
         boolean isSuccess = user != null;

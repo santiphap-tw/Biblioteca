@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,7 +55,8 @@ public class CheckOutControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS, Label.CHECKOUT_SUCCESS.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/checkout/" + item.getTitle()))
+        this.mockMvc.perform(post("/checkout/")
+                .param("name",item.getTitle()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -68,7 +69,8 @@ public class CheckOutControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.CHECKOUT_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/checkout/" + item.getTitle()))
+        this.mockMvc.perform(post("/checkout/")
+                .param("name",item.getTitle()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -80,7 +82,8 @@ public class CheckOutControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.CHECKOUT_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/checkout/there_is_no_this_item_name"))
+        this.mockMvc.perform(post("/checkout/")
+                .param("name","thereisnoitemwiththisname"))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -93,7 +96,8 @@ public class CheckOutControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.AUTHORIZATION_ERROR.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/checkout/" + item.getTitle()))
+        this.mockMvc.perform(post("/checkout/")
+                .param("name",item.getTitle()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));

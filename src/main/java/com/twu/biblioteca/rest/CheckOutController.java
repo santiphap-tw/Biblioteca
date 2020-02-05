@@ -3,15 +3,13 @@ package com.twu.biblioteca.rest;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CheckOutController {
 
-    @RequestMapping("/checkout/{name}")
-    public RestResponse doCheckOut(@PathVariable String name) {
+    @RequestMapping(value = "/checkout", method = RequestMethod.POST)
+    public RestResponse doCheckOut(@RequestParam String name) {
         Biblioteca.RESPONSE response = Biblioteca.getInstance().doCheckOut(name);
         switch (response) {
             case SUCCESS:

@@ -3,15 +3,13 @@ package com.twu.biblioteca.rest;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ReturnController {
 
-    @RequestMapping("/return/{name}")
-    public RestResponse doReturn(@PathVariable String name) {
+    @RequestMapping(value = "/return", method = RequestMethod.POST)
+    public RestResponse doReturn(@RequestParam String name) {
         Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn(name);
         switch (response) {
             case SUCCESS:

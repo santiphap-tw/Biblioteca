@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,7 +48,9 @@ public class LoginControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS, Label.LOGIN_SUCCESS.text + user.getName());
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/login?id=" + user.getId() + "&password=" + user.getPassword()))
+        this.mockMvc.perform(post("/login")
+                .param("id", user.getId())
+                .param("password",user.getPassword()))
         // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -61,7 +63,9 @@ public class LoginControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.LOGIN_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/login?id=" + user.getId() + "&password=" + user.getPassword() + "xxx"))
+        this.mockMvc.perform(post("/login")
+                .param("id", user.getId())
+                .param("password",user.getPassword()+"xxx"))
         // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));

@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,7 +56,8 @@ public class ReturnControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS, Label.RETURN_SUCCESS.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/return/" + item.getTitle()))
+        this.mockMvc.perform(post("/return/")
+                .param("name",item.getTitle()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -69,7 +70,8 @@ public class ReturnControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.RETURN_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/return/" + item.getTitle()))
+        this.mockMvc.perform(post("/return/")
+                .param("name",item.getTitle()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -81,7 +83,8 @@ public class ReturnControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.RETURN_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/return/there_is_no_this_item_name"))
+        this.mockMvc.perform(post("/return/")
+                .param("name","thereisnoitemwiththisname"))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -94,7 +97,8 @@ public class ReturnControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.AUTHORIZATION_ERROR.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/return/" + item.getTitle()))
+        this.mockMvc.perform(post("/return/")
+                .param("name",item.getTitle()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -108,7 +112,8 @@ public class ReturnControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.AUTHORIZATION_ERROR.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/return/" + item.getTitle()))
+        this.mockMvc.perform(post("/return/")
+                .param("name",item.getTitle()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
