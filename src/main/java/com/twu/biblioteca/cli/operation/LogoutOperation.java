@@ -10,20 +10,17 @@ import java.util.ArrayList;
 
 public class LogoutOperation extends AppOperation {
 
-    private Biblioteca biblioteca;
-
-    public LogoutOperation(String description, Biblioteca biblioteca) {
+    public LogoutOperation(String description) {
         super(description);
-        this.biblioteca = biblioteca;
     }
 
     @Override
     public ArrayList<String> run(String parameter) {
         ArrayList<String> output = new ArrayList<String>();
         ////////////
-        boolean isLoggedIn = biblioteca.user().getCurrentUser() != null;
+        boolean isLoggedIn = Biblioteca.getInstance().user().getCurrentUser() != null;
         if(isLoggedIn) {
-            User user = biblioteca.user().logout();
+            User user = Biblioteca.getInstance().user().logout();
             output.add(Label.LOGOUT_SUCCESS.text + user.getName());
         }
         else {

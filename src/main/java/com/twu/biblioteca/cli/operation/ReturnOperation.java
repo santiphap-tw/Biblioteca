@@ -9,18 +9,15 @@ import java.util.ArrayList;
 
 public class ReturnOperation extends AppOperation {
 
-    private Biblioteca biblioteca;
-
-    public ReturnOperation(String description, Biblioteca biblioteca) {
+    public ReturnOperation(String description) {
         super(description);
-        this.biblioteca = biblioteca;
     }
 
     @Override
     public ArrayList<String> run(String itemName) {
         ArrayList<String> output = new ArrayList<String>();
         ////////////
-        Biblioteca.RESPONSE isSuccess = biblioteca.doReturn(itemName.trim());
+        Biblioteca.RESPONSE isSuccess = Biblioteca.getInstance().doReturn(itemName.trim());
         switch (isSuccess) {
             case SUCCESS:
                 output.add(Label.RETURN_SUCCESS.text);

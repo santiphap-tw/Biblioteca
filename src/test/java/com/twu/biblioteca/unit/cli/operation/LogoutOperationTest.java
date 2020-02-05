@@ -17,9 +17,8 @@ public class LogoutOperationTest {
     @Before
     public void initialize(){
         // Given
-        Biblioteca biblioteca = new Biblioteca();
-        logoutOperation = new LogoutOperation("", biblioteca);
-        biblioteca.user().login("111-1111", "1111");
+        logoutOperation = new LogoutOperation("");
+        Biblioteca.getInstance().user().login("111-1111", "1111");
     }
 
     @Test

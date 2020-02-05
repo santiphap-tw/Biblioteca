@@ -14,20 +14,19 @@ import static org.junit.Assert.assertEquals;
 
 public class MyBorrowOperationTest {
 
-    private Biblioteca biblioteca;
     private MyBorrowOperation myBorrowOperation;
     private ArrayList<String> expectedOutput;
 
     @Before
     public void initialize(){
         // Given
-        biblioteca = new Biblioteca();
-        myBorrowOperation = new MyBorrowOperation("", biblioteca);
-        biblioteca.user().login("111-1111", "1111");
-        biblioteca.doCheckOut("Book A");
-        biblioteca.doCheckOut("Movie A");
-        biblioteca.doCheckOut("Book B");
-        ArrayList<Rental> collection = biblioteca.user().getCurrentUser().getItems();
+        Biblioteca.getInstance().initialize();
+        myBorrowOperation = new MyBorrowOperation("");
+        Biblioteca.getInstance().user().login("111-1111", "1111");
+        Biblioteca.getInstance().doCheckOut("Book A");
+        Biblioteca.getInstance().doCheckOut("Movie A");
+        Biblioteca.getInstance().doCheckOut("Book B");
+        ArrayList<Rental> collection = Biblioteca.getInstance().user().getCurrentUser().getItems();
         expectedOutput = Formatter.collection(collection, Rental.class, false);
     }
 
@@ -43,7 +42,7 @@ public class MyBorrowOperationTest {
     @Test
     public void shouldNotShowMyBorrowingIfNotLoggedIn() {
         // Given
-        biblioteca.user().logout();
+        Biblioteca.getInstance().user().logout();
         // When
         ArrayList<String> output = myBorrowOperation.run("");
         // Then

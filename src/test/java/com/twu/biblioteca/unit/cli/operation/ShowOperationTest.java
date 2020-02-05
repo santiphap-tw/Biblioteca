@@ -16,22 +16,20 @@ import static org.junit.Assert.assertEquals;
 
 public class ShowOperationTest {
 
-    private Biblioteca biblioteca;
-
     @Before
     public void initialize(){
         // Given
-        biblioteca = new Biblioteca();
-        biblioteca.user().login("111-1111", "1111");
-        biblioteca.doCheckOut("Book A");
-        biblioteca.doCheckOut("Movie A");
-        biblioteca.doCheckOut("Book B");
+        Biblioteca.getInstance().initialize();
+        Biblioteca.getInstance().user().login("111-1111", "1111");
+        Biblioteca.getInstance().doCheckOut("Book A");
+        Biblioteca.getInstance().doCheckOut("Movie A");
+        Biblioteca.getInstance().doCheckOut("Book B");
     }
 
     @Test
     public void shouldShowAvailableIfNoParameter() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca);
+        ShowOperation showOperation = new ShowOperation("");
         // When
         ArrayList<String> output = showOperation.run("");
         // Then
@@ -41,7 +39,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowAvailable() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca);
+        ShowOperation showOperation = new ShowOperation("");
         ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("available");
@@ -53,7 +51,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowNotAvailable() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca);
+        ShowOperation showOperation = new ShowOperation("");
         ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("not available");
@@ -65,7 +63,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowAll() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca);
+        ShowOperation showOperation = new ShowOperation("");
         ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL);
         // When
         ArrayList<String> output = showOperation.run("all");
@@ -77,7 +75,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowAvailableBookIfNoParameter() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
+        ShowOperation showOperation = new ShowOperation("", Book.class);
         // When
         ArrayList<String> output = showOperation.run("");
         // Then
@@ -87,7 +85,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowAvailableBook() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
+        ShowOperation showOperation = new ShowOperation("", Book.class);
         ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("available");
@@ -99,7 +97,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowNotAvailableBook() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
+        ShowOperation showOperation = new ShowOperation("", Book.class);
         ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("not available");
@@ -111,7 +109,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowAllBook() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
+        ShowOperation showOperation = new ShowOperation("", Book.class);
         ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL);
         // When
         ArrayList<String> output = showOperation.run("all");
@@ -123,7 +121,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowAvailableMovieIfNoParameter() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
+        ShowOperation showOperation = new ShowOperation("", Movie.class);
         // When
         ArrayList<String> output = showOperation.run("");
         // Then
@@ -133,7 +131,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowAvailableMovie() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
+        ShowOperation showOperation = new ShowOperation("", Movie.class);
         ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("available");
@@ -145,7 +143,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowNotAvailableMovie() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
+        ShowOperation showOperation = new ShowOperation("", Movie.class);
         ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("not available");
@@ -157,7 +155,7 @@ public class ShowOperationTest {
     @Test
     public void shouldShowAllMovie() {
         // Given
-        ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
+        ShowOperation showOperation = new ShowOperation("", Movie.class);
         ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL);
         // When
         ArrayList<String> output = showOperation.run("all");

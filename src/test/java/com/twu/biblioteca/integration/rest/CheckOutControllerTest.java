@@ -39,12 +39,12 @@ public class CheckOutControllerTest {
     public void setup() {
         // Given
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        WebApp.biblioteca = new Biblioteca();
+        Biblioteca.getInstance().initialize();
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
         // Login with some user
         User user = UserDatabase.getInstance().getUsers().get(0);
-        WebApp.biblioteca.user().login(user.getId(),user.getPassword());
+        Biblioteca.getInstance().user().login(user.getId(),user.getPassword());
         // Get some item
         item = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).get(0);
     }
@@ -64,7 +64,7 @@ public class CheckOutControllerTest {
     @Test
     public void shouldNotCheckOutNAItem() throws Exception  {
         // Given
-        WebApp.biblioteca.doCheckOut(item.getTitle());
+        Biblioteca.getInstance().doCheckOut(item.getTitle());
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.CHECKOUT_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
@@ -89,7 +89,7 @@ public class CheckOutControllerTest {
     @Test
     public void shouldNotCheckOutWhenNotLogin() throws Exception  {
         // Given
-        WebApp.biblioteca.user().logout();
+        Biblioteca.getInstance().user().logout();
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.AUTHORIZATION_ERROR.text);
         String json = itemJson.write(expectedResult).getJson();
         // When

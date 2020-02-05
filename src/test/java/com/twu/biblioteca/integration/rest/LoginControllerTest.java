@@ -36,7 +36,7 @@ public class LoginControllerTest {
     public void setup() {
         // Given
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        WebApp.biblioteca = new Biblioteca();
+        Biblioteca.getInstance().initialize();
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
     }

@@ -1,6 +1,5 @@
 package com.twu.biblioteca.cli;
 
-import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.operation.*;
 import com.twu.biblioteca.model.*;
 
@@ -30,21 +29,18 @@ public class BibliotecaApp {
     private Scanner sc = new Scanner(System.in);
 
     public BibliotecaApp() {
-        this(new Biblioteca());
-    }
-    public BibliotecaApp(Biblioteca biblioteca) {
         this.state = STATE.INITIAL;
         // Initialize options
         options = new LinkedHashMap<String, AppOperation>();
-        options.put(Label.OPTION_SHOW_ALL_COMMAND.text, new ShowOperation(Label.OPTION_SHOW_ALL.text, biblioteca, Rental.class));
-        options.put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new ShowOperation(Label.OPTION_SHOW_BOOKS.text, biblioteca, Book.class));
-        options.put(Label.OPTION_SHOW_MOVIES_COMMAND.text, new ShowOperation(Label.OPTION_SHOW_MOVIES.text, biblioteca, Movie.class));
-        options.put(Label.OPTION_LOGIN_COMMAND.text, new LoginOperation(Label.OPTION_LOGIN.text, biblioteca));
-        options.put(Label.OPTION_LOGOUT_COMMAND.text, new LogoutOperation(Label.OPTION_LOGOUT.text, biblioteca));
-        options.put(Label.OPTION_CHECKOUT_COMMAND.text, new CheckOutOperation(Label.OPTION_CHECKOUT.text, biblioteca));
-        options.put(Label.OPTION_RETURN_COMMAND.text, new ReturnOperation(Label.OPTION_RETURN.text, biblioteca));
-        options.put(Label.OPTION_MY_INFO_COMMAND.text, new MyInfoOperation(Label.OPTION_MY_INFO.text, biblioteca));
-        options.put(Label.OPTION_MY_BORROWING_COMMAND.text, new MyBorrowOperation(Label.OPTION_MY_BORROWING.text, biblioteca));
+        options.put(Label.OPTION_SHOW_ALL_COMMAND.text, new ShowOperation(Label.OPTION_SHOW_ALL.text, Rental.class));
+        options.put(Label.OPTION_SHOW_BOOKS_COMMAND.text, new ShowOperation(Label.OPTION_SHOW_BOOKS.text, Book.class));
+        options.put(Label.OPTION_SHOW_MOVIES_COMMAND.text, new ShowOperation(Label.OPTION_SHOW_MOVIES.text, Movie.class));
+        options.put(Label.OPTION_LOGIN_COMMAND.text, new LoginOperation(Label.OPTION_LOGIN.text));
+        options.put(Label.OPTION_LOGOUT_COMMAND.text, new LogoutOperation(Label.OPTION_LOGOUT.text));
+        options.put(Label.OPTION_CHECKOUT_COMMAND.text, new CheckOutOperation(Label.OPTION_CHECKOUT.text));
+        options.put(Label.OPTION_RETURN_COMMAND.text, new ReturnOperation(Label.OPTION_RETURN.text));
+        options.put(Label.OPTION_MY_INFO_COMMAND.text, new MyInfoOperation(Label.OPTION_MY_INFO.text));
+        options.put(Label.OPTION_MY_BORROWING_COMMAND.text, new MyBorrowOperation(Label.OPTION_MY_BORROWING.text));
         options.put(Label.OPTION_HELP_COMMAND.text, new StartOperation(Label.OPTION_HELP.text, options));
         options.put(Label.OPTION_EXIT_COMMAND.text, new ExitOperation(Label.OPTION_EXIT.text));
         // Initialize initial tasks

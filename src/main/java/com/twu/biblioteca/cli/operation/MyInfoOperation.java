@@ -10,18 +10,15 @@ import java.util.ArrayList;
 
 public class MyInfoOperation extends AppOperation {
 
-    private Biblioteca biblioteca;
-
-    public MyInfoOperation(String description, Biblioteca biblioteca) {
+    public MyInfoOperation(String description) {
         super(description);
-        this.biblioteca = biblioteca;
     }
 
     @Override
     public ArrayList<String> run(String parameter) {
         ArrayList<String> output = new ArrayList<String>();
         ////////////
-        User user = biblioteca.user().getCurrentUser();
+        User user = Biblioteca.getInstance().user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
             output.add("ID: \t" + user.getId());

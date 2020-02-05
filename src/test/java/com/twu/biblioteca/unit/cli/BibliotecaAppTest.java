@@ -78,8 +78,7 @@ public class BibliotecaAppTest {
     @Test
     public void shouldHaveCheckOutCommand() {
         // Given
-        Biblioteca biblioteca = new Biblioteca();
-        BibliotecaApp app = new BibliotecaApp(biblioteca);
+        BibliotecaApp app = new BibliotecaApp();
         app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
         // When
         BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_CHECKOUT_COMMAND.text + " Book A");
@@ -91,8 +90,7 @@ public class BibliotecaAppTest {
     @Test
     public void shouldHaveReturnCommand() {
         // Given
-        Biblioteca biblioteca = new Biblioteca();
-        BibliotecaApp app = new BibliotecaApp(biblioteca);
+        BibliotecaApp app = new BibliotecaApp();
         app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
         app.selectOption(Label.OPTION_CHECKOUT_COMMAND.text + " Book A");
         app.selectOption(Label.OPTION_CHECKOUT_COMMAND.text + " Book B");
@@ -106,26 +104,24 @@ public class BibliotecaAppTest {
     @Test
     public void shouldHaveLoginCommand() {
         // Given
-        Biblioteca biblioteca = new Biblioteca();
-        BibliotecaApp app = new BibliotecaApp(biblioteca);
+        BibliotecaApp app = new BibliotecaApp();
         // When
         BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
         // Then
         assertEquals("Login command should be valid", BibliotecaApp.RESPONSE.VALID, response);
-        assertEquals("App should have logged in with user 111-1111", "111-1111", biblioteca.user().getCurrentUser().getId());
+        assertEquals("App should have logged in with user 111-1111", "111-1111", Biblioteca.getInstance().user().getCurrentUser().getId());
     }
 
     @Test
     public void shouldHaveLogoutCommand() {
         // Given
-        Biblioteca biblioteca = new Biblioteca();
-        BibliotecaApp app = new BibliotecaApp(biblioteca);
+        BibliotecaApp app = new BibliotecaApp();
         app.selectOption(Label.OPTION_LOGIN_COMMAND.text + " 111-1111 1111");
         // When
         BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_LOGOUT_COMMAND.text);
         // Then
         assertEquals("Logout command should be valid", BibliotecaApp.RESPONSE.VALID, response);
-        assertEquals("App should have logged out", null, biblioteca.user().getCurrentUser());
+        assertEquals("App should have logged out", null, Biblioteca.getInstance().user().getCurrentUser());
     }
 
     @Test

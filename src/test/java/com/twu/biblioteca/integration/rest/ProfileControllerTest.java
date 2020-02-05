@@ -39,19 +39,19 @@ public class ProfileControllerTest {
     public void setup() {
         // Given
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        WebApp.biblioteca = new Biblioteca();
+        Biblioteca.getInstance().initialize();
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
         // Login with some user
         user = UserDatabase.getInstance().getUsers().get(0);
-        WebApp.biblioteca.user().login(user.getId(),user.getPassword());
+        Biblioteca.getInstance().user().login(user.getId(),user.getPassword());
         // Checkout some items
         Rental item1 = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).get(0);
         Rental item2 = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).get(1);
         Rental item3 = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).get(4);
-        WebApp.biblioteca.doCheckOut(item1.getTitle());
-        WebApp.biblioteca.doCheckOut(item3.getTitle());
-        WebApp.biblioteca.doCheckOut(item2.getTitle());
+        Biblioteca.getInstance().doCheckOut(item1.getTitle());
+        Biblioteca.getInstance().doCheckOut(item3.getTitle());
+        Biblioteca.getInstance().doCheckOut(item2.getTitle());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ProfileControllerTest {
     @Test
     public void shouldNotShowInfoWhenNotLogin() throws Exception  {
         // Given
-        WebApp.biblioteca.user().logout();
+        Biblioteca.getInstance().user().logout();
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.MY_INFO_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When

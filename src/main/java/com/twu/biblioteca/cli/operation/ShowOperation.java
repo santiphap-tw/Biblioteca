@@ -1,6 +1,5 @@
 package com.twu.biblioteca.cli.operation;
 
-import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.cli.Formatter;
 import com.twu.biblioteca.database.RentalDatabase;
@@ -14,7 +13,6 @@ import java.util.function.Predicate;
 
 public class ShowOperation extends AppOperation {
 
-    private Biblioteca biblioteca;
     private Class<? extends Rental> targetClass;
     private Map<String, Predicate<? super Rental>> stringToFilter = new HashMap<String, Predicate<? super Rental>>() {{
        put("available", RentalDatabase.Filter.AVAILABLE);
@@ -22,13 +20,12 @@ public class ShowOperation extends AppOperation {
        put("all", RentalDatabase.Filter.ALL);
     }};
 
-    public ShowOperation(String description, Biblioteca biblioteca) {
-        this(description, biblioteca, Rental.class);
+    public ShowOperation(String description) {
+        this(description, Rental.class);
     }
-    public ShowOperation(String description, Biblioteca biblioteca, Class<? extends Rental> targetClass) {
+    public ShowOperation(String description, Class<? extends Rental> targetClass) {
         super(description);
         this.targetClass = targetClass;
-        this.biblioteca = biblioteca;
     }
 
     @Override

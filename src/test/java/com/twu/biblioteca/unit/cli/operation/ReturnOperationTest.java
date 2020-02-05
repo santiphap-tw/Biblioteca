@@ -12,17 +12,16 @@ import static org.junit.Assert.assertEquals;
 
 public class ReturnOperationTest {
 
-    private Biblioteca biblioteca;
     private ReturnOperation returnOperation;
 
     @Before
     public void initialize(){
         // Given
-        biblioteca = new Biblioteca();
-        returnOperation = new ReturnOperation("", biblioteca);
-        biblioteca.user().login("111-1111", "1111");
-        biblioteca.doCheckOut("Book A");
-        biblioteca.doCheckOut("Movie A");
+        Biblioteca.getInstance().initialize();
+        returnOperation = new ReturnOperation("");
+        Biblioteca.getInstance().user().login("111-1111", "1111");
+        Biblioteca.getInstance().doCheckOut("Book A");
+        Biblioteca.getInstance().doCheckOut("Movie A");
     }
 
     @Test
@@ -59,7 +58,7 @@ public class ReturnOperationTest {
     @Test
     public void shouldNotReturnNoUer() {
         // Given
-        biblioteca.user().logout();
+        Biblioteca.getInstance().user().logout();
         // When
         ArrayList<String> output = returnOperation.run("Movie A");
         // Then
@@ -70,7 +69,7 @@ public class ReturnOperationTest {
     @Test
     public void shouldNotReturnWrongUser() {
         // Given
-        biblioteca.user().login("222-2222", "2222");
+        Biblioteca.getInstance().user().login("222-2222", "2222");
         // When
         ArrayList<String> output = returnOperation.run("Movie A");
         // Then

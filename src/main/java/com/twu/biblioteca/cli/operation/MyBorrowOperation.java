@@ -12,18 +12,15 @@ import java.util.ArrayList;
 
 public class MyBorrowOperation extends AppOperation {
 
-    private Biblioteca biblioteca;
-
-    public MyBorrowOperation(String description, Biblioteca biblioteca) {
+    public MyBorrowOperation(String description) {
         super(description);
-        this.biblioteca = biblioteca;
     }
 
     @Override
     public ArrayList<String> run(String parameter) {
         ArrayList<String> output = new ArrayList<String>();
         ////////////
-        User user = biblioteca.user().getCurrentUser();
+        User user = Biblioteca.getInstance().user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
             output.addAll(Formatter.collection(user.getItems(),Rental.class,false));

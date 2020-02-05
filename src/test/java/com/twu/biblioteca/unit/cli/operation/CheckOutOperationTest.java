@@ -12,15 +12,14 @@ import static org.junit.Assert.assertEquals;
 
 public class CheckOutOperationTest {
 
-    private Biblioteca biblioteca;
     private CheckOutOperation checkOutOperation;
 
     @Before
     public void initialize(){
         // Given
-        biblioteca = new Biblioteca();
-        checkOutOperation = new CheckOutOperation("", biblioteca);
-        biblioteca.user().login("111-1111", "1111");
+        Biblioteca.getInstance().initialize();
+        checkOutOperation = new CheckOutOperation("");
+        Biblioteca.getInstance().user().login("111-1111", "1111");
     }
 
     @Test
@@ -57,7 +56,7 @@ public class CheckOutOperationTest {
     @Test
     public void shouldNotCheckOutUnauthorizedUser() {
         // Given
-        biblioteca.user().logout();
+        Biblioteca.getInstance().user().logout();
         // When
         ArrayList<String> output = checkOutOperation.run("Book B");
         // Then

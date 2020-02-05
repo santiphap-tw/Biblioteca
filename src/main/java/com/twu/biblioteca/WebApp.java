@@ -5,11 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class WebApp {
-
-    public static Biblioteca biblioteca;
-
     public static void main(String[] args) {
-        biblioteca = new Biblioteca();
         SpringApplication.run(WebApp.class, args);
     }
 }

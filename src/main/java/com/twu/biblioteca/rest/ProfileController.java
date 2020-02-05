@@ -1,6 +1,6 @@
 package com.twu.biblioteca.rest;
 
-import com.twu.biblioteca.WebApp;
+import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
 import com.twu.biblioteca.model.User;
@@ -12,7 +12,7 @@ public class ProfileController {
 
     @RequestMapping("/profile")
     public RestResponse logout() {
-        User user = WebApp.biblioteca.user().getCurrentUser();
+        User user = Biblioteca.getInstance().user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin)
             return new RestResponse(RestResponse.STATUS.SUCCESS, user);
