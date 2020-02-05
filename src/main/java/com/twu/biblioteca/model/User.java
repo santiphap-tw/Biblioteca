@@ -1,6 +1,7 @@
 package com.twu.biblioteca.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.twu.biblioteca.database.RentalDatabase;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,6 @@ public class User {
     private String name;
     private String email;
     private String phone;
-    private ArrayList<Rental> items;
 
     public User(String id, String password, String name, String email, String phone) {
         this.id = id;
@@ -18,7 +18,6 @@ public class User {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.items = new ArrayList<Rental>();
     }
 
     public String getId() {
@@ -43,16 +42,6 @@ public class User {
 
     @JsonManagedReference
     public ArrayList<Rental> getItems() {
-        // Sort items by class name
-        items.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
-        return items;
-    }
-
-    public void checkOutItem(Rental item) {
-        this.items.add(item);
-    }
-
-    public void returnItem(Rental item) {
-        this.items.remove(item);
+        return RentalDatabase.getInstance().getItems(item -> item.borrower == this);
     }
 }

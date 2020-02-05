@@ -22,11 +22,9 @@ public abstract  class Rental {
     public void doCheckOut(User borrower) {
         this.borrower = borrower;
         this.available = false;
-        borrower.checkOutItem(this);
     }
 
     public void doReturn() {
-        if(this.borrower != null) this.borrower.returnItem(this);
         this.borrower = null;
         this.available = true;
     }
