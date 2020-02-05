@@ -1,5 +1,6 @@
 package com.twu.biblioteca.cli;
 
+import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.operation.*;
 import com.twu.biblioteca.model.*;
 
@@ -16,12 +17,6 @@ public class BibliotecaApp {
         TERMINATE
     }
 
-    public enum RESPONSE {
-        VALID,
-        INVALID,
-        EXIT
-    }
-
     private STATE state;
     private Map<String, AppOperation> options;
     private AppOperation initialTasks;
@@ -29,6 +24,7 @@ public class BibliotecaApp {
     private Scanner sc = new Scanner(System.in);
 
     public BibliotecaApp() {
+        Biblioteca.getInstance().initialize();
         this.state = STATE.INITIAL;
         // Initialize options
         options = new LinkedHashMap<String, AppOperation>();
@@ -47,6 +43,10 @@ public class BibliotecaApp {
         initialTasks = new StartOperation("", options);
     }
 
+    public static void printOutput(ArrayList<String> output){
+        output.forEach(System.out::println);
+    }
+
     public void start() {
         while(this.state != BibliotecaApp.STATE.TERMINATE) {
             switch (this.state) {
@@ -57,9 +57,10 @@ public class BibliotecaApp {
                 case RUNNING:
                     System.out.print(Label.OPTION_INPUT_PROMPT.text);
                     String option = sc.nextLine();
-                    RESPONSE response = selectOption(option);
-                    if(response == RESPONSE.EXIT)
-                        this.state = BibliotecaApp.STATE.TERMINATE;
+                    runCommand(option).stream()
+                        .filter(out -> out.equals(Label.EXIT.text))
+                        .findFirst()
+                        .ifPresent(out -> this.state = BibliotecaApp.STATE.TERMINATE);
                     break;
                 case TERMINATE:
                     break;
@@ -67,20 +68,18 @@ public class BibliotecaApp {
         }
     }
 
-    public RESPONSE selectOption(String command) {
+    public ArrayList<String> runCommand(String command) {
         // Split command into option & parameter
         String[] commandSplit = command.split(" ", 2);
         String option = commandSplit[0];
         String parameter = commandSplit.length > 1 ? commandSplit[1] : "";
+        return runOption(option,parameter);
+    }
 
+    private ArrayList<String> runOption(String option, String parameter){
         AppOperation selectedOption = options.getOrDefault(option, invalidOption);
         ArrayList<String> output = selectedOption.run(parameter);
         BibliotecaApp.printOutput(output);
-        RESPONSE response = selectedOption.getResponse();
-        return response;
-    }
-
-    public static void printOutput(ArrayList<String> output){
-        output.forEach(System.out::println);
+        return output;
     }
 }

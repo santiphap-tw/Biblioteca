@@ -1,6 +1,5 @@
 package com.twu.biblioteca.cli.operation;
 
-import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.cli.Formatter;
 import com.twu.biblioteca.database.RentalDatabase;
 import com.twu.biblioteca.model.AppOperation;
@@ -38,7 +37,6 @@ public class ShowOperation extends AppOperation {
         ArrayList<Rental> items = RentalDatabase.getInstance().getItems(filter);
         output.addAll(Formatter.items(items,targetClass,showBorrower));
         ////////////
-        response = BibliotecaApp.RESPONSE.VALID;
         return output;
     }
 }

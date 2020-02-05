@@ -1,7 +1,6 @@
 package com.twu.biblioteca.cli.operation;
 
 import com.twu.biblioteca.Biblioteca;
-import com.twu.biblioteca.cli.BibliotecaApp;
 import com.twu.biblioteca.model.AppOperation;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.User;
@@ -29,7 +28,6 @@ public class MyInfoOperation extends AppOperation {
             output.add(Label.MY_INFO_FAIL.text);
         }
         ////////////
-        response = BibliotecaApp.RESPONSE.VALID;
         return output;
     }
 }
