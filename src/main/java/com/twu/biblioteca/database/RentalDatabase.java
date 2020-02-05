@@ -53,4 +53,10 @@ public class RentalDatabase {
         items.add(new Movie("Movie B", 2013,"Santiphap B.", 9));
         items.add(new Movie("Movie C", 2020, "Santiphap C.", 10));
     }
+
+    public static class Filter {
+        public static Predicate<? super Rental> AVAILABLE = Rental::isAvailable;
+        public static Predicate<? super Rental> NOT_AVAILABLE = item -> !item.isAvailable();
+        public static Predicate<? super Rental> ALL = item -> true;
+    }
 }

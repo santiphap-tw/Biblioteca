@@ -1,7 +1,6 @@
 package com.twu.biblioteca.rest;
 
-import com.twu.biblioteca.WebApp;
-import com.twu.biblioteca.Biblioteca;
+import com.twu.biblioteca.database.RentalDatabase;
 import com.twu.biblioteca.model.Rental;
 import com.twu.biblioteca.model.RestResponse;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,17 +37,17 @@ public class ShowController {
         switch (filter){
             case "available":
                 return new RestResponse(RestResponse.STATUS.SUCCESS,
-                        WebApp.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+                        RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).stream()
                         .filter(item -> isSameType(item,type))
                         .collect(Collectors.toCollection(ArrayList::new)));
             case "not_available":
                 return new RestResponse(RestResponse.STATUS.SUCCESS,
-                        WebApp.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
+                        RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE).stream()
                         .filter(item -> isSameType(item,type))
                         .collect(Collectors.toCollection(ArrayList::new)));
             case "all":
                 return new RestResponse(RestResponse.STATUS.SUCCESS,
-                        WebApp.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
+                        RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).stream()
                         .filter(item -> isSameType(item,type))
                         .collect(Collectors.toCollection(ArrayList::new)));
             default:

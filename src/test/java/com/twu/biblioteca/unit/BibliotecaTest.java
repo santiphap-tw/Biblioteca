@@ -1,6 +1,7 @@
 package com.twu.biblioteca.unit;
 
 import com.twu.biblioteca.Biblioteca;
+import com.twu.biblioteca.database.RentalDatabase;
 import com.twu.biblioteca.model.Rental;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class BibliotecaTest {
         biblioteca.user().login("111-1111", "1111");
         biblioteca.doCheckOut("Book A");
         // When
-        ArrayList<Rental> items = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
+        ArrayList<Rental> items = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE);
         // Then
         boolean isAllItemAvailable = items.stream().allMatch(Rental::isAvailable);
         assertEquals("getItems AVAILABLE should return only available items", true, isAllItemAvailable);
@@ -37,7 +38,7 @@ public class BibliotecaTest {
         biblioteca.user().login("111-1111", "1111");
         biblioteca.doCheckOut("Book A");
         // When
-        ArrayList<Rental> items = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
+        ArrayList<Rental> items = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE);
         // Then
         boolean isAllItemNotAvailable = items.stream().allMatch(item -> !item.isAvailable());
         assertEquals("getItems NOT_AVAILABLE should return only not available items", true, isAllItemNotAvailable);
@@ -49,7 +50,7 @@ public class BibliotecaTest {
         biblioteca.user().login("111-1111", "1111");
         biblioteca.doCheckOut("Book A");
         // When
-        ArrayList<Rental> items = biblioteca.getItems(Biblioteca.FILTER.ALL);
+        ArrayList<Rental> items = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL);
         // Then
         boolean isSomeItemAvailable = items.stream().anyMatch(Rental::isAvailable);
         boolean isSomeItemNotAvailable = items.stream().anyMatch(item -> !item.isAvailable());

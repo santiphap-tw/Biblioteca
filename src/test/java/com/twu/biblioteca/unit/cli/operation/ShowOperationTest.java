@@ -3,6 +3,7 @@ package com.twu.biblioteca.unit.cli.operation;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.Formatter;
 import com.twu.biblioteca.cli.operation.ShowOperation;
+import com.twu.biblioteca.database.RentalDatabase;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rental;
@@ -41,7 +42,7 @@ public class ShowOperationTest {
     public void shouldShowAvailable() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca);
-        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
+        ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("available");
         // Then
@@ -53,7 +54,7 @@ public class ShowOperationTest {
     public void shouldShowNotAvailable() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca);
-        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
+        ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("not available");
         // Then
@@ -65,7 +66,7 @@ public class ShowOperationTest {
     public void shouldShowAll() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca);
-        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.ALL);
+        ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL);
         // When
         ArrayList<String> output = showOperation.run("all");
         // Then
@@ -87,7 +88,7 @@ public class ShowOperationTest {
     public void shouldShowAvailableBook() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
-        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
+        ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("available");
         // Then
@@ -99,7 +100,7 @@ public class ShowOperationTest {
     public void shouldShowNotAvailableBook() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
-        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
+        ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("not available");
         // Then
@@ -111,7 +112,7 @@ public class ShowOperationTest {
     public void shouldShowAllBook() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca, Book.class);
-        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.ALL);
+        ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL);
         // When
         ArrayList<String> output = showOperation.run("all");
         // Then
@@ -133,7 +134,7 @@ public class ShowOperationTest {
     public void shouldShowAvailableMovie() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
-        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.AVAILABLE);
+        ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("available");
         // Then
@@ -145,7 +146,7 @@ public class ShowOperationTest {
     public void shouldShowNotAvailableMovie() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
-        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE);
+        ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.NOT_AVAILABLE);
         // When
         ArrayList<String> output = showOperation.run("not available");
         // Then
@@ -157,7 +158,7 @@ public class ShowOperationTest {
     public void shouldShowAllMovie() {
         // Given
         ShowOperation showOperation = new ShowOperation("", biblioteca, Movie.class);
-        ArrayList<Rental> collection = biblioteca.getItems(Biblioteca.FILTER.ALL);
+        ArrayList<Rental> collection = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL);
         // When
         ArrayList<String> output = showOperation.run("all");
         // Then

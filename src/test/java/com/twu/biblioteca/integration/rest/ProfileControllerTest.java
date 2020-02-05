@@ -3,6 +3,7 @@ package com.twu.biblioteca.integration.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.WebApp;
+import com.twu.biblioteca.database.RentalDatabase;
 import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.Rental;
@@ -45,9 +46,9 @@ public class ProfileControllerTest {
         user = UserDatabase.getInstance().getUsers().get(0);
         WebApp.biblioteca.user().login(user.getId(),user.getPassword());
         // Checkout some items
-        Rental item1 = WebApp.biblioteca.getItems(Biblioteca.FILTER.ALL).get(0);
-        Rental item2 = WebApp.biblioteca.getItems(Biblioteca.FILTER.ALL).get(1);
-        Rental item3 = WebApp.biblioteca.getItems(Biblioteca.FILTER.ALL).get(4);
+        Rental item1 = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).get(0);
+        Rental item2 = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).get(1);
+        Rental item3 = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.ALL).get(4);
         WebApp.biblioteca.doCheckOut(item1.getTitle());
         WebApp.biblioteca.doCheckOut(item3.getTitle());
         WebApp.biblioteca.doCheckOut(item2.getTitle());

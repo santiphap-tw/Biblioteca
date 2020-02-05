@@ -3,6 +3,7 @@ package com.twu.biblioteca.integration.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.WebApp;
+import com.twu.biblioteca.database.RentalDatabase;
 import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.Rental;
@@ -45,7 +46,7 @@ public class CheckOutControllerTest {
         User user = UserDatabase.getInstance().getUsers().get(0);
         WebApp.biblioteca.user().login(user.getId(),user.getPassword());
         // Get some item
-        item = WebApp.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).get(0);
+        item = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).get(0);
     }
 
     @Test

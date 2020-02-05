@@ -2,13 +2,13 @@ package com.twu.biblioteca.unit.cli;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.cli.BibliotecaApp;
+import com.twu.biblioteca.database.RentalDatabase;
 import com.twu.biblioteca.model.Label;
 import org.junit.After;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
@@ -85,7 +85,7 @@ public class BibliotecaAppTest {
         BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_CHECKOUT_COMMAND.text + " Book A");
         // Then
         assertEquals("Check out command should be valid", BibliotecaApp.RESPONSE.VALID, response);
-        assertEquals("App should have 5 items after checkout", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
+        assertEquals("App should have 5 items after checkout", 5, RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).size());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class BibliotecaAppTest {
         BibliotecaApp.RESPONSE response = app.selectOption(Label.OPTION_RETURN_COMMAND.text + " Book A");
         // Then
         assertEquals("Return command should be valid", BibliotecaApp.RESPONSE.VALID, response);
-        assertEquals("App should have 5 items after return", 5, biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).size());
+        assertEquals("App should have 5 items after return", 5, RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).size());
     }
 
     @Test
