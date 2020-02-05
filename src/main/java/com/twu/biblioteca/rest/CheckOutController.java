@@ -1,6 +1,6 @@
 package com.twu.biblioteca.rest;
 
-import com.twu.biblioteca.App;
+import com.twu.biblioteca.WebApp;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
@@ -13,7 +13,7 @@ public class CheckOutController {
 
     @RequestMapping("/checkout/{name}")
     public RestResponse doCheckOut(@PathVariable String name) {
-        Biblioteca.RESPONSE response = App.biblioteca.doCheckOut(name);
+        Biblioteca.RESPONSE response = WebApp.biblioteca.doCheckOut(name);
         switch (response) {
             case SUCCESS:
                 return new RestResponse(RestResponse.STATUS.SUCCESS, Label.CHECKOUT_SUCCESS.text);

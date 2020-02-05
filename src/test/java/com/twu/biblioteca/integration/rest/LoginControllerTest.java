@@ -1,8 +1,9 @@
 package com.twu.biblioteca.integration.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.twu.biblioteca.App;
 import com.twu.biblioteca.Biblioteca;
+import com.twu.biblioteca.WebApp;
+import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
 import com.twu.biblioteca.model.User;
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes= App.class)
+@SpringBootTest(classes= WebApp.class)
 @RunWith(SpringRunner.class)
 public class LoginControllerTest {
 
@@ -35,7 +36,7 @@ public class LoginControllerTest {
     public void setup() {
         // Given
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        App.biblioteca = new Biblioteca();
+        WebApp.biblioteca = new Biblioteca();
         ObjectMapper objectMapper = new ObjectMapper();
         JacksonTester.initFields(this, objectMapper);
     }
@@ -43,7 +44,7 @@ public class LoginControllerTest {
     @Test
     public void shouldLoginWithCorrectUser() throws Exception  {
         // Given
-        User user = App.biblioteca.user().getUsers().get(0);
+        User user = UserDatabase.getInstance().getUsers().get(0);
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS, Label.LOGIN_SUCCESS.text + user.getName());
         String json = itemJson.write(expectedResult).getJson();
         // When
@@ -56,7 +57,7 @@ public class LoginControllerTest {
     @Test
     public void shouldNotLoginWithWrongUser() throws Exception  {
         // Given
-        User user = App.biblioteca.user().getUsers().get(0);
+        User user = UserDatabase.getInstance().getUsers().get(0);
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.LOGIN_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When

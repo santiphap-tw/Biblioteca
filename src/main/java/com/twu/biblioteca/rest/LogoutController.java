@@ -1,6 +1,6 @@
 package com.twu.biblioteca.rest;
 
-import com.twu.biblioteca.App;
+import com.twu.biblioteca.WebApp;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
 import com.twu.biblioteca.model.User;
@@ -12,7 +12,7 @@ public class LogoutController {
 
     @RequestMapping("/logout")
     public RestResponse logout() {
-        User user = App.biblioteca.user().logout();
+        User user = WebApp.biblioteca.user().logout();
         boolean isSuccess = user != null;
         if(isSuccess)
             return new RestResponse(RestResponse.STATUS.SUCCESS, Label.LOGOUT_SUCCESS.text + user.getName());

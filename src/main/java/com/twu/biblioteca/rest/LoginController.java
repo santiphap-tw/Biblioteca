@@ -1,6 +1,6 @@
 package com.twu.biblioteca.rest;
 
-import com.twu.biblioteca.App;
+import com.twu.biblioteca.WebApp;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
 import com.twu.biblioteca.model.User;
@@ -13,7 +13,7 @@ public class LoginController {
 
     @RequestMapping("/login")
     public RestResponse login(@RequestParam String id, @RequestParam String password) {
-        User user = App.biblioteca.user().login(id,password);
+        User user = WebApp.biblioteca.user().login(id,password);
         boolean isSuccess = user != null;
         if(isSuccess)
             return new RestResponse(RestResponse.STATUS.SUCCESS, Label.LOGIN_SUCCESS.text + user.getName());

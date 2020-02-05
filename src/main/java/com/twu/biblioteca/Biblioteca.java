@@ -1,11 +1,10 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.model.Book;
-import com.twu.biblioteca.model.Movie;
+import com.twu.biblioteca.database.RentalDatabase;
+import com.twu.biblioteca.database.UserDatabase;
 import com.twu.biblioteca.model.Rental;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class Biblioteca {
@@ -22,31 +21,29 @@ public class Biblioteca {
         DEFAULT_ERROR
     }
 
-    private ArrayList<Rental> items;
     private BibliotecaUser userManager;
 
     public Biblioteca() {
-        items = new ArrayList<Rental>();
         userManager = new BibliotecaUser();
-        addDefaultBooks();
-        addDefaultMovies();
+        UserDatabase.getInstance().initialize();
+        RentalDatabase.getInstance().initialize();
     }
 
     public ArrayList<Rental> getItems(FILTER filter) {
         ArrayList<Rental> items = new ArrayList<>();
         switch (filter){
             case AVAILABLE:
-                items = this.items.stream()
+                items = RentalDatabase.getInstance().getItems().stream()
                         .filter(Rental::isAvailable)
                         .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case NOT_AVAILABLE:
-                items = this.items.stream()
+                items = RentalDatabase.getInstance().getItems().stream()
                         .filter(item -> !item.isAvailable())
                         .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case ALL:
-                items = this.items;
+                items = RentalDatabase.getInstance().getItems();
                 break;
         }
         // Sort items by class name
@@ -56,7 +53,7 @@ public class Biblioteca {
 
     public RESPONSE doCheckOut(String itemName) {
         if(userManager.getCurrentUser()==null) return RESPONSE.AUTHORIZATION_ERROR;
-        Rental item = items.stream()
+        Rental item = RentalDatabase.getInstance().getItems().stream()
                 .filter(it -> it.getTitle().equals(itemName))
                 .findFirst()
                 .orElse(null);
@@ -71,7 +68,7 @@ public class Biblioteca {
 
     public RESPONSE doReturn(String itemName) {
         if(userManager.getCurrentUser()==null) return RESPONSE.AUTHORIZATION_ERROR;
-        Rental item = items.stream()
+        Rental item = RentalDatabase.getInstance().getItems().stream()
                 .filter(it -> it.getTitle().equals(itemName))
                 .findFirst()
                 .orElse(null);
@@ -87,17 +84,5 @@ public class Biblioteca {
 
     public BibliotecaUser user() {
         return userManager;
-    }
-
-    private void addDefaultBooks(){
-        items.add(new Book("Book A", "Santiphap A.", "01/01/2008"));
-        items.add(new Book("Book B", "Santiphap B.", "02/01/2008"));
-        items.add(new Book("Book C", "Santiphap C.", "03/01/2008"));
-    }
-
-    private void addDefaultMovies(){
-        items.add(new Movie("Movie A", 2008, "Santiphap A.", 8));
-        items.add(new Movie("Movie B", 2013,"Santiphap B.", 9));
-        items.add(new Movie("Movie C", 2020, "Santiphap C.", 10));
     }
 }

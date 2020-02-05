@@ -1,6 +1,6 @@
 package com.twu.biblioteca.rest;
 
-import com.twu.biblioteca.App;
+import com.twu.biblioteca.WebApp;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Rental;
 import com.twu.biblioteca.model.RestResponse;
@@ -38,17 +38,17 @@ public class ShowController {
         switch (filter){
             case "available":
                 return new RestResponse(RestResponse.STATUS.SUCCESS,
-                        App.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
+                        WebApp.biblioteca.getItems(Biblioteca.FILTER.AVAILABLE).stream()
                         .filter(item -> isSameType(item,type))
                         .collect(Collectors.toCollection(ArrayList::new)));
             case "not_available":
                 return new RestResponse(RestResponse.STATUS.SUCCESS,
-                        App.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
+                        WebApp.biblioteca.getItems(Biblioteca.FILTER.NOT_AVAILABLE).stream()
                         .filter(item -> isSameType(item,type))
                         .collect(Collectors.toCollection(ArrayList::new)));
             case "all":
                 return new RestResponse(RestResponse.STATUS.SUCCESS,
-                        App.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
+                        WebApp.biblioteca.getItems(Biblioteca.FILTER.ALL).stream()
                         .filter(item -> isSameType(item,type))
                         .collect(Collectors.toCollection(ArrayList::new)));
             default:

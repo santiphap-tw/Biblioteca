@@ -1,7 +1,7 @@
 package com.twu.biblioteca.integration.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.twu.biblioteca.App;
+import com.twu.biblioteca.WebApp;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
 import org.junit.Before;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes= App.class)
+@SpringBootTest(classes= WebApp.class)
 @RunWith(SpringRunner.class)
 public class WelcomeControllerTest {
 
