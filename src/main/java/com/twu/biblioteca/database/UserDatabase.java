@@ -27,11 +27,11 @@ public class UserDatabase {
     }
 
     public ArrayList<User> getUsers() {
-        return users;
+        return this.getUsers(user -> true);
     }
 
     public ArrayList<User> getUsers(Predicate<? super User> filter) {
-        ArrayList<User> filteredUsers = this.getUsers().stream()
+        ArrayList<User> filteredUsers = this.users.stream()
                 .filter(filter)
                 .collect(Collectors.toCollection(ArrayList::new));
         filteredUsers.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));

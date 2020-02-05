@@ -30,12 +30,11 @@ public class RentalDatabase {
     }
 
     public ArrayList<Rental> getItems() {
-        items.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
-        return items;
+        return this.getItems(item -> true);
     }
 
     public ArrayList<Rental> getItems(Predicate<? super Rental> filter) {
-        ArrayList<Rental> filteredItems = this.getItems().stream()
+        ArrayList<Rental> filteredItems = this.items.stream()
                 .filter(filter)
                 .collect(Collectors.toCollection(ArrayList::new));
         filteredItems.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
