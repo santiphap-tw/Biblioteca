@@ -1,7 +1,8 @@
 package com.twu.biblioteca.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class User {
     private String id;
@@ -40,6 +41,7 @@ public class User {
         return phone;
     }
 
+    @JsonManagedReference
     public ArrayList<Rental> getItems() {
         // Sort items by class name
         items.sort((o1, o2) -> o1.getClass().getName().compareTo(o2.getClass().getName()));
