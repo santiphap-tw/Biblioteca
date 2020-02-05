@@ -6,15 +6,27 @@ import com.twu.biblioteca.model.Rental;
 
 public class Biblioteca {
 
+
     public enum RESPONSE {
         SUCCESS,
         AUTHORIZATION_ERROR,
         DEFAULT_ERROR
     }
 
+    private static Biblioteca instance;
     private BibliotecaUser userManager;
 
     public Biblioteca() {
+        instance = this;
+        initialize();
+    }
+
+    public static Biblioteca getInstance() {
+        if(instance == null) instance = new Biblioteca();
+        return instance;
+    }
+
+    public void initialize() {
         userManager = new BibliotecaUser();
         UserDatabase.getInstance().initialize();
         RentalDatabase.getInstance().initialize();
