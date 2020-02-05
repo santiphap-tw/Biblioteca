@@ -36,7 +36,7 @@ public class ShowOperation extends AppOperation {
         boolean showBorrower = !filter.equals(RentalDatabase.Filter.AVAILABLE);
         filter = filter.and(item -> targetClass.isInstance(item));
         ArrayList<Rental> items = RentalDatabase.getInstance().getItems(filter);
-        output.addAll(Formatter.collection(items,targetClass,showBorrower));
+        output.addAll(Formatter.items(items,targetClass,showBorrower));
         ////////////
         response = BibliotecaApp.RESPONSE.VALID;
         return output;

@@ -27,7 +27,7 @@ public class MyBorrowOperationTest {
         Biblioteca.getInstance().doCheckOut("Movie A");
         Biblioteca.getInstance().doCheckOut("Book B");
         ArrayList<Rental> collection = Biblioteca.getInstance().user().getCurrentUser().getItems();
-        expectedOutput = Formatter.collection(collection, Rental.class, false);
+        expectedOutput = Formatter.items(collection, Rental.class, false);
     }
 
     @Test

@@ -23,7 +23,7 @@ public class MyBorrowOperation extends AppOperation {
         User user = Biblioteca.getInstance().user().getCurrentUser();
         boolean isLogin = user != null;
         if(isLogin){
-            output.addAll(Formatter.collection(user.getItems(),Rental.class,false));
+            output.addAll(Formatter.items(user.getItems(),Rental.class,false));
         } else {
             output.add(Label.MY_INFO_FAIL.text);
         }

@@ -2,6 +2,9 @@ package com.twu.biblioteca.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+
 public abstract  class Rental {
 
     protected String title;
@@ -31,5 +34,22 @@ public abstract  class Rental {
     @JsonBackReference
     public User getBorrower() {
         return borrower;
+    }
+
+    public LinkedHashMap<String, String> attributes() {
+        LinkedHashMap<String, String> attributes = new LinkedHashMap<>();
+        attributes.put("Title", getTitle());
+        Arrays.stream(this.getClass().getMethods())
+                .filter(method -> method.getName().matches("get.*") && method.getName() != "getClass")
+                .forEach(method -> {
+                    try {
+                        String output = method.invoke(this).toString();
+                        output = output.equals("") ? "-" : output;
+                        attributes.put(method.getName().substring(3), output);
+                    } catch (Exception e) {
+                        attributes.put(method.getName().substring(3), "-");
+                    }
+                });
+        return attributes;
     }
 }
