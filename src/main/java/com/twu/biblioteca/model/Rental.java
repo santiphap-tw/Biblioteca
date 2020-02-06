@@ -1,6 +1,6 @@
 package com.twu.biblioteca.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -29,7 +29,7 @@ public abstract  class Rental {
         this.available = true;
     }
 
-    @JsonBackReference
+    @JsonIgnoreProperties("items")
     public User getBorrower() {
         return borrower;
     }

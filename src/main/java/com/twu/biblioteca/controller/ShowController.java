@@ -1,10 +1,11 @@
-package com.twu.biblioteca.rest;
+package com.twu.biblioteca.controller;
 
 import com.twu.biblioteca.database.RentalDatabase;
 import com.twu.biblioteca.model.Rental;
 import com.twu.biblioteca.model.RestResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -13,12 +14,12 @@ import java.util.stream.Collectors;
 @RestController
 public class ShowController {
 
-    @RequestMapping("/show")
+    @RequestMapping(value = "/show", method = RequestMethod.GET)
     public RestResponse showNoParam() {
         return showTwoParams("rental", "available");
     }
 
-    @RequestMapping("/show/{parameter}")
+    @RequestMapping(value = "/show/{parameter}", method = RequestMethod.GET)
     public RestResponse showOneParam(@PathVariable String parameter) {
         switch (parameter){
             case "available":
@@ -32,7 +33,7 @@ public class ShowController {
         }
     }
 
-    @RequestMapping("/show/{type}/{filter}")
+    @RequestMapping(value = "/show/{type}/{filter}", method = RequestMethod.GET)
     public RestResponse showTwoParams(@PathVariable String type, @PathVariable String filter) {
         switch (filter){
             case "available":

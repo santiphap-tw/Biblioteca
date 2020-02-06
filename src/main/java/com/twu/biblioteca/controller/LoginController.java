@@ -1,19 +1,18 @@
-package com.twu.biblioteca.rest;
+package com.twu.biblioteca.controller;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
 import com.twu.biblioteca.model.User;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.twu.biblioteca.model.request.UserRequest;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class LoginController {
 
-    @RequestMapping("/login")
-    public RestResponse login(@RequestParam String id, @RequestParam String password) {
-        User user = Biblioteca.getInstance().user().login(id,password);
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public RestResponse login(@RequestBody UserRequest userRequest) {
+        User user = Biblioteca.getInstance().user().login(userRequest.getId(), userRequest.getPassword());
         boolean isSuccess = user != null;
         if(isSuccess)
             return new RestResponse(RestResponse.STATUS.SUCCESS, Label.LOGIN_SUCCESS.text + user.getName());

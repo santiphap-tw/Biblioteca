@@ -1,6 +1,6 @@
 package com.twu.biblioteca.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.twu.biblioteca.database.RentalDatabase;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class User {
         return phone;
     }
 
-    @JsonManagedReference
+    @JsonIgnoreProperties("borrower")
     public ArrayList<Rental> getItems() {
         return RentalDatabase.getInstance().getItems(item -> item.borrower == this);
     }

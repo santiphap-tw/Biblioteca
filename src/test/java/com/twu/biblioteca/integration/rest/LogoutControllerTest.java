@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,7 +51,7 @@ public class LogoutControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.SUCCESS, Label.LOGOUT_SUCCESS.text + user.getName());
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/logout"))
+        this.mockMvc.perform(post("/logout"))
         // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -64,7 +64,7 @@ public class LogoutControllerTest {
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.MY_INFO_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
-        this.mockMvc.perform(get("/logout"))
+        this.mockMvc.perform(post("/logout"))
         // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
