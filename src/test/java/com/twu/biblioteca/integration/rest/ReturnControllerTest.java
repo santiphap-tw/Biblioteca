@@ -9,16 +9,20 @@ import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.Rental;
 import com.twu.biblioteca.model.RestResponse;
 import com.twu.biblioteca.model.User;
+import com.twu.biblioteca.model.request.ItemRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.nio.charset.Charset;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -28,12 +32,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class ReturnControllerTest {
 
+    public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+
     @Autowired
     private WebApplicationContext wac;
 
     private MockMvc mockMvc;
     private JacksonTester<RestResponse> itemJson;
-    private Rental item;
+    private JacksonTester<ItemRequest> requestJson;
+    private ItemRequest itemRequest;
 
     @Before
     public void setup() {
@@ -46,7 +53,9 @@ public class ReturnControllerTest {
         User user = UserDatabase.getInstance().getUsers().get(0);
         Biblioteca.getInstance().user().login(user.getId(),user.getPassword());
         // Checkout some item
-        item = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).get(0);
+        Rental item = RentalDatabase.getInstance().getItems(RentalDatabase.Filter.AVAILABLE).get(0);
+        itemRequest = new ItemRequest();
+        itemRequest.setName(item.getTitle());
         Biblioteca.getInstance().doCheckOut(item.getTitle());
     }
 
@@ -57,7 +66,8 @@ public class ReturnControllerTest {
         String json = itemJson.write(expectedResult).getJson();
         // When
         this.mockMvc.perform(post("/return/")
-                .param("name",item.getTitle()))
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(requestJson.write(itemRequest).getJson()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -66,12 +76,13 @@ public class ReturnControllerTest {
     @Test
     public void shouldNotReturnAvailableItem() throws Exception  {
         // Given
-        Biblioteca.getInstance().doReturn(item.getTitle());
+        Biblioteca.getInstance().doReturn(itemRequest.getName());
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.RETURN_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
         this.mockMvc.perform(post("/return/")
-                .param("name",item.getTitle()))
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(requestJson.write(itemRequest).getJson()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -80,11 +91,13 @@ public class ReturnControllerTest {
     @Test
     public void shouldNotReturnWrongItem() throws Exception  {
         // Given
+        itemRequest.setName("thereisnoitemwiththisname");
         RestResponse expectedResult = new RestResponse(RestResponse.STATUS.FAIL, Label.RETURN_FAIL.text);
         String json = itemJson.write(expectedResult).getJson();
         // When
         this.mockMvc.perform(post("/return/")
-                .param("name","thereisnoitemwiththisname"))
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(requestJson.write(itemRequest).getJson()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -98,7 +111,8 @@ public class ReturnControllerTest {
         String json = itemJson.write(expectedResult).getJson();
         // When
         this.mockMvc.perform(post("/return/")
-                .param("name",item.getTitle()))
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(requestJson.write(itemRequest).getJson()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));
@@ -113,7 +127,8 @@ public class ReturnControllerTest {
         String json = itemJson.write(expectedResult).getJson();
         // When
         this.mockMvc.perform(post("/return/")
-                .param("name",item.getTitle()))
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(requestJson.write(itemRequest).getJson()))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(content().json(json));

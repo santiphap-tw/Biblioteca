@@ -3,14 +3,15 @@ package com.twu.biblioteca.controller;
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Label;
 import com.twu.biblioteca.model.RestResponse;
+import com.twu.biblioteca.model.request.ItemRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ReturnController {
 
     @RequestMapping(value = "/return", method = RequestMethod.POST)
-    public RestResponse doReturn(@RequestParam String name) {
-        Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn(name);
+    public RestResponse doReturn(@RequestBody ItemRequest item) {
+        Biblioteca.RESPONSE response = Biblioteca.getInstance().doReturn(item.getName());
         switch (response) {
             case SUCCESS:
                 return new RestResponse(RestResponse.STATUS.SUCCESS, Label.RETURN_SUCCESS.text);
