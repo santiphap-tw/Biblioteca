@@ -1,4 +1,4 @@
-package com.twu.biblioteca.rest;
+package com.twu.biblioteca.controller;
 
 import com.twu.biblioteca.Biblioteca;
 import com.twu.biblioteca.model.Label;

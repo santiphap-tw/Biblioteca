@@ -1,4 +1,4 @@
-package com.twu.biblioteca.rest;
+package com.twu.biblioteca.controller;
 
 import com.twu.biblioteca.database.RentalDatabase;
 import com.twu.biblioteca.model.Rental;
